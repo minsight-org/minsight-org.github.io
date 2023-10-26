@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+	<title>Mosstool - Learn</title>
+	<link rel="icon" href="images/moessicon.png">
+	<link rel="stylesheet" type="text/css" href="css/moess_index.css">
+	<script type="text/javascript" src="js/lineplot_menu2.js"></script>
+	<script type="text/javascript" src="js/templateminerals.js"></script>
+
+
+</head>
+
+<body onload="draw_sumBHF();draw_sumCS();draw_sumQS();oxstate();" style="background-image: url(); background-size: 100%; background-position: right top; background-attachment: fixed;">
+
+<ul class="topmenu_ul">
+		<div>
+		<li class="topmenu_ul"><img src="images/moessicon_v3b.png" alt="Mossbauer database" style="height:65px; float:left"></li>
+		<li class="topmenu_ul"><a class="title" href="index.html">Home</a></li>
+		<li class="topmenu_ul"><a class="title" href="https://mosstool.shinyapps.io/deployed/">Data Fitting</a></li>
+		<li class="topmenu_ul"><a class="title" href="database.html">Database</a></li>
+		<li class="topmenu_ul"><a class="title" href="learn.html">Learn</a></li>
+		<li class="topmenu_ul"><a class="title" href="links.html">Links</a></li>
+		<li class="topmenu_ul"><a class="title" href="about.html">About</a></li>
+		</div>
+</ul>
+
+
+<div style="width:80%; margin-top: 0%; margin-left: 10%; background-color: white; opacity: 1">
+	<p style="text-align: right"><i>Published online: 03.06.2019 <br>Author: James M. Byrne</i></p>
+</div>
+
+<h4>Hyperfine Parameters</h4>
+
+<div style="width:80%; margin-top: 0%; margin-left: 10%; background-color: white; opacity: 1">
+
+<p>
+Hyperfine parameters are the values which are determined through fitting M&ouml;ssbauer spectra. In general, there are four main parameters which are usually considered including the Isomer shift (&delta;), Quadrupole Splitting (&Delta;E<sub>Q</sub>), Hyperfine Field (B<sub>hf</sub>) and Quadrupole shift (&epsilon;). Each parameter provides different kinds of information which are briefly described below. 
+</p>
+
+<FORM NAME="myform" ACTION="" METHOD="GET">
+
+<div style="border-radius: 5px; border: 0px solid #73AD21; padding: 0px; background-color:white;">
+
+<input id="slider1" type="hidden" min="1" max="100" step="1" Value="0.5" orient="vertical" onClick="draw_sum()"/>
+
+<h3>Isomer shift (IS, &delta;)</h3>
+
+<p>
+The isomer shift arises due to the interaction of the electron cloud around an atom with the nucleus. Technically, the term isomer shift is only valid when the source and absorber are at the same temperature, otherwise the term center shift is preferred. The isomer shift is defined relataive to a calibration, commonly metallic Fe(0) which is defined to have a value of 0 mm/s. The IS is highly sensitive to the oxidation state of the mineral under investigation, which can commonly be seen to be high (> 1 mm/s) for Fe(II) containing samples and low (< 1 mm/s) for Fe(III) containing samples. Exceptions for this rule include pyrite, which contains low spin Fe(II) with IS of 0.45 mm/s when measured at 77 K. 
+</p>
+<p>
+To get a feeling for how the shape of the M&ouml;ssbauer spectra changes as the IS value is altered, change the value in the box below and see what happens! You should see that changing the value of &delta; shifts the plot along the x-axis.
+</p>
+
+<center>
+<div>
+	<canvas id="canvas" width="500" height="300" style="border:1px solid #000000;"></canvas>
+</div>
+<p><b>&delta; (mm/s) = </b><input style="width:50px" TYPE="text" id="censhift_1" NAME="censhift_1" VALUE="0.0" ><button type=button onclick="draw_sumCS()">Go</button></p>
+</center>
+
+
+<h3>Quadrupole Splitting (QS, &Delta;E<sub>Q</sub>)</h3>
+<p>
+The quadrupole split arises due to non-spherical absorber atoms which can either be prolate or oblate. QS is also highly sensitive to the oxidation state of the mineral under investigation, with Fe(II) phases generally having QS > 1 mm/s, and Fe(III) phases having QS < 1 mm/s. Again, exceptions exist such as pyrite which has a QS of 0.5 mm/s when measured at 77 K.
+</p>
+<p>
+To get a feeling for how the shape of the M&ouml;ssbauer spectra changes as the QS value is altered, change the value in the box below and see what happens! You should see that changing the value of &Delta;E<sub>Q</sub> causes the specturm to split into two symmetrical peaks. The larger the value of, the further the peaks are spread.
+</p>
+
+<center>
+<div>
+	<canvas id="canvasQS" width="500" height="300" style="border:1px solid #000000;"></canvas>
+</div>
+<input id="slider1" type="hidden" min="1" max="100" step="1" Value="20" orient="vertical" onClick="draw_sum()"/>
+<p><b>&Delta;E<sub>Q</sub> (mm/s) = </b><input style="width:50px" TYPE="text" id="qshift_2" NAME="qshift_2" VALUE="0.0"><button type=button onclick="draw_sumQS();oxstate()">Go</button></p>
+</center>
+
+<h3>Hyperfine field (B<sub>hf</sub>, H)</h3>
+<p>
+The hyperfine field is an indicator of magnetization, i.e. the atoms within the mineral are magnetically ordered. This is seen due to the emergence of up to six peaks. Change the value for B<sub>hf</sub> in the box below and see what happens! You should see that changing the B<sub>hf</sub> above 2 T will start to break the singlet into six different lines. As B<sub>hf</sub> is increased, these 6 lines become increasingly spaced apart. The intensity of the lines also appears to decrease as the area under the curve is now spread over multiple peaks. Also notice the velocity range of the spectrum. At the moment this box is restricted to the range of  -6 mm/s to +6 mm/s which means that only spectra with hyperfine field of ~33 T (i.e. metallic Fe) or less can be viewed in full. This is why spectrometers are commonly set up to run between -12 mm/s to +12 mm/s.
+</p>
+
+<center>
+<div>
+	<canvas id="canvasBHF" width="500" height="300" style="border:1px solid #000000;"></canvas>
+</div>
+<input id="slider1" type="hidden" min="1" max="100" step="1" Value="20" orient="vertical" onClick="draw_sum()"/>
+<p><b>B<sub>hf</sub> (T) = </b><input style="width:50px" TYPE="text" id="hyperfinefield_3" NAME="hyperfinefield_3" VALUE="0.0"><button type=button onClick="draw_sumBHF()">Go</button></p>
+</center>
+<input id="slider2" type="hidden" min="1" max="100" step="1" Value="40" orient="horizontal" onClick="draw_sum()"/>
+
+<h3>Quadrupole shift (&epsilon;)</h3>
+<p>
+The quadrupole shift is not necessarily an specific parameter as it can be regarded as being related to the quadrupole splitting by:
+</p>
+<p>
+  $$\varepsilon = {\Delta E_Q \over 2} $$
+</p>
+<p>
+ The parameter is only observed when a sample shows magnetic ordering, i.e. when there is a sextet, however, in most cases it is relatively small compared to with B<sub>hf</sub>. Nevertheless, it can be a useful parameter for identifiying mineral phases such as goethite which tends to have a strongly negative &epsilon;. Be careful when reading values of &epsilon; in publications as sometimes what is described as quadrupole splitting actually corresponds to quadrupole shift and vice versa.  
+</p>
+
+<h3>Remarks</h3>
+
+<p>
+The information provided above is extermely superficial and is simply intended to give you a basic starting point. For more detailed information, please consult text books or publications including:
+<ul>
+		<li>Dyar, M. D., Agresti, D. G., Schaefer, M. W., Grant, C. A. and Sklute, E. C. 2006. M&ouml;ssbauer spectroscopy of earth and planetary materials. Annu. al Rev. iew of Earth and Planet. ary Sci., ences, 34, 83–125.</li>
+		<li>Greenwood, N. N. and Gibb, T. C. 1971. M&ouml;ssbauer Spectroscopy, London, Chapman and Hall Ltd.</li>
+		<li>G&uuml;tlich  , P., Bill, E. and Trautwein, A. X. 2010. M&ouml;ssbauer Spectroscopy and Transition Metal Chemistry: Fundamentals and Applications, Springer Science Business Media.</li>
+		<li>G&uuml;tlich, P., Schr&ouml;der, C. and Sch&uuml;nemann, V. 2012. M&ouml;ssbauer spectroscopy—an indispensable tool in solid state research. Spectroscopy Europe, 24, 21.</li>
+		<li>Murad, E. and Cashion, J. 2004. M&ouml;ssbauer Spectroscopy of Environmental Materials and their Industrial Utilization, USA, Kluwer Academic Publishers.</li>
+
+</ul>
+</p>
+
+
+<table>
+
+<div style="float:left; margin-left:5px; margin-top:5px; margin-bottom:30px">
+	<table>
+				
+		<tr><td></td><td><input style="width:50px" TYPE="hidden" id="linewidth_1" NAME="linewidth_1" VALUE="0.097" onkeypress="draw_sumCS();draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="censhift_1" NAME="censhift_1" VALUE="0.0" onkeypress="draw_sumCS();draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="qshift_1" NAME="qshift_1" VALUE="0.0" onkeypress="draw_sumCS();draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="hyperfinefield_1" NAME="hyperfinefield_1" VALUE="0" onkeypress="draw_sumCS();draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="ratio_1" NAME="ratio_1" VALUE="100" onkeypress="draw_sumCS();draw_sumQS();draw_sum();oxstate()"></td>
+		<td><INPUT TYPE="hidden" NAME="hematite" Value="Hematite" onClick="writeText_ferrihydrite(this.form);draw_sum();oxstate()"></td><td><INPUT TYPE="hidden" NAME="clear" Value="Clear" onClick="writeText_clearA(this.form);draw_sum();oxstate()"></td></tr>
+
+		
+		<tr><td></td><td><input style="width:50px" TYPE="hidden" id="linewidth_2" NAME="linewidth_2" VALUE="0.097" onkeypress="draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="censhift_2" NAME="censhift_2" VALUE="0.0" onkeypress="draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="qshift_2" NAME="qshift_2" VALUE="0.0" onkeypress="draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="hyperfinefield_2" NAME="hyperfinefield_2" VALUE="0" onkeypress="draw_sumQS();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="ratio_2" NAME="ratio_2" VALUE="100" onkeypress="draw_sumQS();draw_sum();oxstate()"></td>
+		<td><INPUT TYPE="hidden" NAME="ferrihydrite" Value="Ferrihydrite" onClick="writehidden_ferrihydriteB(this.form);draw_sum();oxstate()"></td><td><INPUT TYPE="hidden" NAME="clear" Value="Clear" onClick="writehidden_clearB(this.form);draw_sum();oxstate()"></td></tr>
+		
+		<tr><td></td><td><input style="width:50px" TYPE="hidden" id="linewidth_3" NAME="linewidth_3" VALUE="0.097" onkeypress="draw_sumBHF();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="censhift_3" NAME="censhift_3" VALUE="0.0" onkeypress="draw_sumBHF();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="qshift_3" NAME="qshift_3" VALUE="0.0" onkeypress="draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="hyperfinefield_3" NAME="hyperfinefield_3" VALUE="0" onkeypress="draw_sumBHF();draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="ratio_3" NAME="ratio_3" VALUE="100" onkeypress="draw_sumBHF();draw_sum();oxstate()"></td>
+		<td><INPUT TYPE="hidden" class="hiddenminerals" NAME="ferrihydrite" Value="Ferrihydrite" onClick="writehidden_ferrihydriteB(this.form);draw_sum();oxstate()"></td><td><INPUT TYPE="hidden" NAME="clear" Value="Clear" onClick="writehidden_clearC(this.form);draw_sum();oxstate()"></td></tr>
+		
+		<tr><td></td><td><input style="width:50px" TYPE="hidden" id="linewidth_4" NAME="linewidth_4" VALUE="0.097" onkeypress="draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="censhift_4" NAME="censhift_4" VALUE="0.0" onkeypress="draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="qshift_4" NAME="qshift_4" VALUE="0.0" onkeypress="draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="hyperfinefield_4" NAME="hyperfinefield_4" VALUE="0" onkeypress="draw_sum();oxstate()"></td><td><input style="width:50px" TYPE="hidden" id="ratio_4" NAME="ratio_4" VALUE="0" onkeypress="draw_sum();oxstate()"></td>
+		<td><INPUT TYPE="hidden" class="buttonminerals" NAME="ferrihydrite" Value="Ferrihydrite" onClick="writehidden_ferrihydriteB(this.form);draw_sum();oxstate()"></td><td><INPUT TYPE="hidden" NAME="clear" Value="Clear" onClick="writehidden_clearD(this.form);draw_sum();oxstate()"></td></tr>
+		
+		
+		</center><td></tr>
+		</table>
+</div>
+</table>
+
+
+</div>
+</td>
+</tr>
+
+</table>
+
+
+</body>
+</html>

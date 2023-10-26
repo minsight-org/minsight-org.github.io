@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Mosstool - Learn</title>
+	<link rel="icon" href="images/moessicon.png">
+	<link rel="stylesheet" type="text/css" href="css/moess_index.css">
+	<script type="text/javascript" src="js/lineplot_menu2.js"></script>
+	<script type="text/javascript" src="js/templateminerals.js"></script>
+
+
+</head>
+
+<body onload="" style="">
+
+<ul class="topmenu_ul">
+		<div>
+		<li class="topmenu_ul"><img src="images/moessicon_v3b.png" alt="Mossbauer database" style="height:65px; float:left"></li>
+		<li class="topmenu_ul"><a class="title" href="index.html">Home</a></li>
+    <li class="topmenu_ul"><a class="title" href="https://mosstool.shinyapps.io/deployed/">Data Fitting</a></li>
+		<li class="topmenu_ul"><a class="title" href="database.html">Database</a></li>
+		<li class="topmenu_ul"><a class="title" href="learn.html">Learn</a></li>
+		<li class="topmenu_ul"><a class="title" href="links.html">Links</a></li>
+		<li class="topmenu_ul"><a class="title" href="about.html">About</a></li>
+		</div>
+</ul>
+
+<div style="width:80%; margin-top: 0%; margin-left: 10%; background-color: white; opacity: 1">
+  <p style="text-align: right"><i>Published online: 26.05.2019 <br>Author: James M. Byrne</i></p>
+</div>
+
+<h4>Build your own M&ouml;ssbauer fitting software</h4>
+
+<div style="width:80%; margin-top: 0%; margin-left: 10%; background-color: white; opacity: 1">
+
+<p style="padding: 0px; margin-top: 0%; ">
+
+When I first started learning how to fit M&ouml;ssbauer data, I blindly placed my trust in the fitting software, adding doublets and sextets whenever they seemed appropriate. However, I never stopped to think about what really makes up these specific line shapes. It took several years before I eventually decided to see if I could make more sense of these mysterious curves by drawing my own doublets and sextets in Excel. It turned out after a short period of troubleshooting that these lines were much easier to understand than I had first thought and I quickly realised it was even possible to fit them to raw data, first by guess work and then by using the solving tools in Excel. I now incorporate this strategy into my lectures because I think it provides students with a much better appreciation for the interpretation of the spectra when they can understand the fundamentals behind how the fitting actually works. The purpose of this page is to replicate this and provide a step by step guide to the fundamental aspects of data fitting.
+</p>
+<p>
+Hopefully you already have heard a little bit about the theory of M&ouml;ssbauer spectroscopy, so I will simply jump straight ahead and remind you of the fact that the characteristic M&ouml;ssbauer spectrum is best described by a Lorentzian lineshape:
+</p>
+<p>
+  $$L(x) = I*{1\over \pi}{w/2 \over (x-x_0)^2+(w/2)^2}$$
+  Where \(I=\)intensity, \(x=\)velocity [mm/s], \(x_0 =\) centre of the curve, \(w =\) half width at half maximum
+</p>
+<p>
+Based on just this simple equation, it is possible to create the classic singlets, doublets and sextets you should already be familiar with.
+</p>
+
+<h3>Creating a singlet</h3>
+<p>
+A good place to start is the singlet as it is the easiest and fastest type of lineshape you can create. If we create a figure using equation 1, you will see that x<sub>0</sub> simply describes the center shift parameter. Let's see what I mean:
+
+<ol type="1">
+  <li>Start a new Excel project</li>
+  <li>Make a column for velocity (this will be our x) with values from -12 to 12. The step size between each cell should be 0.047. We use this value because it is the velocity range, divided by the number of channels in the detector which is typically 512, i.e. (12- -12)/512=0.047</li>
+  <li>Make a column L using equation (1)</li>
+  <li>Make an absolute cell for I = 1</li> 
+  <li>Make an absolute cell for w = 0.097 [mm/s]</li>
+  <li>Make an absolute cell for x0 = 0 [mm/s] </li>
+  <li>Plot a graph of velocity vs. L</li>
+
+</ol>
+When you plot the graph, you should see a peak, but most M&ouml;ssbauer data is inverted (i.e. you see a dip rather than a peak). To correct for this, simply multiply all the values in your L column by -1. You should hopefully see a characteristic M&ouml;ssbauer spectrum which looks like a singlet.
+<center><figure>
+  <img src="images/fitprog/singlet.png" alt="singlet" style="width:300px">
+  <figcaption><b><i>Figure 1 - Singlet</i></b></figcaption>
+</figure></center>
+
+Now change the value of x0 and see what happens. This value of x0 clearly corresponds to the center shift. 
+</p>
+
+<p>
+<a href="/fitprog/singlet.xlsx" target="_blank">Download workbook - Singlet</a>
+</p>
+
+<h3>Creating a doublet</h3>
+<p>
+A singlet is nice and easy, but with the exception on of a few examples, most environmental samples have spectra which are characterised by doublets or sextets. Can you think how to change the Lorentzian equation so that we can plot a doublet? All you have to do is to plot two of them and add them together. So we can simply adjust the equation describing L(x) and introduce a left and right side. 
+
+<p>
+  $$L(x) = L(x)_L+L(x)_R=I*{1\over \pi}{w/2 \over (x-x_L)^2+(w/2)^2}+I*{1\over \pi}{w/2 \over (x-x_R)^2+(w/2)^2}$$
+  Where \(I=\)intensity, \(x=\)velocity [mm/s], \(x_0 =\) centre of the curve, \(w =\) half width at half maximum
+</p>
+Here you should notice that I have changed x<sub>0</sub> to x<sub>L</sub> and x<sub>R</sub> for the left and right Lorentzians respectively. These terms now contain information that correspond to both center shift (CS) and quadrupole splitting (QS) parameters:
+<p>
+  $$x_L = CS-{QS\over 2}$$
+  $$x_R = CS+{QS\over 2}$$
+</p>
+This means we can rewrite equation (2), and factor out the intensity (I) of the curve :
+<p>
+  $$L(x) =I*\Bigg({{1\over \pi}{w/2 \over (x-CS-{QS\over 2})^2+(w/2)^2}+{1\over \pi}{w/2 \over (x-CS+{QS\over 2})^2+(w/2)^2}}\Bigg)$$
+</p>
+So let's try and plot this:
+
+<ol type="1">
+  <li>Start a new Excel project</li>
+  <li>Make a column for velocity (this will be our x) with values from -12 to 12. The step size between each cell should be 0.047. We use this value because it is the velocity range, divided by the number of channels in the detector which is typically 512, i.e. (12- -12)/512=0.047</li>
+  <li>Make an absolute cell for I = 1</li> 
+  <li>Make an absolute cell for w = 0.097 [mm/s]</li>
+  <li>Make an absolute cell for CS = 0 [mm/s] </li>
+  <li>Make an absolute cell for QS = 0 [mm/s] </li>
+  <li>Make a column L using equation (5)</li>
+  <li>Plot a graph of velocity vs. L</li>
+
+</ol>
+You will probably only see one peak! This is because the hyperfine parameters of each Lorentzian are set to 0. Change one or both of CS or QS and you will see the peak split into two distinct peaks and shift along the velocity axis. You can also change the value of w to see both halves of the spectrum become broader or narrower (be careful, 0.097 is the theoretical minimum).
+
+<center><figure>
+  <img src="images/fitprog/doublet.png" alt="doublet" style="width:300px">
+  <figcaption><b><i>Figure 1 - Doublet</i></b></figcaption>
+</figure></center>
+
+<p>
+<a href="" target="_blank">Download workbook - Doublet</a>
+</p>
+
+<h3>Working with data</h3>
+
+Now we have a very basic spectrum, but how can we use this to fit our data? First, we need to get some data. Either you have your own, or we can just work with some that already exists. Download the spectrum below:
+
+<p>
+<a href="/fitprog/unknown1.txt" target="_blank">Unknown 1</a>
+</p>
+
+This is just a basic spectrum which can be described by a doublet. Follow the steps below to get started:
+
+
+<ol type="1">
+  <li>Start a new Excel project</li>
+  <li>Import your data into two separate columns and give them the headings "Velocity" and "Data".</li> 
+  <li>Create a new column with the heading "Fit".</li>
+  <li>Make an absolute cell for I = 3E5 (this value should be changed accordingly if you imported your own data)</li> 
+  <li>Make an absolute cell for background (Bkgd) = 8.65E6 (this cell is now required because your data will always have a background intensity which you will need to account for. If you imported your own data, you should change this value accordingly)</li> 
+   <li>Make an absolute cell for w = 0.097 [mm/s]</li>
+  <li>Make an absolute cell for CS = 0 [mm/s] </li>
+  <li>Make an absolute cell for QS = 0 [mm/s] </li>
+  <li>In the "Fit" column, fill the cells with equation (5), however use the "Velocity" column from the imported data as your x. </li>
+  <li>Plot a graph which shows both the "Fit" and "Data" against "Velocity"</li>
+  <li>Manually change CS and QS so that your spectrum closely fits the data. You might also need to change the values for intensity (I), background and linewidth (w). Suggested parameters include CS = 0.35, QS = 0.77, w = 0.5.</li>
+
+</ol>
+
+<center><figure>
+  <img src="images/fitprog/doublet-data.png" alt="doublet and data" style="width:300px">
+  <figcaption><b><i>Figure 3 - Real data fitted with a doublet by eye</i></b></figcaption>
+</figure></center>
+
+<p>
+You have now completed a very basic and crude way of fitting your Moessbauer data. This is of course not very scientific and we need a more robust method to analyse our data. There are many different approaches to doing this, but one common method is to use a regression based analysis where the difference between the "data" and the "fit" is minimized. 
+</p>
+<p>
+In your workbook, add a new column with the heading "least squares". Fill the cells in this column with (fit-data)^2. Now create a new cell which sums all of the values in the least squares column, i.e.:
+</p>
+
+<p>
+  $$R^2 = {\Sigma{(fit-data)}^2}$$
+</p>
+<p>
+The general goal is to minimize R<sup>2</sup>, so try and adjust your hyperfine parameters again so that it is even lower. Normally, your fitting software will just try minimize this number by changing the hyperfine parameters. There is a method for doing this in Excel using a plugin called Solver. To install in Excel:
+
+<ol type="1">
+  <li>Go to File > Options > Add-ins</li>
+  <li>Press Go</li>
+  <li>Tick "Analysis ToolPak" and "Solver Add-in"</li> 
+  <li>Press OK and then restart Excel</li>
+  <li>Solver should now be installed under "Data" ribbon. </li>
+  <li>Select the cell containing the sum of your least squares (i.e. R<sup>2</sup> and press "Solver".</li>
+  <li>The Set Objective field should contain the cell describing R<sup>2</sup>.</li>
+  <li>We want to minimize R<sup>2</sup> so select the "Min" radio button</li>
+  <li>Select all the hyperfine parameters (CS, QS, I, Bkg and w) in "By Changing Variable Cells".</li>
+  <li>Press Solve at the bottom.</li>
+
+</ol>
+
+<center><figure>
+  <img src="images/fitprog/solver.png" alt="solver" style="width:500px">
+  <figcaption><b><i>Figure 4 - Dialogue window which should appear when using Solver</i></b></figcaption>
+</figure></center>
+
+You have now made a very basic fitting program in which the hyperfine parameters should be able to describe the mystery sample (Figure 5). The sample was measured at room temperature. Look up the center shift and quadrupole splitting on the Mosstool database and try to determine the mineral identity. 
+</p>
+
+<center><figure>
+  <img src="images/fitprog/doublet-data-fit.png" alt="fitted doublet" style="width:300px">
+  <figcaption><b><i>Figure 5 - Final result after fitting data using Solver</i></b></figcaption>
+</figure></center>
+
+
+<p>
+<a href="/fitprog/doublet_fitting.xlsx" target="_blank">Download workbook - Doublet with real data</a>
+</p>
+
+<h3>Creating a sextet</h3>
+
+<p>
+Now we will move onto the sextet, which is commonly observed when analysing crystalline iron oxides such as hematite, goethite or magnetite, or paramagnetic mineral phases below their blocking temperature. How do we create a sextet? We just need to add six Lorentzians together:
+</p>
+<p>
+  $$L(x) = L(x)_1+L(x)_2+L(x)_3+L(x)_4+L(x)_5+L(x)_6$$
+</p>
+<p>
+I have not written out the details for each of the individual Lorentzians because it would be far too long here. However, in general we need to replace the x<sub>0</sub> for each individual Lorentzian as follows:
+</p>
+<p>
+	<center>
+	<table>
+		<tr>
+			<th>\(Lorenzian\)</th>
+			<th>$$x_0$$</th>
+		</tr>
+		<tr>
+			<td>\(1\)</td>
+			<td>$$0-(Bhf/B_c*D3/2)+IS+QS$$</td>
+		</tr>
+		<tr>
+			<td>\(2\)</td>
+			<td>$$0-(Bhf/B_c*D2/2)+IS-QS$$</td>
+		</tr>
+		<tr>
+			<td>\(3\)</td>
+			<td>$$0-(Bhf/B_c*D1/2)+IS-QS$$</td>
+		</tr>
+		<tr>
+			<td>\(4\)</td>
+			<td>$$0+(Bhf/B_c*D1/2)+IS-QS$$</td>
+		</tr>
+		<tr>
+			<td>\(5\)</td>
+			<td>$$0+(Bhf/B_c*D2/2)+IS-QS$$</td>
+		</tr>
+		<tr>
+			<td>\(6\)</td>
+			<td>$$0+(Bhf/B_c*D3/2)+IS+QS$$</td>
+		</tr>
+	</table>
+	</center>
+</p>
+<p>
+Where \(B_c=32.95, D1 = 1.679, D2 = 6.1525\) and \(D3 = 10.625\).
+</p>
+<p>
+You might notice that the above equation does not account for differences in the intensities of the individual peaks of a sextet. In general, these often follow the ratio of 3:2:1:1:2:3 for peaks 1-6 respectively. Therefore, lets update our equation to include these ratios:
+</p>
+<p>
+  $$L(x) = 3L(x)_1+2L(x)_2+L(x)_3+L(x)_4+2L(x)_5+3L(x)_6$$
+</p>
+<p>
+Now we are ready to create a sextet:
+
+<ol type="1">
+  <li>Start a new Excel project</li>
+  <li>Make a column for velocity (this will be our x) with values from -12 to 12. The step size between each cell should be 0.047. We use this value because it is the velocity range, divided by the number of channels in the detector which is typically 512, i.e. (12- -12)/512=0.047</li>
+  <li>Make an absolute cell for I = 1</li> 
+  <li>Make an absolute cell for w = 0.097 [mm/s]</li>
+  <li>Make an absolute cell for CS = 0 [mm/s] </li>
+  <li>Make an absolute cell for QS = 0 [mm/s] </li>
+  <li>Make an absolute cell for Bhf = 33 [mm/s] </li>
+  <li>I now recommend making six columns for each of the terms within the equation for L(x). This will make it easier to handle in Excel.</li>
+  <li>Add a seventh column with the title "Fit" which is simply the sum of each of the six individual columns created in step 7.</li>
+
+  <li>Plot a graph of Velocity vs. Fit</li>
+
+</ol>
+
+</p>
+<center><figure>
+  <img src="images/fitprog/sextet.png" alt="fitted doublet" style="width:300px">
+  <figcaption><b><i>Figure 6 - Sextet</i></b></figcaption>
+</figure></center>
+
+<p>
+<a href="/fitprog/sextet.xlsx" target="_blank">Download workbook - Sextet</a>
+</p>
+
+<h3>Working with data</h3>
+<p>
+Now we have a very basic spectrum for a sextet, but how can we use this to fit our data? First, we need to get some data. Either you have your own, or we can just work with some that already exists. Download the spectrum below:
+</p>
+
+<p>
+<a href="/fitprog/unknown2.txt" target="_blank">Unknown 2</a>
+</p>
+
+<p>
+I now challenge you to try and fit the data using the same approach described for the doublet. The principle is almost identical and through the use of the Solver function, you will be able to determine the identify of Unknown 2. If you get stuck, download the fully worked solution:
+</p>
+
+<p>
+<a href="/fitprog/sextet_fitting.xlsx" target="_blank">Download workbook - Sextet with real data</a>
+</p>
+
+<h3>Remarks</h3>
+
+<p>
+I hope that this brief tutorial has given you at least a very basic understanding of how Moessbauer data fitting works. There are of course much more complicated models which can be used, but the basic principles remain the same. Happy fitting! 
+</p>
+
+
+</div>
+</div>
+
+
+
+
+</center>
+
+</body>
+</html>

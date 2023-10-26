@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333333;
+}
+
+#lorenz-parameters {
+    clear: both;
+}
+
+.tooltip {
+    position: absolute;
+    font-size: 12px;
+    width:  auto;
+    height: auto;
+    pointer-events: none;
+    background-color: white;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+#subcomponents-enabled-button {
+    cursor: default;
+}
+
+#top-panel .button {
+    padding: 10px 10px;
+}
+
+.button:hover {
+    background-color: green;
+}
+
+.button:disabled {
+    background-color: #999999;
+}
+
+#plotting {
+    float: left;
+}
+
+#plot {
+    width:1000px;
+    height:700px;
+}
+
+#loaded_files {
+    float: left;
+    width: 260px;
+}
+
+.loaded_file .title {
+    font-weight: bold;
+    color: #777777;
+}
+
+.loaded_file h4 {
+    padding: 5px 0px 5px 0px;
+    margin: 0;
+    color: #777777;
+    float: left;
+}
+
+.loaded_file p {
+    line-height: 1;
+    padding: 0;
+    margin: 3px 0 3px 0;
+}
+
+.loaded_file {
+    border-radius: 10px;
+    border: 1px solid #dedede;
+    padding: 15px;
+    margin: 5px 0px 5px 0px;
+}
+
+.loaded_file_legend {
+    width: 14px;
+    height: 14px;
+    margin: 5px 10px 5px 0;
+    float: left;
+}
+
+.loaded_file_toggle {
+    float: right;
+}
+
+#subcomponents-enabled {
+    margin: 0px;
+}
+
+.site-id {
+    text-align: center;
+}

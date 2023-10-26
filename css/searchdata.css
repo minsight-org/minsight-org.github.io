@@ -1,0 +1,154 @@
+
+#myTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 80%; /* Full-width */
+    border: 1px solid black; /* Add a grey border */
+    font-size: 16px; /* Increase font-size */
+
+}
+
+#myTable th {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    background-color: #99cc33;
+    color:white;
+
+}
+
+#myTable td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    
+}
+
+#myTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+
+#myTable tr.header, #myTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+
+/*Site 1*/
+#mysubTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 0px solid black; /* Add a grey border */
+    font-size: 12px; /* Increase font-size */
+}
+#mysubTable th {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    background-color: white;
+    color:black;
+}
+#mysubTable td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */   
+}
+#mysubTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+#mysubTable tr.header, #mysubTable tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+
+/*Site 2*/
+#mysubTable2 {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 0px solid black; /* Add a grey border */
+    font-size: 12px; /* Increase font-size */
+}
+#mysubTable2 th {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    background-color: white;
+    color:black;
+}
+#mysubTable2 td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */ 
+}
+#mysubTable2 tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+#mysubTable2 tr.header, #mysubTable2 tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+/*Site 3*/
+#mysubTable3 {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 0px solid black; /* Add a grey border */
+    font-size: 12px; /* Increase font-size */
+}
+#mysubTable3 th {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    background-color: white;
+    color:black;
+}
+#mysubTable3 td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */ 
+}
+#mysubTable43 tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+#mysubTable3 tr.header, #mysubTable3 tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+
+/*Site 4*/
+#mysubTable4 {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+    border: 0px solid black; /* Add a grey border */
+    font-size: 12px; /* Increase font-size */
+}
+#mysubTable4 th {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */
+    background-color: white;
+    color:black;
+}
+#mysubTable4 td {
+    text-align: left; /* Left-align text */
+    padding: 10px; /* Add padding */ 
+}
+#mysubTable4 tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+#mysubTable4 tr.header, #mysubTable4 tr:hover {
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+
+
+
+#searchTable {
+    border-collapse: collapse; /* Collapse borders */
+    border: 2px solid black; /* Add a grey border */
+    font-size: 14px; /* Increase font-size */
+}
+
+#div.description {
+    border-collapse: collapse; /* Collapse borders */
+    width: 75%; /* Full-width */
+    border: 2px solid black; /* Add a grey border */
+    font-size: 14px; /* Increase font-size */
+}
