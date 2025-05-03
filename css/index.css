@@ -1,0 +1,113 @@
+	
+body {
+	margin: 0px;
+	padding-top: 0px;
+	font-family: arial;
+	text-align:justify;
+	line-height: 1.5;	
+    background-color: #ffffff;
+
+}
+
+div.polaroid {
+    margin:auto;
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+ 
+div.polaroid_container {
+    text-align: center;
+    padding: 10px 20px;
+}
+
+
+.top_logo {
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+    padding-right:10px;
+    background-color: #ffffff;
+
+}
+
+.launch_container_bkgd {
+    padding-top:50px;
+    padding-bottom:50px;
+    padding-left:0px;
+    padding-right:0px;
+    color: #454545;
+}
+.containers {
+    padding-top:50px;
+    padding-bottom:50px;
+    padding-left:0px;
+    padding-right:0px;
+    color: #454545;
+    background-color: #ffffff;
+}
+
+
+.launch_container {
+    padding-top:30px;
+    padding-bottom:30px;
+    padding-left:10px;
+    padding-right:10px;
+    margin:auto;
+    text-align:center;
+    font-weight: bold;
+    width:20%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    color: white;
+}
+
+.contentcontainers {
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-left:10px;
+    padding-right:10px;
+    width:80%;
+    margin:auto;
+    background-color: #ffffff;
+    opacity: 90%;
+}
+
+
+	
+.launchlink {
+	border: none;
+	color: rgb(255, 255, 255);
+    text-align: left;
+    text-decoration: none;
+	font-family: arial;
+    font-size: 40px;
+}
+	
+.launchlink:hover {
+    border: none;
+	color: rgb(147, 143, 143);
+    text-align: left;
+    text-decoration: none;
+	font-family: arial;
+    font-size: 40px;
+}
+	
+.launchlink:focus {
+	outline:0;
+}
+
+.grid-container {
+    display: grid;
+    width:80%;
+    margin:auto;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    background-color: #ffffff;
+
+}
+.grid-item {
+    padding: 20px;
+    text-align: center;
+}

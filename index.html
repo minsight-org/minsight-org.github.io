@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>HTML Meta Tag</title>
-      <meta http-equiv = "refresh" content = "3; url = https://minsight.streamlit.app/" />
+      <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
+      <link rel="stylesheet" type="text/css" href="css/index.css">
+      <!-- <meta http-equiv = "refresh" content = "3; url = https://minsight.streamlit.app/" /> -->
    </head>
-   <body>
-		<p><img src = "logo_text.png", width = 25%></p>
 
-    	<p>Redirecting to the Minsight app</p>
-   </body>
+   <body onload="" style="background-image: url(media/index.jpg); background-repeat: no-repeat; background-size: 100%; background-position: right top; background-attachment: fixed;">
+
+        <div class = "top_logo">
+            <p>
+                <img src = "media/logo_text.png", width = 25%>
+            </p>
+        </div>
+		
+        <!-- Link to launch Minsight -->
+        <div class = "launch_container_bkgd", style ="padding-top:100px; padding-bottom:100px;">        
+            <div class = "launch_container">
+                <a href = "https://minsight.streamlit.app/" target="_blank" class="launchlink">Launch</a>
+            </div>
+        </div>
+
+        <!-- Site description -->
+        <div class = "containers">        
+            <div class = "contentcontainers">
+                <p>
+                    Minsight is an online application for fitting and interpreting Mössbauer spectroscopy data. Unlike 
+                    other fitting software Minsight aims to handle the entire analytical pipeline so that once data is collected, 
+                    it can be readily and easily understood. Typical non-linear regression models combined with dynamic databases 
+                    enable discovery of similar spectra which have already been published. 
+                </p>
+                <p>
+                    
+                    Try the free trial today! 
+                </p>	
+            </div>
+        </div>
+
+        <div class = "containers">        
+            <div class="grid-container">
+
+                <div class="grid-item">
+                    <div class = "polaroid">
+                        <img src = "media/loginscreen.jpg", width = 100%>
+                    </div>
+                    <p><i>Basic login screen</i></p>
+                </div>
+
+                <div class="grid-item">
+                    <div class = "polaroid">
+                        <img src = "media/project_screen.jpg", width = 100%>
+                    </div>
+                    <p><i>Projects can be created, loaded, and collaborated</i></p>
+                </div>
+
+                <div class="grid-item">
+                    <div class = "polaroid">
+                        <img src = "media/filemanager_screen.jpg", width = 100%>
+                    </div>
+                    <p><i>The file management system enables uploads and addition of metadata</i></p>
+                </div>
+
+                <div class="grid-item">
+                    <div class = "polaroid">
+                        <img src = "media/testabc_Mössbauer_Lorentzian_figure(1).png", width = 100%>
+                    </div>
+                    <p><i>Rapidly build a multi-panel figure suitable for publication with just a click</i></p>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+    </body>
 </html>
 
