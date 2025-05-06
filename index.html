@@ -3,26 +3,49 @@
    <head>
       <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
       <link rel="stylesheet" type="text/css" href="css/index.css">
+      <link rel="stylesheet" type="text/css" href="css/dropdown.css">
       <!-- <meta http-equiv = "refresh" content = "3; url = https://minsight.streamlit.app/" /> -->
    </head>
 
    <body onload="" style="background-image: url(media/main_banner.png); background-repeat: no-repeat; background-size: 100%; background-position: right top; background-attachment: fixed;">
 
+
+        <div class="navbar">
+            <ul>
+                <li><img src = "media/logo_text_white.png" style="height:65px; float:left;"></li>
+                
+                <li><a href = "https://minsight.streamlit.app/" target="_blank">Launch</a></li>
+                <li><a href="#interface">Interface</a></li>
+                <li><a href="#about">About</a></li>
+
+                <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Learn</a>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+                </li>
+
+            </ul>
+        </div>
+<!-- 
         <div class = "top_logo">
             <p>
                 <img src = "media/logo_text.png", width = 25%>
             </p>
-        </div>
+        </div> -->
 		
         <!-- Link to launch Minsight -->
-        <div class = "launch_container_bkgd", style ="padding-top:100px; padding-bottom:100px;">        
+        <div class = "launch_container_bkgd", style ="padding-top:150px; padding-bottom:100px;">        
             <div class = "launch_container">
                 <a href = "https://minsight.streamlit.app/" target="_blank" class="launchlink">Launch</a>
             </div>
         </div>
 
         <!-- Site description -->
-        <div class = "containers">        
+        <div class="IMGgrid-container" id="home">
+                
             <div class = "contentcontainers">
                 <p>
                     Minsight is an online application for fitting and interpreting Mössbauer spectroscopy data. Unlike 
@@ -33,7 +56,8 @@
             </div>
         </div>
 
-        <div class = "containers">        
+        <div class = "containers" id="interface">
+           
             <div class="grid-container">
 
                 <div class="grid-item">
@@ -67,26 +91,73 @@
             </div>
         </div>
 
+
+        <div class="IMGgrid-container" id="about">
+
+            <div class="grid-item">
+
+                <div>
+                    <div class="container_img">
+
+                        <a href="about_JB.html"><img src="media/profile_JB.jpg" alt="Data fitting" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
+
+                        <div class="overlay_img">
+                            <div class="text_img"><img src="media/profile_JB.jpg" alt="Data Fitting" class="image_img"></div>
+                        </div>
+                        </a>
+                    </div> 
+                </div>
+
+            </div>
+
+            <div class="grid-item">
+
+                <div>
+                    <p class="head_2">
+                        Dr James Byrne		
+                    </p>
+                    <p>
+                        I am an Associate Professor in Environmental Mineralogy in the School of Earth Sciences at the University of Bristol, UK. 
+                        My research focuses on the formation of (bio)minerals (especially iron bearing minerals) thorough microbially mediated processes, 
+                        as well as through chemical synthesis. These mineral phases include magnetic magnetite nanoparticles, goethite, ferrihydrite, 
+                        siderite, green rust and others. They often have highly reactive properties which make them suitable 
+                        to a range of applicaitons including water treatment. 
+                    </p>
+                    <p>
+                        I routinely apply a range of analytical techniques such as M&ouml;ssbauer 
+                        spectroscopy, X-ray diffraction, FTIR, magnetometry, and synchrotron methods to understand the (physio)chemical properties of these minerals. 
+                        My interest in the understanding the different ways to intepret datasets coming from these techniques has led me to develop MinSight as a platform
+                        to combine multi-model analytics.
+                        
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        
+
         <!-- Site description -->
         <div class = "containers">        
             <div class = "contentcontainers">
-                <p>
-                    The development of MinSight has been supported by a UKRI Future Leaders Fellowship awarded to Dr J. M. Byrne at the University of Bristol, UK.
+                <p style="text-align: center;">
+                    The development of MinSight has been supported through a UKRI Future Leaders Fellowship.
                     
                 </p>
 
                 <img src = "media/UKRI-Logo_Horiz-RGB.png" style="width: 20%; display: block; margin: auto;">
 
             </div>
-        </div>
 
-        <footer style="text-align: center; margin-top: 20px;">
-            <p>&copy; <span id="year"></span> MinSight. All rights reserved.</p>
-            <script>
-                document.getElementById("year").textContent = new Date().getFullYear();
-            </script>
-        </footer>
+
+
+            <footer style="text-align: center; margin-top: 20px;">
+                <p>&copy; <span id="year"></span> MinSight. All rights reserved.</p>
+                <script>
+                    document.getElementById("year").textContent = new Date().getFullYear();
+                </script>
+            </footer>
         
+        </div>
 
 
     </body>

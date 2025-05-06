@@ -6,7 +6,6 @@ body {
 	text-align:justify;
 	line-height: 1.5;	
     background-color: #ffffff;
-
 }
 
 div.polaroid {
@@ -15,13 +14,11 @@ div.polaroid {
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
-  
  
 div.polaroid_container {
     text-align: center;
     padding: 10px 20px;
 }
-
 
 .top_logo {
     padding-top:10px;
@@ -29,7 +26,6 @@ div.polaroid_container {
     padding-left:10px;
     padding-right:10px;
     background-color: #ffffff;
-
 }
 
 .launch_container_bkgd {
@@ -39,6 +35,7 @@ div.polaroid_container {
     padding-right:0px;
     color: #454545;
 }
+
 .containers {
     padding-top:50px;
     padding-bottom:50px;
@@ -64,6 +61,8 @@ div.polaroid_container {
 }
 
 .contentcontainers {
+    position: relative; /* or absolute/fixed/sticky */
+    z-index: 1;
     padding-top:10px;
     padding-bottom:10px;
     padding-left:10px;
@@ -75,7 +74,8 @@ div.polaroid_container {
 }
 
 
-	
+
+/* Launch button */
 .launchlink {
 	border: none;
 	color: rgb(255, 255, 255);
@@ -98,6 +98,7 @@ div.polaroid_container {
 	outline:0;
 }
 
+/* Grid for posting polaroid images */
 .grid-container {
     display: grid;
     width:80%;
@@ -109,5 +110,135 @@ div.polaroid_container {
 }
 .grid-item {
     padding: 20px;
-    text-align: center;
+    text-align: justify;
 }
+
+
+
+
+p.head { 
+
+	font-size: 28pt;
+	margin-top: 0em;
+	font-weight: bold;
+	margin-bottom: 0em;
+
+}
+
+p.head_2 { 
+
+	font-size: 24pt;
+	margin-top: 0em;
+	margin-bottom: 0em;
+
+}
+
+
+
+
+/*Images for the front page*/
+
+.container_img {
+    position: relative;
+    width: 200px;
+  }
+  
+  .image_img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    opacity: 5;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
+  }
+  
+  .overlay_img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 18px;
+    font-family: "Arial Narrow", Arial, "Helvetica Condensed", Helvetica, sans-serif;
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    margin-left: 0px;
+    opacity: 0;
+    overflow: hidden;
+    transition: .5s ease;
+    background-color: #99cc33;
+  }
+  
+  .container_img:hover .overlay_img {
+    opacity: 1;
+  }
+  
+  .text_img {
+    color: white;
+    position: absolute;
+    border-radius: 50%;
+    font-family: "Arial Narrow", Arial, "Helvetica Condensed", Helvetica, sans-serif; 
+    top:50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  .minititle {
+    color: black;
+    position: absolute;
+    font-size: 14pt;
+    font-family: "Arial Narrow", Arial, "Helvetica Condensed", Helvetica, sans-serif; 
+    border-radius: 50%;
+    padding-top: 105px; padding-bottom: 0px; 
+    left: 50%;
+    font-weight: bold;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+
+
+/* Container for the above pages */
+  .IMGgrid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    vertical-align: middle;
+    background-color: #215F9A;
+    padding: 50px 75px 30px;
+  
+  }
+  
+  .IMGgrid-container > div {
+    background-color: #215F9A;
+    border: 0px solid black;
+    text-align: justify;
+    vertical-align: middle;
+    color:white;
+  }
+  
+  .IMGgrid-containerwhite {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 20px;
+    background-color: white;
+    padding: 50px 75px 30px;
+  
+  }
+  
+  .IMGgrid-containerwhite > div {
+    background-color: white;
+    border: 0px solid black;
+    text-align: justify;
+    color:black;
+    opacity: 5;
+    vertical-align: middle;
+    }
+  
