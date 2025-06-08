@@ -10,6 +10,55 @@
    <body onload="" style="background-image: url(media/main_banner.png); background-repeat: no-repeat; background-size: 100%; background-position: right top; background-attachment: fixed;">
 
 
+        <!-- Cookie Consent Banner -->
+        <div id="cookie-banner" style="position: fixed; bottom: 1em; left: 5em; right: 5em; background: #fff; padding: 1em; opacity: 0.9; box-shadow: 0 -2px 5px rgba(0,0,0,0.2); z-index: 1000; display: none;">
+            <p style="margin: 10;">We use cookies to improve your experience and analyze traffic. By clicking "Accept", you consent to the use of Google Analytics.</p>
+            <button onclick="acceptCookies()" style="margin-left: 1em;">Accept</button>
+            <button onclick="declineCookies()" style="margin-left: 0.5em;">Decline</button>
+        </div>
+
+
+
+        <!-- JavaScript -->
+        <script>
+            function loadGoogleAnalytics() {
+            const script = document.createElement('script');
+            script.src = "https://www.googletagmanager.com/gtag/js?id=G-RV4K87G8LQ";
+            script.async = true;
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-RV4K87G8LQ', { 'anonymize_ip': true });
+            }
+
+            function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookie-banner').style.display = 'none';
+            loadGoogleAnalytics();
+            }
+
+            function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookie-banner').style.display = 'none';
+            }
+
+            function openCookieSettings() {
+            document.getElementById('cookie-banner').style.display = 'block';
+            }
+
+            window.onload = function() {
+            const consent = localStorage.getItem('cookieConsent');
+            if (!consent) {
+                document.getElementById('cookie-banner').style.display = 'block';
+            } else if (consent === 'accepted') {
+                loadGoogleAnalytics();
+            }
+            };
+        </script>
+
+
         <div class="navbar">
             <ul>
                 <li><img src = "media/logo_text_white.png" style="height:65px; float:left;"></li>
@@ -199,6 +248,9 @@
                 <script>
                     document.getElementById("year").textContent = new Date().getFullYear();
                 </script>
+
+                <a href="#" onclick="openCookieSettings()">Update cookie settings</a>
+
             </footer>
         
         </div>
