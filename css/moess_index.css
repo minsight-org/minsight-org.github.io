@@ -1117,21 +1117,21 @@ a.title:hover, a.title:active {
 
 /* Expander Container */
 	
-.container {
+.container_MB {
     width:80%;
     border:0px solid #d3d3d3;
 	margin-left:10%;
 }
-.container div {
+.container_MB div {
     width:100%;
 }
-.container .header {
+.container_MB .header {
     background-color:white;
     padding: 2px;
     cursor: pointer;
     font-weight: bold;
 }
-.container .content {
+.container_MB .content {
 	background-color:white;
     display: none;
     padding : 5px;

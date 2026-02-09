@@ -1,5 +1,5 @@
 
-#myTable {
+#myTable_2 {
     border-collapse: collapse; /* Collapse borders */
     width: 90%; /* Full-width */
     border: 1px solid black; /* Add a grey border */
@@ -7,7 +7,7 @@
 
 }
 
-#myTable th {
+#myTable_2 th {
     text-align: left; /* Left-align text */
     padding: 10px; /* Add padding */
     background-color: #99cc33;
@@ -15,18 +15,18 @@
 
 }
 
-#myTable td {
+#myTable_2 td {
     text-align: left; /* Left-align text */
     padding: 10px; /* Add padding */
     
 }
 
-#myTable tr {
+#myTable_2 tr {
     /* Add a bottom border to all table rows */
     border-bottom: 1px solid #ddd; 
 }
 
-#myTable tr.header, #myTable tr:hover {
+#myTable_2 tr.header, #myTable_2 tr:hover {
     /* Add a grey background color to the table header and on hover */
     background-color: #f1f1f1;
 }
@@ -151,4 +151,17 @@
     width: 75%; /* Full-width */
     border: 2px solid black; /* Add a grey border */
     font-size: 14px; /* Increase font-size */
+}
+
+
+table.datatable_2, thead tr th td {
+    margin:auto;
+    overflow-y:auto;
+    border: 1px;
+    color:black;        
+    background: transparent;
+    font-size: 12pt;
+    font-family: "Arial Narrow", Arial, "Helvetica Condensed", Helvetica, sans-serif;
+    padding: 5px;
+    text-align:justify;     
 }

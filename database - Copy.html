@@ -1,0 +1,142 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110168135-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-110168135-1');
+</script>
+	<!-- The table sort script was obtained from http://tablesorter.com/docs/ -->
+	<title>Mosstool - Database</title>
+	<link rel="icon" href="images/moessicon.png">
+		
+	<link rel="stylesheet" type="text/css" href="css/moess_index.css">
+	<link rel="stylesheet" type="text/css" href="css/searchdata.css">
+	
+	<script type="text/javascript" src="filter/jquery-latest.js"></script>
+	<script type="text/javascript" src="js/searchdata_short_CSV.js"></script>
+	<script type="text/javascript" src="js/expander.js"></script>
+	
+</head>
+<body>
+
+<body onload="loadtable()">
+
+<ul class="topmenu_ul">
+		<div>
+		<li class="topmenu_ul"><img src="images/moessicon_v3b.png" alt="Mossbauer database" style="height:65px; float:left"></li>
+		<li class="topmenu_ul"><a class="title" href="index.html">Home</a></li>
+		<li class="topmenu_ul"><a class="title" href="https://mosstool.shinyapps.io/deployed/">Data Fitting</a></li>
+		<li class="topmenu_ul"><a class="title" href="database.html">Database</a></li>
+		<li class="topmenu_ul"><a class="title" href="learn.html">Learn</a></li>
+		<li class="topmenu_ul"><a class="title" href="links.html">Links</a></li>
+		<li class="topmenu_ul"><a class="title" href="about.html">About</a></li>
+		</div>
+</ul>
+
+<h4>Mineral Parameter Database</h4>
+
+<div class="container_MB" style="margin-top:5px; margin-bottom:15px">
+    <div class="expheader" style="color: darkgrey; font-weight: normal"><span>&#8853; Information</span>
+
+    </div>
+    <div class="content">
+<p>
+This database contains the hyperfine parameters of a number of different <b>iron</b> minerals typically investigated in Environmental sciences. To use the search function, simply start typing in a mineral (e.g. hematite) or mineral class (e.g. phyllosilicate) into the wide search boxes below. Alternatively you can search for hyperfine parameters either individually by typing in a value and pressing the small magnifying glass. Alternatively, if you want to search for multiple parameters type in values into all hyperfine parameter boxes and press "Search all".
+</p>
+<p>
+The phases are defined by their type which is either Synthetic (S), Environmental (E), Biogenic (B) or Unknown (U). You can refine your search by type by using the checkboxes underneath the hyperfine parameter search boxes.
+</p>
+<p>Sample = sample name; Class = Assigned according to the Dana classification method; OS = oxidation state; T = temperature; &delta; = isomer (chemical) shift  &Delta;E<sub>Q</sub> = quadrupole splitting; &epsilon; = quadrupole shift (only applies for sextets); B<sub>hf</sub> = Hyperfine magnetic field; Site<sub>(Total)</sub> = Indicates which site is identified and the total number of sites present in the mineral phase (i.e. if the value is 1<sub>(2)</sub> then this phase is just 1 of 2 sites, both of which should be identified for a reliable agreement of phase identity); Model = type of fitting model used. Can either be Lorentzian, Voight, extended Voigt or unknown; Reference = direct URL to the source of the parameters.</p>
+
+    </div>
+</div>
+
+<center>
+
+<table style="border:1px; padding: 5px 5px 5px 5px" id="searchTable">
+
+<tr style="border:1px; padding: 5px 5px 5px 5px" >
+<td colspan="6">
+<center>
+<input type="text" style="width:300px; height:25px; margin-top:10px; margin-bottom:10px; padding: 5px 5px 5px 5px" id="myInput_1" onkeyup="search_1()" placeholder="Search for a mineral.." title="Type in a name">
+Or:
+<input type="text" style="width:300px; height:25px; margin-top:10px; margin-bottom:10px; padding: 5px 5px 5px 5px" id="myInput_2" onkeyup="search_2()" placeholder="Search class.." title="Type in a name">
+</center>
+</td>
+</tr>
+
+
+
+<tr>
+<td colspan="6">
+<p style="width:400px; height:25px; margin-top:10px; margin-bottom:5px;" ><B><u>Or</u></B> search by hyperfine parameters:</p>
+</td>
+</tr>
+
+<tr>
+<td>
+T (K)
+<input type="text" style="width:50px; height:25px" id="min_3" placeholder="" title="Type in a name">
+&plusmn; <input type="text" style="width:30px; height:25px" id="min_3_range" value="5" placeholder="" title="Range">
+<button style="background-color: white; border:0px; padding:0px" onclick="search_3()"><img src="images/search.png" style="height:15px"></button></center>
+</td>
+
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&delta; (mm/s)
+<input type="text" style="width:50px; height:25px" id="min_4" placeholder="" value="0.40" title="Type in a name">
+&plusmn; <input type="text" style="width:30px; height:25px" id="min_4_range" value="0.1" placeholder="" title="Range">
+<button style="background-color: white; border:0px; padding:0px" onclick="search_4()"><img src="images/search.png" style="height:15px"></button></center>
+</td>
+
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&Delta;E<sub>Q</sub> (mm/s)
+<input type="text" style="width:50px; height:25px" id="min_5" value="0.70" placeholder="" title="Type in a name">
+&plusmn; <input type="text" style="width:30px; height:25px" id="min_5_range" value="0.1" placeholder="" title="Range">
+<button style="background-color: white; border:0px; padding:0px" onclick="search_5()"><img src="images/search.png" style="height:15px"></button></center>
+</td>
+
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;B<sub>hf</sub> (T)
+<input type="text" style="width:50px; height:25px" id="min_6" value="0.0" placeholder="" title="Type in a name">
+&plusmn; <input type="text" style="width:30px; height:25px" id="min_6_range" value="1" placeholder="" title="Range">
+<button style="background-color: white; border:0px; padding:0px" onclick="search_6()"><img src="images/search.png" style="height:15px"></button></center>
+</td>
+
+<td>
+<center>&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="bigsearch()" style="width:80px; height:25px">Search all</button>
+<button onclick="blanksearch()" style="width:80px; height:25px">Reset all</button></center>
+</td>
+
+</tr>
+
+
+<tr>
+	<td colspan="7">
+ 		<p>Refine by sample type:
+ 		<input type="checkbox" id="tickS" name="tick" onclick="bigsearch()" checked="checked">Synthetic (S)
+ 		<input type="checkbox" id="tickE" name="tick" onclick="bigsearch()" checked="checked">Environmental (E)
+ 		<input type="checkbox" id="tickB" name="tick" onclick="bigsearch()" checked="checked">Biogenic (B)
+ 		<input type="checkbox" id="tickU" name="tick" onclick="bigsearch()" checked="checked">Unknown (U)</p>
+
+ 	</td>
+</tr>
+
+
+</table>
+
+<div id="MBData_table"></div>
+
+
+</center>
+
+<br>
+
+</body>
+</html>
