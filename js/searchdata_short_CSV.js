@@ -168,506 +168,87 @@ function sortTable(n) {
 }
 
 
-//Search all parameters in the main database table
+// Search all parameters in the main database table
 function bigsearch() {
-  // Declare variables 
-  
-  var table, tr, td, i;
-  
-  var checkBoxS = document.getElementById("tickS");
-  var checkBoxE = document.getElementById("tickE");
-  var checkBoxB = document.getElementById("tickB");
-  //var checkBoxP = document.getElementById("tickP");
-  var checkBoxU = document.getElementById("tickU");
-  //var checkBoxA = document.getElementById("tickA");
+  const table = document.getElementById("myTable");
+  if (!table) return;
 
-  var T, rangeT, filterminT, filtermaxT, td2;
-  T = document.getElementById("min_3").value;
-  rangeT = +document.getElementById("min_3_range").value;
+  // ---- Column indices (adjust here if your table structure changes) ----
+  const TYPE_COL = 2;  // Type: S/E/B/U
+  const TEMP_COL = 4;  // Temperature (T)
+  const CS_COL   = 5;  // CS
+  const QS_COL   = 7;  // QS (note: your original used 7 here)
+  const BHF_COL  = 9;  // Bhf (note: your original used 9 here)
 
-  if (T==null || T==""){
-    filterminT = 0;
-    filtermaxT = 600;    
-  }
-   else {
-    filterminT = +T-rangeT;
-    filtermaxT = +T+rangeT;
-  }
+  // ---- Selected types from checkboxes ----
+  const selectedTypes = ["S", "E", "B", "U"].filter(t => {
+    const el = document.getElementById(`tick${t}`);
+    return el && el.checked;
+  });
 
+  // If none selected, we allow all types (still applies numeric filters).
+  // If you prefer "require at least one selected", set this to true.
+  const typeFilterActive = selectedTypes.length > 0;
 
-  var CS, rangeCS, filterminCS, filtermaxCS, td3;
-  CS = document.getElementById("min_4").value;
-  rangeCS = +document.getElementById("min_4_range").value;
-  if (CS==null || CS==""){
-    filterminCS = 0;
-    filtermaxCS = 5;    
-  }
-   else {
-    filterminCS = +CS-rangeCS;
-    filtermaxCS = +CS+rangeCS;
-  }
+  // ---- Numeric ranges with defaults if input is blank ----
+  // T defaults 0..600; CS defaults 0..5; QS defaults unbounded; Bhf defaults 0..0
+  const T   = getRange("min_3", "min_3_range",   [0, 600]);
+  const CS  = getRange("min_4", "min_4_range",   [0, 5]);
+  const QS  = getRange("min_5", "min_5_range",   [-Infinity, Infinity]); // no filter if blank
+  const BHF = getRange("min_6", "min_6_range",   [0, 0]);
 
+  // Prefer tbody rows if present; otherwise fall back to all <tr>
+  const rows = table.tBodies && table.tBodies.length
+    ? Array.from(table.tBodies[0].rows)
+    : Array.from(table.getElementsByTagName("tr"));
 
-  var QS, rangeQS, filterminQS, filtermaxQS, td4;
-  QS = +document.getElementById("min_5").value;
-  rangeQS = +document.getElementById("min_5_range").value;
-  filterminQS = +QS-rangeQS;
-  filtermaxQS = +QS+rangeQS;
-  
-  if (QS<0){
-    //range=-1*range
-    filterminQS = +QS-rangeQS;
-    filtermaxQS = +QS+rangeQS;
-  }
-   else if(QS>0){
-    filterminQS = +QS-rangeQS;
-    filtermaxQS = +QS+rangeQS;
+  for (const row of rows) {
+    const typeVal = getCellText(row, TYPE_COL).toUpperCase();
+    const t   = getCellNumber(row, TEMP_COL);
+    const cs  = getCellNumber(row, CS_COL);
+    const qs  = getCellNumber(row, QS_COL);
+    const bhf = getCellNumber(row, BHF_COL);
+
+    const typeOk = !typeFilterActive || selectedTypes.includes(typeVal);
+    const tOk    = inRange(t,   T.min,   T.max);
+    const csOk   = inRange(cs,  CS.min,  CS.max);
+    const qsOk   = inRange(qs,  QS.min,  QS.max);
+    const bhfOk  = inRange(bhf, BHF.min, BHF.max);
+
+    row.style.display = (typeOk && tOk && csOk && qsOk && bhfOk) ? "" : "none";
   }
 
-
-
-  var Bhf, rangeBhf, filterminBhf, filtermaxBhf, td5;
-  Bhf = document.getElementById("min_6").value;
-  rangeBhf = +document.getElementById("min_6_range").value;
-  if (Bhf==null || Bhf==""){
-    filterminBhf = 0;
-    filtermaxBhf = 0;    
-  }
-   else {
-    filterminBhf = +Bhf-rangeBhf;
-    filtermaxBhf = +Bhf+rangeBhf;
+  // ---- Helpers ----
+  function getCellText(row, idx) {
+    const cell = row.cells[idx];
+    return cell ? cell.textContent.trim() : "";
   }
 
-
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    //td1 = tr[i].getElementsByTagName("td")[2];  //type
-    //td2 = tr[i].getElementsByTagName("td")[4];  //Temp
-    //td3 = tr[i].getElementsByTagName("td")[5];  //CS
-    //td4 = tr[i].getElementsByTagName("td")[6];  //QS
-    //td5 = tr[i].getElementsByTagName("td")[7];  //Bhf
-    td1 = tr[i].getElementsByTagName("td")[2];  //type
-    td2 = tr[i].getElementsByTagName("td")[4];  //Temp
-    td3 = tr[i].getElementsByTagName("td")[5];  //CS
-    td4 = tr[i].getElementsByTagName("td")[7];  //QS
-    td5 = tr[i].getElementsByTagName("td")[9];  //Bhf
-    if ((checkBoxS.checked == true 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == false
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        && td1.innerHTML !== "E"
-        && td1.innerHTML !== "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == false
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML == "E"
-        && td1.innerHTML !== "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == true
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML !== "E"
-        && td1.innerHTML == "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-        else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == false
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML !== "E"
-        && td1.innerHTML !== "B"
-        && td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    //Multiple checkboxes (2)
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == false
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        || td1.innerHTML == "E"
-        && td1.innerHTML !== "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == true
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        && td1.innerHTML !== "E"
-        || td1.innerHTML == "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == false
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        && td1.innerHTML !== "E"
-        && td1.innerHTML !== "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }    
-
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == true
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML == "E"
-        || td1.innerHTML == "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == false
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML == "E"
-        && td1.innerHTML !== "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == true
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML !== "E"
-        && td1.innerHTML == "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    //Multiple checkboxes (3)
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == true
-      && checkBoxU.checked == false)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        || td1.innerHTML == "E"
-        || td1.innerHTML == "B"
-        && td1.innerHTML !== "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }    
-
-
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == false
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        || td1.innerHTML == "E"
-        || td1.innerHTML !== "B"
-        && td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == false
-      && checkBoxB.checked == true
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        && td1.innerHTML !== "E"
-        || td1.innerHTML == "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-    else if ((checkBoxS.checked == false 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == true
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML !== "S"
-        && td1.innerHTML == "E"
-        || td1.innerHTML == "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
-
-    else if ((checkBoxS.checked == true 
-      && checkBoxE.checked == true
-      && checkBoxB.checked == true
-      && checkBoxU.checked == true)
-      ) {
-    if (td1 && td2 && td3 && td5) {
-      if ((td1.innerHTML == "S"
-        || td1.innerHTML == "E"
-        || td1.innerHTML == "B"
-        || td1.innerHTML == "U")
-        && td2.innerHTML >= filterminT 
-        && td2.innerHTML <= filtermaxT
-        && td3.innerHTML >= filterminCS 
-        && td3.innerHTML <= filtermaxCS
-        && td4.innerHTML >= filterminQS 
-        && td4.innerHTML <= filtermaxQS
-        && td5.innerHTML >= filterminBhf 
-        && td5.innerHTML <= filtermaxBhf
-        ) {
-        
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-    }
-
+  function getCellNumber(row, idx) {
+    // Handles decimal commas gracefully
+    const txt = getCellText(row, idx).replace(",", ".");
+    const num = parseFloat(txt);
+    return Number.isFinite(num) ? num : null;
   }
 
+  function inRange(val, min, max) {
+    return val !== null && val >= min && val <= max;
+  }
 
+  function getRange(valueId, rangeId, defaultRange) {
+    const valueEl = document.getElementById(valueId);
+    const rangeEl = document.getElementById(rangeId);
 
+    const vRaw = valueEl?.value?.trim();
+    const rRaw = rangeEl?.value;
+
+    const v = vRaw === "" || vRaw == null ? null : parseFloat(vRaw);
+    const r = parseFloat(rRaw);
+
+    if (v === null || !Number.isFinite(v) || !Number.isFinite(r)) {
+      // If the value or its range is missing, fall back to default range
+      return { min: defaultRange[0], max: defaultRange[1] };
+    }
+    return { min: v - r, max: v + r };
+  }
 }
-
