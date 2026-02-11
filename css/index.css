@@ -242,3 +242,48 @@ p.head_2 {
     vertical-align: middle;
     }
   
+  
+  /* Centers the content in the full viewport */
+  .page-center {
+    min-height: 100%;
+    display: flex;
+    justify-content: center; /* horizontal */
+    align-items: center;     /* vertical */
+  }
+
+  /* Optional: make the table width fit its content so centering is obvious */
+  #searchTable {
+    border: 1px solid #000;
+    padding: 5px;
+    /* Not required for centering, but keeps width tidy */
+    width: fit-content;
+  }
+  td { padding: 5px; }
+  input {
+    width: 300px; height: 25px;
+    margin: 10px 0; padding: 5px;
+  }
+
+/* Expander Container */
+	
+.container_MB {
+    width:80%;
+    border:0px solid #d3d3d3;
+	margin-left:10%;
+}
+.container_MB div {
+    width:100%;
+}
+.container_MB .header {
+    background-color:white;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.container_MB .content {
+	background-color:white;
+    display: none;
+    padding : 5px;
+	margin-left:5px;
+	margin-right:5px;
+}
