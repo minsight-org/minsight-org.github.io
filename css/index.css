@@ -283,3 +283,18 @@ p.head_2 {
 	margin-left:5px;
 	margin-right:5px;
 }
+
+img.sort {
+	height:10px;
+
+}
+
+button.sort {
+	height:15px;
+	width:5px;
+	padding:0px;
+	float:left;
+	cursor: pointer;
+	background-color:transparent;
+	border:0px;
+}
