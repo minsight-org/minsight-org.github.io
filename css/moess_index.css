@@ -297,7 +297,7 @@ input[type=range][orient=horizontal]
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-    background-color: #6333cc;
+    background-color: #99cc33;
 }
 
 /* Create an active/current tablink class */
@@ -534,7 +534,7 @@ button.sort {
 	border: 0px solid lightgrey;
 	width:130px;
     color: black;
-    padding: ßpx 0px;
+    padding: ÃŸpx 0px;
     text-align: left;
     text-decoration: none;
     display: inline-block;
@@ -1117,21 +1117,21 @@ a.title:hover, a.title:active {
 
 /* Expander Container */
 	
-.container_MB {
+.container {
     width:80%;
     border:0px solid #d3d3d3;
 	margin-left:10%;
 }
-.container_MB div {
+.container div {
     width:100%;
 }
-.container_MB .header {
+.container .header {
     background-color:white;
     padding: 2px;
     cursor: pointer;
     font-weight: bold;
 }
-.container_MB .content {
+.container .content {
 	background-color:white;
     display: none;
     padding : 5px;
