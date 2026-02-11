@@ -1143,7 +1143,7 @@ a.title:hover, a.title:active {
 /* Filtertables */
 table.tablesorter {
 	font-family:arial;
-	background-color: #99cc33;
+	background-color: #000000;
 	margin:0px 0pt 0px;
 	font-size: 12pt;
 	width: 80%;
