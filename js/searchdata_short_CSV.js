@@ -4,8 +4,8 @@
 $(document).ready(function(){
  $('#load_data').ready(function(){
   $.ajax({
-   //url:"dataset/MBData_short.csv",
-   url:"dataset/MBData_verified.txt",
+   //url:"dataset/parameters.txt",
+   url:"database/parameters/MBData_verified.txt",
    dataType:"text",
    success:function(data)
    {
@@ -35,6 +35,49 @@ $(document).ready(function(){
  });
  
 });
+
+
+
+// $(document).ready(function () {
+//    $('#load_data').ready(function(){
+
+//     $.ajax({
+//         url: "dataset/parameters.txt",
+//         dataType: "text",
+//         success: function (data) {
+
+//             const rows = data.split(/\r?\n/).filter(r => r.trim() !== "");
+//             let table = '<table id="myTable" class="datatable">';
+
+//             rows.forEach((row, rowIndex) => {
+
+//                 // Parse CSV row safely (handles commas inside quotes)
+//                 const cells = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+
+//                 table += "<tr>";
+
+//                 cells.forEach(cell => {
+//                     // Remove quotes around CSV values
+//                     cell = cell.replace(/^"|"$/g, "");
+
+//                     if (rowIndex === 0) {
+//                         table += `<th>${cell}</th>`;
+//                     } else {
+//                         table += `<td>${cell}</td>`;
+//                     }
+//                 });
+
+//                 table += "</tr>";
+//             });
+
+//             table += "</table>";
+
+//             $("#MBData_table").html(table);
+//         }
+//     });
+//    });
+// });
+
 
 // END CSV Load
 

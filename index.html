@@ -9,7 +9,6 @@
 
    <body onload="" style="background-image: url(media/main_banner.png); background-repeat: no-repeat; background-size: 100%; background-position: right top; background-attachment: fixed;">
 
-
         <!-- Cookie Consent Banner -->
         <div id="cookie-banner" style="position: fixed; bottom: 1em; left: 5em; right: 5em; background: #fff; padding: 1em; opacity: 0.9; box-shadow: 0 -2px 5px rgba(0,0,0,0.2); z-index: 1000; display: none;">
             <p style="margin: 10;">We use cookies to improve your experience and analyze traffic. By clicking "Accept", you consent to the use of Google Analytics.</p>
@@ -58,18 +57,7 @@
             };
         </script>
 
-
-        <div class="navbar">
-            <ul>
-                <li><img src = "media/logo_text_white.png" style="height:65px; float:left;"></li>
-                
-                <li><a href = "https://minsight.streamlit.app/" target="_blank">Launch</a></li>
-                <li><a href="#interface">Interface</a></li>
-                <li><a href="#about">About</a></li>
-
-            </ul>
-        </div>
-
+		<div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
 		
         <!-- Link to launch Minsight -->
         <div class = "launch_container_bkgd", style ="padding-top:150px; padding-bottom:100px;">        
@@ -183,10 +171,10 @@
                 <div>
                     <div class="container_img">
 
-                        <img src="media/profile_JB.jpg" alt="Data fitting" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
+                        <img src="media/profiles/profile_JB.jpg" alt="Data fitting" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
 
                         <div class="overlay_img">
-                            <div class="text_img"><img src="media/profile_JB.jpg" alt="Data Fitting" class="image_img"></div>
+                            <div class="text_img"><img src="media/profiles/profile_JB.jpg" alt="Data Fitting" class="image_img"></div>
                         </div>
                     </div> 
                 </div>
@@ -222,10 +210,10 @@
                 <div>
                     <div class="container_img">
 
-                        <img src="media/profile_BH.jpg" alt="Benedict" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
+                        <img src="media/profiles/profile_BH.jpg" alt="Benedict" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
 
                         <div class="overlay_img">
-                            <div class="text_img"><img src="media/profile_BH.jpg" alt="Benedict" class="image_img"></div>
+                            <div class="text_img"><img src="media/profiles/profile_BH.jpg" alt="Benedict" class="image_img"></div>
                         </div>
                     </div> 
                 </div>

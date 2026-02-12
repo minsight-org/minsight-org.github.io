@@ -7,7 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="css/searchdata.css">
 		<link rel="stylesheet" type="text/css" href="css/moess_index.css">
 
-		<script type="text/javascript" src="filter/jquery-latest.js"></script>
+		<script type="text/javascript" src="js/jquery-latest.js"></script>
 		<script type="text/javascript" src="js/searchdata_short_CSV.js"></script>
 		<script type="text/javascript" src="js/expander.js"></script>
 
@@ -16,16 +16,7 @@
 
 	<body onload="loadtable()">
 
-		<div class="navbar">
-            <ul>
-                <li><img src = "media/logo_text_white.png" style="height:65px; float:left;"></li>
-                
-                <li><a href = "https://minsight.streamlit.app/" target="_blank">Launch</a></li>
-                <li><a href="#interface">Interface</a></li>
-                <li><a href="#about">About</a></li>
-
-            </ul>
-        </div>
+		<div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
 
 		
 		<h4>Mineral Parameter Database</h4>
@@ -99,7 +90,7 @@
 
 					<!-- δ (mm/s) -->
 					<td>
-						&nbsp;&nbsp;&nbsp;&nbsp;δ (mm/s)
+						&nbsp;&nbsp;&nbsp;&nbsp;&delta; (mm/s)
 						<input type="text" id="min_4" value="0.40" style="width:50px; height:25px;">
 						&plusmn;
 						<input type="text" id="min_4_range" value="0.1" style="width:30px; height:25px;">
@@ -110,7 +101,7 @@
 
 					<!-- ΔEQ -->
 					<td>
-						&nbsp;&nbsp;&nbsp;&nbsp;ΔE<sub>Q</sub> (mm/s)
+						&nbsp;&nbsp;&nbsp;&nbsp;&Delta;E<sub>Q</sub> (mm/s)
 						<input type="text" id="min_5" value="0.70" style="width:50px; height:25px;">
 						&plusmn;
 						<input type="text" id="min_5_range" value="0.1" style="width:30px; height:25px;">
