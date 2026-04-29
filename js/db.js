@@ -748,7 +748,7 @@ function downloadSpectrumTxt(row, sites) {
     "# Byrne, J. M. MinSight – a new concept for fitting and interpreting Mössbauer spectroscopy data."
   );
   metaLines.push(
-    "# Hyperfine Interactions (2025). https://doi.org/10.1007/s10751-025-02331-7"
+    "# Interactions (2025). https://doi.org/10.1007/s10751-025-02331-7"
   );
 
   /* ---------- Timestamp ---------- */
