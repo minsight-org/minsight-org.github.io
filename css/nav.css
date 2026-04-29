@@ -1,0 +1,105 @@
+
+.navbar {
+    display: flex;
+    align-items: center;   /* ✅ vertical centering */
+    justify-content: space-between;
+    height: 70px;          /* or whatever you want */
+    padding: 0 16px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+    background: #215F9A;
+
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    font-size: 1.05rem;
+}
+
+/* DESKTOP LINKS */
+.nav-links {
+  display: flex;
+  align-items: center;   /* ✅ vertical centering */
+  gap: 16px;
+}
+
+
+/* MOBILE HAMBURGER */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 24px;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+}
+.nav-logo {
+  height: 65px;
+  width: auto;
+  display: block;
+}
+
+
+/* MOBILE MENU */
+@media (max-width: 750px) {
+    .navbar {
+        justify-content: flex-start;  /* ✅ left align horizontally */
+            
+        flex-direction: column;
+        align-items: flex-start;  /* ✅ left align in column layout */
+
+    }
+
+    .nav-links {
+        display: none;
+        justify-content: flex-start;
+        text-align: left;
+        position: absolute;
+        top: 60px;
+        left: 0; right: 0;
+        background: #215F9A;
+        flex-direction: column;
+        padding: 1rem;
+        
+    align-items: flex-start;
+    width: 100%;
+
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .hamburger {
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+
+    }
+    .nav-logo {
+        
+        max-width: 70vw;     /* never overflow screen */
+    }
+
+}
+
+/* THEME TOGGLE BUTTON */
+.theme-btn {
+    padding: 0.45rem 0.8rem;
+    background: var(--card-bg);
+    color: var(--text);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}

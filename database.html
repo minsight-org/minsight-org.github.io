@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
 
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+
   <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
 
-  <link rel="stylesheet" type="text/css" href="css/dropdown.css">
+  <!-- <link rel="stylesheet" type="text/css" href="css/dropdown.css"> -->
   <link rel="stylesheet" type="text/css" href="css/db.css">
+  <link rel="stylesheet" type="text/css" href="css/nav.css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8" />
@@ -14,9 +17,16 @@
 
 <body class="search-centered">
 
-  <div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
+  <div id="nav-placeholder"></div>
+
+  <!-- <div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script> -->
   
   <div id="search-wrapper">
+
+    <h1 class="db-title">Explore the MinSight database</h1>
+    <p class="db-subtitle">
+      Find published Mössbauer hyperfine parameters and see their corresponding spectra.
+    </p>
 
     <!-- Search bar -->
 
@@ -104,6 +114,7 @@
 
 
 <script src="js/db.js?v=20260427"></script>
+<script src="js/site.js"></script>
 
 </body>
 </html>

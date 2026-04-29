@@ -318,3 +318,100 @@ button.sort {
     background-color:transparent;
 
 }
+
+
+/* ==========================
+   Mobile optimisations
+   ========================== */
+@media (max-width: 768px) {
+
+  /* General text improvements */
+  body {
+    text-align: left;
+    line-height: 1.6;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  /* Launch box */
+  .launch_container {
+    width: 90%;
+    font-size: 1.2rem;
+  }
+
+  .launchlink,
+  .launchlink:hover {
+    font-size: 2rem;
+    text-align: center;
+    display: block;
+  }
+
+  /* Core content containers */
+  .contentcontainers,
+  .grid-container,
+  .container_MB {
+    width: 95%;
+    margin: auto;
+  }
+
+  /* Reduce vertical padding */
+  .containers,
+  .launch_container_bkgd {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+
+  /* Two-column grids → single column */
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .IMGgrid-container,
+  .IMGgrid-containerwhite {
+    grid-template-columns: 1fr;
+    padding: 30px 20px;
+  }
+
+  /* Grid items */
+  .grid-item {
+    padding: 10px;
+  }
+
+  /* Headings */
+  p.head {
+    font-size: 1.6rem;
+  }
+
+  p.head_2 {
+    font-size: 1.4rem;
+  }
+
+  /* Profile images */
+  .container_img {
+    width: 150px;
+    margin: auto;
+  }
+
+  .image_img {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* Disable hover-only overlays on touch */
+  .overlay_img {
+    display: none;
+  }
+
+  /* Polaroid images */
+  div.polaroid {
+    width: 100%;
+  }
+
+  /* Prevent horizontal overflow */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

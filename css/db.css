@@ -417,6 +417,22 @@ th {
   -webkit-overflow-scrolling: touch;
 }
 
+.db-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #454545;
+}
+
+.db-subtitle {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 25px;
+}
+
 /* =========================================================
    Mobile layout (CARDS ONLY)
    ========================================================= */
@@ -586,5 +602,16 @@ th {
     padding: 4px 6px;
   }
 
+  .db-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    padding: 0 10px;
+  }
+
+  .db-subtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    padding: 0 12px;
+  }
 
 }
