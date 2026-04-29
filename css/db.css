@@ -34,6 +34,7 @@ body.search-centered #search-wrapper {
 body.search-active #search-wrapper {
   position: relative;
   top: auto;
+  padding-top: 20px;
   left: auto;
   transform: none;
   margin: 20px;
@@ -326,7 +327,12 @@ th {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.result-count {
+  display: block;
+  margin-top: 8px;   /* increase to 10–12px if you want more air */
+  margin-left: 4px;
+  text-align: right;
+}
 /* =========================================================
    Expandable detail rows
    ========================================================= */
@@ -433,6 +439,55 @@ th {
   margin-bottom: 25px;
 }
 
+
+.download-spectrum-btn {
+  margin: 8px 0;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+/* ---------- Spectrum download (text-style control) ---------- */
+
+.spectrum-download-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.spectrum-download-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  color: #215F9A;
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.spectrum-download-link:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.spectrum-download-link:focus {
+  outline: none;
+  text-decoration: underline;
+}
+
+/* Hide landing title when search is active */
+
+.db-title,
+.db-subtitle {
+  transition: opacity 0.2s ease, max-height 0.25s ease;
+}
+
+body.search-active .db-title,
+body.search-active .db-subtitle {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+}
 /* =========================================================
    Mobile layout (CARDS ONLY)
    ========================================================= */
@@ -501,10 +556,15 @@ th {
 
   .search-container {
     width: 100%;   
-    margin: 0 auto;
-    max-width: 560px;   /* feels good across phones */
-
+    max-width: 100%;
+    box-sizing: border-box;
   }
+
+  .search-container button {
+    padding: 4px 6px;
+    font-size: 0.9rem;
+  }
+
 
   body.search-centered #search-wrapper {
     top: 30%;                 /* visually nicer than dead-centre */
@@ -520,14 +580,26 @@ th {
   }
 
   .search-container input {
-    font-size: 16px; /* prevents iOS zoom */
-    padding: 14px 48px 14px 18px;
+      font-size: 16px; /* prevents iOS zoom */
+      padding: 12px 40px 12px 16px;
   }
-
+  .search-container,
+  .search-container * {
+    box-sizing: border-box;
+  }
+  
   #search-btn,
   #clear-btn {
     font-size: 20px;
-    padding: 8px;
+    padding: 4px 6px;
+    font-size: 0.9rem;
+  }
+  #search-btn {
+    right: 10px;
+  }
+
+  #clear-btn {
+    right: 34px;
   }
 
   .suggestion {

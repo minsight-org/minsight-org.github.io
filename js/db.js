@@ -518,14 +518,32 @@ function passesRange(value, min, max) {
 
       table.appendChild(tbody);
 
+
+      // ---------- Download link ----------
+      const downloadLink = document.createElement("button");
+      downloadLink.className = "spectrum-download-link";
+      downloadLink.textContent = "⬇ Download simulated spectrum";
+      downloadLink.addEventListener("click", e => {
+        e.stopPropagation();
+        downloadSpectrumTxt(row, sites);
+      });
+
+      const downloadRow = document.createElement("div");
+
+      downloadRow.className = "spectrum-download-row";
+      downloadRow.appendChild(downloadLink);
+
+      const tableWrapper = document.createElement("div");
+
+
       /* ---------- Assemble card ---------- */
       // sitesBox.appendChild(table);
-      const tableWrapper = document.createElement("div");
       tableWrapper.className = "sites-table-wrapper";
       tableWrapper.appendChild(table);
       sitesBox.appendChild(tableWrapper);
       wrapper.appendChild(spectrumBox);
       wrapper.appendChild(sitesBox);
+      tableWrapper.appendChild(downloadRow);
 
       return wrapper;
     }
@@ -677,6 +695,159 @@ function passesRange(value, min, max) {
       svg.appendChild(sumPath);
     }
 
+
+function downloadSpectrumTxt(row, sites) {
+  if (!sites || sites.length === 0) return;
+
+  /* ---------- Metadata (FROM parameters_SECONDARY.csv) ---------- */
+  const sample = row.Sample || "Unknown sample";
+  const interpretation = row.Interpretation || "Unknown interpretation";
+  const sampleID = row.SampleID || "UnknownID";
+  const temp = row["Temp [K]"] || "Unknown";
+
+  let metaLines = [];
+  metaLines.push(`# Sample: ${sample}`);
+  metaLines.push(`# Interpretation: ${interpretation}`);
+  metaLines.push(`# SampleID: ${sampleID}`);
+  metaLines.push(`# Temperature (K): ${temp}`);
+
+  metaLines.push(""); // blank line
+
+  const refLine = [
+    "Reference: ",
+    row.Title || null,
+    ". ",
+    row.Author || null,
+    ". ",
+    row.Date || null,
+    ". ",
+    row.doi || null,
+    ". ",
+  ].filter(Boolean).join("");
+
+  if (refLine) metaLines.push(`# ${refLine}`);
+
+  // if (row.doi) metaLines.push(`# DOI: ${row.doi}`);
+
+  metaLines.push(""); // blank line
+
+  /* ---------- Simulation & provenance ---------- */
+  metaLines.push(
+    "# Notes: The Mössbauer spectra in this file are simulated from published hyperfine parameters."
+  );
+  metaLines.push(
+    "# These data are intended for visualization, comparison, and educational use only."
+  );
+
+  metaLines.push(""); // blank line
+
+  metaLines.push(
+    "# If you use this simulated spectrum, please cite:"
+  );
+  metaLines.push(
+    "# Byrne, J. M. MinSight – a new concept for fitting and interpreting Mössbauer spectroscopy data."
+  );
+  metaLines.push(
+    "# Hyperfine Interactions (2025). https://doi.org/10.1007/s10751-025-02331-7"
+  );
+
+  /* ---------- Timestamp ---------- */
+  const timestamp = new Date().toISOString();
+  metaLines.push(`# File generated on: ${timestamp}`);
+  metaLines.push(""); // blank line
+
+
+  /* ---------- Sites table ---------- */
+  let siteTable = [];
+  siteTable.push("# Sites table");
+  siteTable.push([
+    "Sample",
+    "Site",
+    "IS(mm/s)",
+    "QS(mm/s)",
+    "Bhf(T)"
+  ].join("\t"));
+
+  sites.forEach((s, i) => {
+    const siteName =
+      s.Site || s.Sublattice || `Site${i + 1}`;
+    siteTable.push([
+      s.Sample || "—",
+      siteName,
+      s["IS [mm/s]"] ?? "—",
+      s["QS [mm/s]"] ?? "—",
+      s["Bhf [T]"] ?? "—"
+    ].join("\t"));
+  });
+
+  siteTable.push("");
+
+  /* ---------- Build spectra ---------- */
+  const spectra = [];
+  sites.forEach(site => {
+    const IS = getValue(site, "is");
+    const QS = getValue(site, "qs");
+    const Bhf = getValue(site, "bhf");
+    if (isNaN(IS) || isNaN(QS)) return;
+    const type = Bhf && Bhf > 0 ? "Sx" : "Db";
+    spectra.push(buildSpectrum({ IS, QS, Bhf, type }));
+  });
+
+  if (spectra.length === 0) return;
+
+  const x = spectra[0].x;
+
+  const summedY = x.map((_, i) =>
+    spectra.reduce((acc, s) => acc + (s.y?.[i] ?? 0), 0)
+  );
+
+  const siteNames = sites.map(
+    (s, i) => s.Site || s.Sublattice || `Site${i + 1}`
+  );
+
+  /* ---------- Spectrum table ---------- */
+  let specLines = [];
+  specLines.push("# Spectrum");
+  specLines.push(
+    ["Velocity(mm/s)", "Sum", ...siteNames].join("\t")
+  );
+
+  for (let i = 0; i < x.length; i++) {
+    specLines.push([
+      x[i].toFixed(5),
+      summedY[i].toExponential(6),
+      ...spectra.map(s =>
+        (s.y?.[i] ?? 0).toExponential(6)
+      )
+    ].join("\t"));
+  }
+
+  /* ---------- Download ---------- */
+  const content = [
+    ...metaLines,
+    ...siteTable,
+    ...specLines
+  ].join("\n");
+
+  const blob = new Blob([content], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download =
+    `${sampleID}_${sample}_${temp}K_spectrum.txt`
+      .replace(/\s+/g, "_");
+
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+    
 
     
 /* ---------- Event listeners ---------- */
@@ -1175,3 +1346,20 @@ document.addEventListener("keydown", e => {
           );
       });
     }); 
+
+
+function updateSearchPlaceholder() {
+  const input = document.getElementById("search");
+  if (!input) return;
+
+  if (window.innerWidth <= 768) {
+    input.placeholder = "Search (e.g. goethite, magnetite)";
+  } else {
+    input.placeholder =
+      "Search Fe-bearing phase (e.g. Goethite, Magnetite...)";
+  }
+}
+
+// Run on load and on resize
+window.addEventListener("load", updateSearchPlaceholder);
+window.addEventListener("resize", updateSearchPlaceholder);
