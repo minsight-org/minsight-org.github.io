@@ -193,7 +193,7 @@ function passesRange(value, min, max) {
     /* ---------- Build Mossbauer spectrum  ---------- */
     
     function buildSpectrum({ IS, QS, Bhf, type }) {
-      const x = velocityAxis(-12, 12, 1200);
+      const x = velocityAxis(-12, 12, 512);
       const y = Array(x.length).fill(0);
       const w = 0.25; // linewidth (mm/s)
 
@@ -1199,7 +1199,7 @@ document.addEventListener("keydown", e => {
     return (1 / Math.PI) * (0.5 * w / ((x - x0) ** 2 + w ** 2));
   }
 
-  function velocityAxis(vmin = -12, vmax = 12, n = 1200) {
+  function velocityAxis(vmin = -12, vmax = 12, n = 512) {
     const x = [];
     const step = (vmax - vmin) / (n - 1);
     for (let i = 0; i < n; i++) {
