@@ -1,1 +1,7 @@
 /_restricted
+
+/database/parameters/local_parameters_with_refID.py
+/database/extractMetainfo.py
+/learn
+/learn/learn.html
+/python

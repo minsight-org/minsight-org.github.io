@@ -1,152 +1,109 @@
 <!DOCTYPE html>
-<html>
-   <head>
-    	<title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
-      	<link rel="stylesheet" type="text/css" href="css/index.css">
-      	<link rel="stylesheet" type="text/css" href="css/dropdown.css">
-		<link rel="stylesheet" type="text/css" href="css/searchdata.css">
-		<link rel="stylesheet" type="text/css" href="css/moess_index.css">
+<html lang="en">
+<head>
 
-		<script type="text/javascript" src="js/jquery-latest.js"></script>
-		<script type="text/javascript" src="js/searchdata_short_CSV.js"></script>
-		<script type="text/javascript" src="js/expander.js"></script>
+  <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
 
-   </head>
-	
+  <link rel="stylesheet" type="text/css" href="css/dropdown.css">
+  <link rel="stylesheet" type="text/css" href="css/db.css">
 
-	<body onload="loadtable()">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
 
-		<div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
+</head>
 
-		
-		<h4>Mineral Parameter Database</h4>
+<body class="search-centered">
 
-		<div class="container_MB" style="margin-top:5px; margin-bottom:15px">
-			<div class="expheader" style="color: darkgrey; font-weight: normal"><span>&#8853; Information</span>
+  <div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
+  
+  <div id="search-wrapper">
 
-			</div>
-			<div class="content">
-				<p>
-				This database contains the hyperfine parameters of a number of different <b>iron</b> minerals typically investigated in Environmental sciences. To use the search function, simply start typing in a mineral (e.g. hematite) or mineral class (e.g. phyllosilicate) into the wide search boxes below. Alternatively you can search for hyperfine parameters either individually by typing in a value and pressing the small magnifying glass. Alternatively, if you want to search for multiple parameters type in values into all hyperfine parameter boxes and press "Search all".
-				</p>
-				<p>
-				The phases are defined by their type which is either Synthetic (S), Environmental (E), Biogenic (B) or Unknown (U). You can refine your search by type by using the checkboxes underneath the hyperfine parameter search boxes.
-				</p>
-				<p>Sample = sample name; Class = Assigned according to the Dana classification method; OS = oxidation state; T = temperature; &delta; = isomer (chemical) shift  &Delta;E<sub>Q</sub> = quadrupole splitting; &epsilon; = quadrupole shift (only applies for sextets); B<sub>hf</sub> = Hyperfine magnetic field; Site<sub>(Total)</sub> = Indicates which site is identified and the total number of sites present in the mineral phase (i.e. if the value is 1<sub>(2)</sub> then this phase is just 1 of 2 sites, both of which should be identified for a reliable agreement of phase identity); Model = type of fitting model used. Can either be Lorentzian, Voight, extended Voigt or unknown; Reference = direct URL to the source of the parameters.</p>
+    <!-- Search bar -->
 
-			</div>
-		</div>
+    <div class="search-row">
 
+      <div class="search-container">
+        <input
+          id="search"
+          type="text"
+          placeholder="Search mineral (e.g. Goethite, Magnetite...)"
+          autocomplete="off"
+        />
 
-		<div class="page-center">
-			<table id="searchTable" style="border:0px solid #000; padding:5px; width: fit-content;">
+        <button id="clear-btn" title="Clear search">✕</button>
+        <button id="search-btn" title="Search">🔍︎</button>
 
-				<!-- Mineral name / class search -->
-				<tr>
-					<td colspan="6" style="padding:5px;">
-						<input type="text"
-							id="myInput_1"
-							placeholder="Search for a mineral.."
-							title="Type in a name"
-							onkeyup="search_1()"
-							style="width:300px; height:25px; margin:10px 0; padding:5px;">
-						&nbsp;Or:&nbsp;
-						<input type="text"
-							id="myInput_2"
-							placeholder="Search class.."
-							title="Type in a name"
-							onkeyup="search_2()"
-							style="width:300px; height:25px; margin:10px 0; padding:5px;">
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div class="page-center">
-			<table id="searchTable" style="border:0px solid #000; padding:5px; width: fit-content;">
+        <div id="autocomplete"></div>
+      </div>
 
-				<!-- Hyperfine heading -->
-				<tr>
-					<td colspan="6">
-						<p style="width:400px; margin:10px 0 5px 0;">
-							<b><u>Or</u></b> search by hyperfine parameters:
-						</p>
-					</td>
-				</tr>
+      <span id="result-count" class="result-count"></span>
 
-				<!-- Hyperfine parameter inputs -->
-				<tr>
+    </div>
 
-					<!-- T (K) -->
-					<td>
-						T (K)
-						<input type="text" id="min_3" style="width:50px; height:25px;">
-						&plusmn;
-						<input type="text" id="min_3_range" value="5" style="width:30px; height:25px;">
-						<button style="background: none; border:0;" onclick="search_3()">
-							<img src="media/search.png" style="height:15px;">
-						</button>
-					</td>
-
-					<!-- δ (mm/s) -->
-					<td>
-						&nbsp;&nbsp;&nbsp;&nbsp;&delta; (mm/s)
-						<input type="text" id="min_4" value="0.40" style="width:50px; height:25px;">
-						&plusmn;
-						<input type="text" id="min_4_range" value="0.1" style="width:30px; height:25px;">
-						<button style="background: none; border:0;" onclick="search_4()">
-							<img src="media/search.png" style="height:15px;">
-						</button>
-					</td>
-
-					<!-- ΔEQ -->
-					<td>
-						&nbsp;&nbsp;&nbsp;&nbsp;&Delta;E<sub>Q</sub> (mm/s)
-						<input type="text" id="min_5" value="0.70" style="width:50px; height:25px;">
-						&plusmn;
-						<input type="text" id="min_5_range" value="0.1" style="width:30px; height:25px;">
-						<button style="background: none; border:0;" onclick="search_5()">
-							<img src="media/search.png" style="height:15px;">
-						</button>
-					</td>
-
-					<!-- Bhf -->
-					<td>
-						&nbsp;&nbsp;&nbsp;&nbsp;B<sub>hf</sub> (T)
-						<input type="text" id="min_6" value="0.0" style="width:50px; height:25px;">
-						&plusmn;
-						<input type="text" id="min_6_range" value="1" style="width:30px; height:25px;">
-						<button style="background: none; border:0;" onclick="search_6()">
-							<img src="media/search.png" style="height:15px;">
-						</button>
-					</td>
-
-					<!-- Search all / reset -->
-					<td style="text-align:center;">
-						<button onclick="bigsearch()" style="width:80px; height:25px;">Search all</button>
-						<button onclick="blanksearch()" style="width:80px; height:25px;">Reset all</button>
-					</td>
-
-				</tr>
-
-				<!-- Refinement checkboxes -->
-				<tr>
-					<td colspan="7">
-						<p>
-							Refine by sample type:
-							<input type="checkbox" id="tickS" onclick="bigsearch()" checked> Synthetic (S)
-							<input type="checkbox" id="tickE" onclick="bigsearch()" checked> Environmental (E)
-							<input type="checkbox" id="tickB" onclick="bigsearch()" checked> Biogenic (B)
-							<input type="checkbox" id="tickU" onclick="bigsearch()" checked> Unknown (U)
-						</p>
-					</td>
-				</tr>
-			</table>
-		</div>
-
-		<div id="MBData_table"></div>
+    <!-- Filters header: button + chips -->
+    <div class="filters-header">
+      <button id="toggle-filters" class="filters-toggle">
+        ▾ Search by parameters
+      </button>
+      <div id="active-filters" class="active-filters"></div>
+    </div>
 
 
+
+    <!-- Collapsible filters panel (ALL fields INSIDE) -->
+    <div id="filters-panel" class="filters-panel">
+
+      <div class="filter-row">
+        <label>Temp [K]</label>
+        <input id="temp-min" type="number" placeholder="min">
+        <span>–</span>
+        <input id="temp-max" type="number" placeholder="max">
+      </div>
+
+      <div class="filter-row">
+        <label>IS [mm/s]</label>
+        <input id="is-min" type="number" step="0.01" placeholder="min">
+        <span>–</span>
+        <input id="is-max" type="number" step="0.01" placeholder="max">
+      </div>
+
+      <div class="filter-row">
+        <label>QS [mm/s]</label>
+        <input id="qs-min" type="number" step="0.01" placeholder="min">
+        <span>–</span>
+        <input id="qs-max" type="number" step="0.01" placeholder="max">
+      </div>
+
+      <div class="filter-row">
+        <label>Bhf [T]</label>
+        <input id="bhf-min" type="number" step="0.1" placeholder="min">
+        <span>–</span>
+        <input id="bhf-max" type="number" step="0.1" placeholder="max">
+      </div>
+
+      <!-- <div class="filter-actions">
+        <button id="clear-filters">Clear filters</button>
+      </div> -->
+
+    </div>
+
+    <!-- Messages -->
+    <p id="result-count"></p>
+    <p id="no-results">No results found.</p>
+
+  </div>
+
+<!-- 
+  <div id="mini-spectrum">
+<svg width="500" height="150" viewBox="0 0 500 150"></svg>
+</div> -->
+
+  <div id="results-cards"></div>
+
+  <table id="results"></table>
+
+
+<script src="js/db.js?v=20260427"></script>
 
 </body>
 </html>

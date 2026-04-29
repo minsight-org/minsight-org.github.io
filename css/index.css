@@ -296,3 +296,25 @@ button.sort {
 	background-color:transparent;
 	border:0px;
 }
+
+
+
+
+  /* li.standard {
+     float: left; 
+  }
+   */
+  li.standard a, .dropbtn {
+    /* display: inline-block; */
+    color: blue;
+    /* text-align: center;
+    padding: 21px 15px;
+    text-decoration: none;
+    height: 35px;
+    align-items: center; Vertically center */
+}
+  
+  li.standard a:hover, .dropdown:hover .dropbtn {
+    background-color:transparent;
+
+}

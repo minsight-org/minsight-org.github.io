@@ -2,7 +2,7 @@
 .navbar {
     overflow: hidden;
     background-color: #215F9A;
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
     padding-top:10px;
@@ -47,16 +47,17 @@ ul {
   }
   
   .dropdown-content {
-    display: none;
-    position: fixed;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 2;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #215F9A;
+
   }
   
   .dropdown-content a {
     color: black;
+
     padding: 12px 16px;
     text-decoration: none;
     display: block;

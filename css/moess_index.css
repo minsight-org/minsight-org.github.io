@@ -952,6 +952,7 @@ table.team td a {
 .learnlink {
 	border: none;
 	color: blue;
+    background-color: white;
     text-align: left;
     text-decoration: none;
 	font-family: arial;
@@ -961,6 +962,7 @@ table.team td a {
 .learnlink:hover {
     border: none;
 	color: red;
+    background-color: white;
     text-align: left;
     text-decoration: none;
 	font-family: arial;
