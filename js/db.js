@@ -390,7 +390,8 @@ function passesRange(value, min, max) {
 
     function createDetailCard(row) {
       const wrapper = document.createElement("div");
-      wrapper.className = "detail-card";
+      // wrapper.className = "detail-card";
+      wrapper.className = "detail-card detail-content";
 
       /* ---------- Mini spectrum container ---------- */
       const spectrumBox = document.createElement("div");
@@ -478,6 +479,10 @@ function passesRange(value, min, max) {
           const tr = document.createElement("tr");
           tr.style.cursor = "pointer";
 
+          if (i === highlightIndex) {
+            tr.classList.add("site-selected");
+          }
+
           const siteName =
             site.Site ||
             site.Sublattice ||
@@ -494,6 +499,16 @@ function passesRange(value, min, max) {
           /* --- Click → highlight this site spectrum --- */
           tr.addEventListener("click", e => {
             e.stopPropagation();
+
+            // Remove selection from all site rows
+            tbody.querySelectorAll("tr").forEach(r =>
+              r.classList.remove("site-selected")
+            );
+
+            // Highlight this one
+            tr.classList.add("site-selected");
+
+            // Update spectrum
             renderMultiSpectrumInto(svg, spectra, i);
           });
 
@@ -504,7 +519,11 @@ function passesRange(value, min, max) {
       table.appendChild(tbody);
 
       /* ---------- Assemble card ---------- */
-      sitesBox.appendChild(table);
+      // sitesBox.appendChild(table);
+      const tableWrapper = document.createElement("div");
+      tableWrapper.className = "sites-table-wrapper";
+      tableWrapper.appendChild(table);
+      sitesBox.appendChild(tableWrapper);
       wrapper.appendChild(spectrumBox);
       wrapper.appendChild(sitesBox);
 
@@ -769,8 +788,10 @@ document.addEventListener("keydown", e => {
 
         
         // ✅ Auto-render first visible row
-      renderTable(filtered, query);
-
+      // renderTable(filtered, query);
+      if (window.innerWidth > 768) {
+        renderTable(filtered, query);
+      }
       if (window.innerWidth <= 768) {
         renderCards(filtered);
       }
@@ -848,7 +869,7 @@ document.addEventListener("keydown", e => {
     document.getElementById("search").addEventListener("input", e => {
       const query = e.target.value.trim();
       clearBtn.style.display = query ? "block" : "none";
-      
+
       const box = document.getElementById("autocomplete");
 
       if (query.length > 0) {
@@ -911,86 +932,94 @@ document.addEventListener("keydown", e => {
   // });
 
   function renderCards(rows) {
-  const container = document.getElementById("results-cards");
-  container.innerHTML = "";
+    const container = document.getElementById("results-cards");
+    container.innerHTML = "";
 
-  rows.forEach(row => {
-    const card = document.createElement("div");
-    card.className = "result-card";
+    rows.forEach(row => {
+      const card = document.createElement("div");
+      card.className = "result-card";
 
-    const header = document.createElement("div");
-    header.className = "card-header";
+      const header = document.createElement("div");
+      header.className = "card-header";
 
-    const title = document.createElement("div");
-    title.className = "card-title";
-    title.textContent = row.Sample || "—";
+      const title = document.createElement("div");
+      // title.className = "card-title";
+      title.textContent = row.Sample || "—";
+      title.textContent =
+        row.Sample
+          ? `${row.Sample}${row["Temp [K]"] ? ` — ${row["Temp [K]"]} K` : ""}`
+          : "—";
+      ``
+      const classTag = document.createElement("div");
+      classTag.className = "card-class";
+      classTag.textContent = row.Class || "—";
 
-    const classTag = document.createElement("div");
-    classTag.className = "card-class";
-    classTag.textContent = row.Class || "—";
+      const arrow = document.createElement("div");
+      arrow.className = "card-arrow";
+      arrow.textContent = "▼";
 
-    const arrow = document.createElement("div");
-    arrow.className = "card-arrow";
-    arrow.textContent = "▼";
+      header.appendChild(title);
+      header.appendChild(classTag);
+      header.appendChild(arrow);
 
-    header.appendChild(title);
-    header.appendChild(classTag);
-    header.appendChild(arrow);
+      // const details = document.createElement("div");
+      // details.className = "card-details";
+      const details = document.createElement("div");
+      details.className = "card-details";
 
-    const details = document.createElement("div");
-    details.className = "card-details";
+      details.appendChild(createDetailCard(row));
+  
+      // const fields = [
+      //   ["Temp [K]", row["Temp [K]"]],
+      //   ["IS [mm/s]", row["IS [mm/s]"]],
+      //   ["QS [mm/s]", row["QS [mm/s]"]],
+      //   ["Bhf [T]", row["Bhf [T]"]]
+      // ];
 
-    const fields = [
-      ["Temp [K]", row["Temp [K]"]],
-      ["IS [mm/s]", row["IS [mm/s]"]],
-      ["QS [mm/s]", row["QS [mm/s]"]],
-      ["Bhf [T]", row["Bhf [T]"]]
-    ];
+      // fields.forEach(([label, value]) => {
+      //   if (!value) return;
+      //   const r = document.createElement("div");
+      //   r.className = "card-row";
+      //   r.innerHTML = `<span>${label}</span><span>${value}</span>`;
+      //   details.appendChild(r);
+      // });
 
-    fields.forEach(([label, value]) => {
-      if (!value) return;
-      const r = document.createElement("div");
-      r.className = "card-row";
-      r.innerHTML = `<span>${label}</span><span>${value}</span>`;
-      details.appendChild(r);
+      
+      const ref = getReference(row);
+      if (ref) {
+        const citation = document.createElement("div");
+        citation.className = "card-row";
+
+        const authorYear =
+          ref.Authors && ref.Year
+            ? `${ref.Authors.split(",")[0]} (${ref.Year})`
+            : "Publication";
+
+        citation.innerHTML = `
+          <span>${authorYear}</span>
+          <a href="${ref.URL}" target="_blank">🔗</a>
+        `;
+
+        details.appendChild(citation);
+      }
+
+
+      header.addEventListener("click", () => {
+        document.querySelectorAll(".card-details.open")
+          .forEach(d => d !== details && d.classList.remove("open"));
+
+        document.querySelectorAll(".card-arrow.open")
+          .forEach(a => a !== arrow && a.classList.remove("open"));
+
+        details.classList.toggle("open");
+        arrow.classList.toggle("open");
+        renderSpectrumFromRow(row);
+      });
+
+      card.appendChild(header);
+      card.appendChild(details);
+      container.appendChild(card);
     });
-
-    
-    const ref = getReference(row);
-    if (ref) {
-      const citation = document.createElement("div");
-      citation.className = "card-row";
-
-      const authorYear =
-        ref.Authors && ref.Year
-          ? `${ref.Authors.split(",")[0]} (${ref.Year})`
-          : "Publication";
-
-      citation.innerHTML = `
-        <span>${authorYear}</span>
-        <a href="${ref.URL}" target="_blank">🔗</a>
-      `;
-
-      details.appendChild(citation);
-    }
-
-
-    header.addEventListener("click", () => {
-      document.querySelectorAll(".card-details.open")
-        .forEach(d => d !== details && d.classList.remove("open"));
-
-      document.querySelectorAll(".card-arrow.open")
-        .forEach(a => a !== arrow && a.classList.remove("open"));
-
-      details.classList.toggle("open");
-      arrow.classList.toggle("open");
-      renderSpectrumFromRow(row);
-    });
-
-    card.appendChild(header);
-    card.appendChild(details);
-    container.appendChild(card);
-  });
 }
 
     /* ---------- lorentzian handler ---------- */

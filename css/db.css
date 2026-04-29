@@ -312,6 +312,20 @@ th {
   font-weight: 600;
   margin-bottom: 4px;
 }
+.sites-table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: fixed;   /* critical */
+  border-collapse: collapse;
+  word-wrap: break-word;
+}
+.sites-table th,
+.sites-table td {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* =========================================================
    Expandable detail rows
@@ -372,6 +386,37 @@ th {
   font-weight: 600;
 }
 
+/* Selected site highlighting (mini tables) */
+.sites-table tr.site-selected {
+  background-color: #dce9f7;   /* matches your main table selection */
+}
+
+.sites-table tr.site-selected td {
+  font-weight: 600;
+}
+
+/* Optional hover feedback (non-selected) */
+.sites-table tbody tr:not(.site-selected):hover {
+  background-color: #eef5fb;
+}
+.sites-table tr.site-selected td:first-child {
+  padding-left: 6px;
+  border-left: 4px solid #D62828; /* same red as selected spectrum */
+}
+.result-card,
+.detail-card,
+.detail-content {
+  max-width: 100%;
+  overflow: hidden; /* critical */
+}
+
+.sites-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* =========================================================
    Mobile layout (CARDS ONLY)
    ========================================================= */
@@ -380,6 +425,12 @@ th {
 
   #results {
     display: none;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   #results-cards {
@@ -392,7 +443,7 @@ th {
   .result-card {
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 12px 14px;
+    padding: 14px 16px;
     background: #fff;
     box-shadow: 0 3px 8px rgba(0,0,0,0.05);
   }
@@ -402,14 +453,20 @@ th {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    min-height: 44px; /* Apple HIG tap target */
+
   }
 
   .card-title {
     font-weight: 600;
+    font-size: 15px;
+
   }
 
   .card-arrow {
     transition: transform 0.2s ease;
+    font-size: 18px;
+
   }
 
   .card-arrow.open {
@@ -425,4 +482,109 @@ th {
   .card-details.open {
     display: block;
   }
+
+  .search-container {
+    width: 100%;   
+    margin: 0 auto;
+    max-width: 560px;   /* feels good across phones */
+
+  }
+
+  body.search-centered #search-wrapper {
+    top: 30%;                 /* visually nicer than dead-centre */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding: 0 12px;          /* prevents edge overflow */
+    box-sizing: border-box;
+    
+    margin: 12px auto;
+    padding: 0 12px;
+
+  }
+
+  .search-container input {
+    font-size: 16px; /* prevents iOS zoom */
+    padding: 14px 48px 14px 18px;
+  }
+
+  #search-btn,
+  #clear-btn {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .suggestion {
+    padding: 14px 16px;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  #autocomplete {
+    max-height: 50vh;
+  }
+
+  .filters-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    max-height: 60vh;
+    overflow-y: auto;
+
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.15);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .filters-toggle {
+    font-size: 15px;
+  }
+
+  .filter-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .filter-row input {
+    font-size: 16px;
+    padding: 8px;
+  }
+  .active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .filter-chip {
+    font-size: 11px;
+  }
+  .detail-content {
+    display: block;
+  }
+
+  .detail-spectrum {
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .sites-table {
+    font-size: 12px;
+  }
+
+  .detail-metadata {
+    margin-bottom: 8px;
+  }
+  .sites-table {
+    font-size: 11px;
+  }
+
+  .sites-table th,
+  .sites-table td {
+    padding: 4px 6px;
+  }
+
+
 }
