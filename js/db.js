@@ -523,19 +523,25 @@ function passesRange(value, min, max) {
       const downloadLink = document.createElement("button");
       downloadLink.className = "spectrum-download-link";
       downloadLink.textContent = "⬇ Download simulated spectrum";
+      
       downloadLink.addEventListener("click", e => {
-                
-        if (window.plausible) {
-          window.plausible("download_spectrum", {
-            props: {
-              sample: row.Sample,
-              sampleID: row.SampleID,
-              temperature: row["Temp [K]"],    
-              device: window.innerWidth <= 768 ? "mobile" : "desktop"
-            }
-          });
-        }
         e.stopPropagation();
+
+        try {
+          if (typeof window.plausible === "function") {
+            window.plausible("download_spectrum", {
+              props: {
+                sample: row.Sample,
+                sampleID: row.SampleID,
+                temperature: row["Temp [K]"],
+                device: window.innerWidth <= 768 ? "mobile" : "desktop"
+              }
+            });
+          }
+        } catch (err) {
+          // Analytics must never break downloads
+          console.warn("Plausible tracking failed:", err);
+        }
 
         downloadSpectrumTxt(row, sites);
       });
