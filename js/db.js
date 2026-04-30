@@ -525,6 +525,18 @@ function passesRange(value, min, max) {
       downloadLink.textContent = "⬇ Download simulated spectrum";
       downloadLink.addEventListener("click", e => {
         e.stopPropagation();
+                
+        if (window.plausible) {
+          window.plausible("download_spectrum", {
+            props: {
+              sample: row.Sample,
+              sampleID: row.SampleID,
+              temperature: row["Temp [K]"],    
+              device: window.innerWidth <= 768 ? "mobile" : "desktop"
+            }
+          });
+        }
+
         downloadSpectrumTxt(row, sites);
       });
 
