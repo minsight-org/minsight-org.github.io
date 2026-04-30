@@ -524,7 +524,6 @@ function passesRange(value, min, max) {
       downloadLink.className = "spectrum-download-link";
       downloadLink.textContent = "⬇ Download simulated spectrum";
       downloadLink.addEventListener("click", e => {
-        e.stopPropagation();
                 
         if (window.plausible) {
           window.plausible("download_spectrum", {
@@ -536,6 +535,7 @@ function passesRange(value, min, max) {
             }
           });
         }
+        e.stopPropagation();
 
         downloadSpectrumTxt(row, sites);
       });
