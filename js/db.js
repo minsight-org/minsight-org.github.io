@@ -16,7 +16,7 @@ let data = [];
 let headers = [];
 let samples = [];
 let references = {};
-
+let mineralProfiles = [];
 let currentSort = {
   column: null,
   direction: "asc"  // "asc" | "desc"
@@ -920,27 +920,34 @@ document.addEventListener("keydown", e => {
         document.body.classList.add("search-active");
       }
       
-      
-            updateFilterChips();
-            
-            // If no filters at all → hide table
-            if (!hasSampleQuery && !hasAnyNumericFilter) {
-              table.classList.remove("visible");
-              table.style.display = "none";
-              count.style.display = "none";
-              message.style.display = "none";
-              return;
-            }
+      if (hasSampleQuery) {
+        renderMineralHighlight(query);
+      } else {
+        renderMineralHighlight(null);
+      }
 
-            // ✅ Start from full dataset
-            let filtered = data;
+
+      updateFilterChips();
+      
+      // If no filters at all → hide table
+      if (!hasSampleQuery && !hasAnyNumericFilter) {
+        table.classList.remove("visible");
+        table.style.display = "none";
+        count.style.display = "none";
+        message.style.display = "none";
+        return;
+      }
+
+      // ✅ Start from full dataset
+      let filtered = data;
             
-            if (hasSampleQuery) {
-          const q = query.toLowerCase();
-          filtered = filtered.filter(r =>
-            r.Sample && r.Sample.toLowerCase().includes(q)
-          );
-        }
+      if (hasSampleQuery) {
+        const q = query.toLowerCase();
+        filtered = filtered.filter(r =>
+          r.Sample && r.Sample.toLowerCase().includes(q)
+        );
+      }
+
       filtered = filtered.filter(row =>
           (!tempMin && !tempMax || passesRange(row["Temp [K]"], tempMin, tempMax)) &&
           (!isMin && !isMax     || passesRange(row["IS [mm/s]"], isMin, isMax)) &&
@@ -1019,6 +1026,12 @@ document.addEventListener("keydown", e => {
         filterTable("");
       });
 
+    fetch("database/mineral_profiles/mineral_profiles.csv")
+      .then(res => res.text())
+      .then(text => {
+        mineralProfiles = parseCSV(text);
+      });
+
     // fetch("database/parameters/references.csv")
     //   .then(res => res.text())
     //   .then(text => {
@@ -1034,24 +1047,78 @@ document.addEventListener("keydown", e => {
     
 
       
-    /* ---------- Autocomplete ---------- */
+  /* ---------- Autocomplete ---------- */
 
-    function updateAutocomplete(matches, query) {
-      const box = document.getElementById("autocomplete");
-      box.innerHTML = "";
+  function updateAutocomplete(matches, query) {
+    const box = document.getElementById("autocomplete");
+    box.innerHTML = "";
 
-      matches.slice(0, 10).forEach(m => {
-        const div = document.createElement("div");
-        div.className = "suggestion";
-        div.innerHTML = highlight(m, query);
-        div.onclick = () => {
-          document.getElementById("search").value = m;
-          box.innerHTML = "";
-          filterTable(m);
-        };
-        box.appendChild(div);
-      });
-    }
+    matches.slice(0, 10).forEach(m => {
+      const div = document.createElement("div");
+      div.className = "suggestion";
+      div.innerHTML = highlight(m, query);
+      div.onclick = () => {
+        document.getElementById("search").value = m;
+        box.innerHTML = "";
+        filterTable(m);
+      };
+      box.appendChild(div);
+    });
+  }
+
+
+/* ---------- Render the mineral highlight handler ---------- */
+
+function renderMineralHighlight(mineralName) {
+  const container = document.getElementById("mineral-highlight");
+  container.innerHTML = "";
+
+  if (!mineralName) return;
+
+  const profile = mineralProfiles.find(
+    m => m.Mineral.toLowerCase() === mineralName.toLowerCase()
+  );
+
+  if (!profile) return;
+
+  const card = document.createElement("div");
+  card.className = "mineral-highlight-card";
+
+  card.innerHTML = `
+    <div class="mineral-highlight-header">
+      <h2>${profile.Mineral}</h2>
+    </div>
+
+    <div class="mineral-highlight-body">
+      ${
+        profile.Image
+          ? `<img src="${profile.Image}" alt="${profile.Mineral}">`
+          : ""
+      }
+
+      <p class="mineral-highlight-text">
+        ${profile.Description}
+      </p>
+
+      <button class="mineral-highlight-toggle">Show more</button>
+    </div>
+  `;
+
+  container.appendChild(card);
+
+  const toggle = card.querySelector(".mineral-highlight-toggle");
+  const text = card.querySelector(".mineral-highlight-text");
+
+  if (toggle && text) {
+    toggle.addEventListener("click", () => {
+      const expanded = text.classList.toggle("expanded");
+      toggle.textContent = expanded ? "Show less" : "Show more";
+    });
+  }
+
+}
+
+
 
     /* ---------- Search handler ---------- */
 
@@ -1095,30 +1162,6 @@ document.addEventListener("keydown", e => {
   searchBtn.addEventListener("click", runSearch);
   clearBtn.addEventListener("click", clearSearch);
 
-  /* Allow Enter key to trigger search */
-  // searchInput.addEventListener("input", e => {
-  //   const query = e.target.value.trim();
-
-  //   clearBtn.style.display = query ? "block" : "none";
-
-  //   if (query.length > 0) {
-  //     document.body.classList.remove("search-centered");
-  //     document.body.classList.add("search-active");
-  //   }
-
-  //   if (!query) {
-  //     autocomplete.innerHTML = "";
-  //     filterTable("");
-  //     return;
-  //   }
-
-  //   const matches = samples.filter(m =>
-  //     m.toLowerCase().includes(query.toLowerCase())
-  //   );
-
-  //   updateAutocomplete(matches, query);
-  //   filterTable(query);
-  // });
 
   function renderCards(rows) {
     const container = document.getElementById("results-cards");
