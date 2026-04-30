@@ -920,11 +920,11 @@ document.addEventListener("keydown", e => {
         document.body.classList.add("search-active");
       }
       
-      if (hasSampleQuery) {
-        renderMineralHighlight(query);
-      } else {
-        renderMineralHighlight(null);
-      }
+      // if (hasSampleQuery) {
+      //   renderMineralHighlight(query);
+      // } else {
+      //   renderMineralHighlight(null);
+      // }
 
 
       updateFilterChips();
@@ -1026,11 +1026,11 @@ document.addEventListener("keydown", e => {
         filterTable("");
       });
 
-    fetch("database/mineral_profiles/mineral_profiles.csv")
-      .then(res => res.text())
-      .then(text => {
-        mineralProfiles = parseCSV(text);
-      });
+    // fetch("database/mineral_profiles/mineral_profiles.csv")
+    //   .then(res => res.text())
+    //   .then(text => {
+    //     mineralProfiles = parseCSV(text);
+    //   });
 
     // fetch("database/parameters/references.csv")
     //   .then(res => res.text())

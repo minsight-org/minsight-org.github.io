@@ -38,7 +38,8 @@ body.search-active #search-wrapper {
   left: auto;
   transform: none;
   margin: 20px;
-} */
+} 
+
 /* =========================================================
    Search input
    ========================================================= */
@@ -488,7 +489,7 @@ body.search-active .db-subtitle {
   max-height: 0;
   overflow: hidden;
 }
-
+/* 
 .mineral-highlight-card {
   background: #f7f9fb;
   border: 1px solid #d6dde5;
@@ -514,7 +515,7 @@ body.search-active .db-subtitle {
   font-size: 0.95rem;
   line-height: 1.45;
   color: #333;
-}
+} */
 
 /* =========================================================
    Mobile layout (CARDS ONLY)
@@ -713,10 +714,10 @@ body.search-active .db-subtitle {
     margin-bottom: 20px;
     padding: 0 12px;
   }
-
+/* 
   .mineral-highlight-text {
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* show only 3 lines initially */
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -733,13 +734,13 @@ body.search-active .db-subtitle {
     color: #215F9A;
     font-size: 0.85rem;
     cursor: pointer;
-  }
+  } */
 
 
 }
-
+/* 
 @media (max-width: 420px) {
   .mineral-highlight-body img {
     display: none;
   }
-}
+} */
