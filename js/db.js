@@ -190,92 +190,174 @@ function passesRange(value, min, max) {
       return NaN;
     }
 
-    /* ---------- Build Mossbauer spectrum  ---------- */
-    
-    function buildSpectrum({ IS, QS, Bhf, type }) {
-      const x = velocityAxis(-12, 12, 512);
-      const y = Array(x.length).fill(0);
-      const w = 0.25; // linewidth (mm/s)
 
-      let peaks = [];
-      let intensities = [];
 
-      if (type === "Db") {
-        // Doublet: equal intensity
-        peaks = [IS - QS / 2, IS + QS / 2];
-        intensities = [1, 1];
-      }
+/* ---------- Build Mossbauer spectrum  ---------- */
+const DEFAULT_HWHM = 0.097; // mm/s
+const SITE_AREA = 1; // arbitrary absolute scale
 
-      if (type === "Sx") {
-        const Z = 1.7509;
-        const z = 0.067897 * Bhf;
+function buildSpectrum({ IS, QS, Bhf, type, HWHM, weight = 1 }) {
+  
+  const x = velocityAxis(-12, 12, 512);
+  const y = Array(x.length).fill(0);
 
-        peaks = [
-          IS - (Z + 3) * z / 2 + QS,
-          IS - (Z + 1) * z / 2 - QS,
-          IS - (Z - 1) * z / 2 - QS,
-          IS + (Z - 1) * z / 2 - QS,
-          IS + (Z + 1) * z / 2 - QS,
-          IS + (Z + 3) * z / 2 + QS
-        ];
+  // ✅ Use site-specific HWHM if present, otherwise default
+  const w = Number.isFinite(HWHM) ? HWHM : DEFAULT_HWHM;
 
-        // ✅ Physical sextet intensities
-        intensities = [3, 2, 1, 1, 2, 3];
-      }
+  let peaks = [];
+  let intensities = [];
 
-      // Normalize intensities (optional but recommended)
-      const norm = intensities.reduce((a, b) => a + b, 0) || 1;
+  if (type === "Db") {
+    peaks = [IS - QS / 2, IS + QS / 2];
+    intensities = [1, 1];
+  }
 
-      peaks.forEach((p, idx) => {
-        const A = intensities[idx] / norm;
-        for (let i = 0; i < x.length; i++) {
-          y[i] -= A * lorentzian(x[i], w, p);
-        }
-      });
+  if (type === "Sx") {
+    const Z = 1.7509;
+    const z = 0.067897 * Bhf;
+    peaks = [
+      IS - (Z + 3) * z / 2 + QS,
+      IS - (Z + 1) * z / 2 - QS,
+      IS - (Z - 1) * z / 2 - QS,
+      IS + (Z - 1) * z / 2 - QS,
+      IS + (Z + 1) * z / 2 - QS,
+      IS + (Z + 3) * z / 2 + QS
+    ];
+    intensities = [3, 2, 1, 1, 2, 3];
+  }
 
-      return { x, y };
+  // --- STEP 3: site-level area (Python h analogue)
+  const siteArea = weight; // RA fraction × total area (total area = 1)
+
+  // Distribute site area over lines (Python A ratios)
+  const norm = intensities.reduce((a, b) => a + b, 0);
+
+  peaks.forEach((p, idx) => {
+    const lineArea = siteArea * (intensities[idx] / norm);
+
+    for (let i = 0; i < x.length; i++) {
+      y[i] -= lineArea * lorentzian(x[i], w, p);
     }
+  });
 
 
-    function createMetadataBlock(row) {
-      const box = document.createElement("div");
-      box.className = "detail-metadata";
+  // peaks.forEach((p, idx) => {
+  //   const A = intensities[idx] / norm;
+  //   for (let i = 0; i < x.length; i++) {
+  //     y[i] -= A * lorentzian(x[i], w, p);
+  //   }
+  // });
 
-      const title = document.createElement("div");
-      title.className = "metadata-title";
-      title.textContent = row.Title || row.Sample || "Unknown reference";
-      box.appendChild(title);
+  return { x, y };
+}
 
-      if (row.Author) {
-        const authors = document.createElement("div");
-        authors.className = "metadata-authors";
-        authors.textContent = row.Author;
-        box.appendChild(authors);
-      }
 
-      const details = [];
-      if (row.Date) details.push(row.Date);
-      if (row["Publication type"]) details.push(row["Publication type"]);
+    // function buildSpectrum({ IS, QS, Bhf, type }) {
+    //   const x = velocityAxis(-12, 12, 512);
+    //   const y = Array(x.length).fill(0);
+    //   const w = 0.25; // linewidth (mm/s)
 
-      if (details.length) {
-        const pub = document.createElement("div");
-        pub.className = "metadata-journal";
-        pub.textContent = details.join(" • ");
-        box.appendChild(pub);
-      }
+    //   let peaks = [];
+    //   let intensities = [];
 
-      if (row.doi || row.URL) {
-        const link = document.createElement("a");
-        link.className = "metadata-link";
-        link.href = row.URL || `https://doi.org/${row.doi}`;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.textContent = row.doi ? `DOI: ${row.doi}` : "View publication";
-        box.appendChild(link);
-      }
+    //   if (type === "Db") {
+    //     // Doublet: equal intensity
+    //     peaks = [IS - QS / 2, IS + QS / 2];
+    //     intensities = [1, 1];
+    //   }
 
-      return box;
-    }
+    //   if (type === "Sx") {
+    //     const Z = 1.7509;
+    //     const z = 0.067897 * Bhf;
+
+    //     peaks = [
+    //       IS - (Z + 3) * z / 2 + QS,
+    //       IS - (Z + 1) * z / 2 - QS,
+    //       IS - (Z - 1) * z / 2 - QS,
+    //       IS + (Z - 1) * z / 2 - QS,
+    //       IS + (Z + 1) * z / 2 - QS,
+    //       IS + (Z + 3) * z / 2 + QS
+    //     ];
+
+    //     // ✅ Physical sextet intensities
+    //     intensities = [3, 2, 1, 1, 2, 3];
+    //   }
+
+    //   // Normalize intensities (optional but recommended)
+    //   const norm = intensities.reduce((a, b) => a + b, 0) || 1;
+
+    //   peaks.forEach((p, idx) => {
+    //     const A = intensities[idx] / norm;
+    //     for (let i = 0; i < x.length; i++) {
+    //       y[i] -= A * lorentzian(x[i], w, p);
+    //     }
+    //   });
+
+    //   return { x, y };
+    // }
+
+
+function createMetadataBlock(row) {
+  const box = document.createElement("div");
+  box.className = "detail-metadata";
+
+  const title = document.createElement("div");
+  title.className = "metadata-title";
+  title.textContent = row.Title || row.Sample || "Unknown reference";
+  box.appendChild(title);
+
+  if (row.Author) {
+    const authors = document.createElement("div");
+    authors.className = "metadata-authors";
+    authors.textContent = row.Author;
+    box.appendChild(authors);
+  }
+
+  const details = [];
+  if (row.Date) details.push(row.Date);
+  if (row["Publication type"]) details.push(row["Publication type"]);
+
+  if (details.length) {
+    const pub = document.createElement("div");
+    pub.className = "metadata-journal";
+    pub.textContent = details.join(" • ");
+    box.appendChild(pub);
+  }
+
+  if (row.doi || row.URL) {
+    const link = document.createElement("a");
+    link.className = "metadata-link";
+    link.href = row.URL || `https://doi.org/${row.doi}`;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = row.doi ? `DOI: ${row.doi}` : "View publication";
+    box.appendChild(link);
+  }
+
+  return box;
+}
+
+function computeSiteWeights(sites) {
+  // Try to read RA [%] from CSV
+  const ras = sites.map(s => getValue(s, "ra"));
+
+  const hasAnyRA = ras.some(v => Number.isFinite(v) && v > 0);
+
+  if (hasAnyRA) {
+    // ✅ Use provided RA values, renormalised
+    const sum = ras.reduce((a, v) => a + (Number.isFinite(v) ? v : 0), 0);
+
+    return ras.map(v =>
+      Number.isFinite(v) && sum > 0 ? v / sum : 0
+    );
+  }
+
+  // ✅ No RA provided → fallback
+  const n = sites.length;
+  if (n <= 1) return [1];
+
+  return Array(n).fill(1 / n);
+}
 
 
     function renderTable(rows, query = "") {
@@ -405,17 +487,33 @@ function passesRange(value, min, max) {
 
       /* ---------- Build individual spectra ---------- */
       const spectra = [];
+      const weights = computeSiteWeights(sites);
+      const rawRA = sites.map(s => getValue(s, "ra"));
+      const hasAnyRA = rawRA.some(v => Number.isFinite(v) && v > 0);
 
-      sites.forEach(site => {
+      sites.forEach((site, i) => {
         const IS  = getValue(site, "is");
         const QS  = getValue(site, "qs");
         const Bhf = getValue(site, "bhf");
+        const HWHM = getValue(site, "hwhm");
 
         if (isNaN(IS) || isNaN(QS)) return;
 
         const type = Bhf && Bhf > 0 ? "Sx" : "Db";
-        spectra.push(buildSpectrum({ IS, QS, Bhf, type }));
+
+        spectra.push(
+          buildSpectrum({
+            IS,
+            QS,
+            Bhf,
+            type,
+            HWHM,
+            weight: weights[i]
+          })
+        );
       });
+
+
 
       /* ---------- Determine highlighted site ---------- */
       const selectedIndex = sites.findIndex(s =>
@@ -463,18 +561,26 @@ function passesRange(value, min, max) {
           <th>IS (mm/s)</th>
           <th>QS (mm/s)</th>
           <th>Bhf (T)</th>
+                  
+          <th>RA (%)</th>
+          <th>HWHM (mm/s)</th>
+
         </tr>
       `;
+      
       table.appendChild(thead);
+      let hasApproximation = false;
 
       /* --- Table body --- */
       const tbody = document.createElement("tbody");
 
       if (sites.length === 0) {
         const tr = document.createElement("tr");
-        tr.innerHTML = `<td colspan="5">No sites available</td>`;
+        tr.innerHTML = `<td colspan="7">No sites available</td>`;
         tbody.appendChild(tr);
       } else {
+
+
         sites.forEach((site, i) => {
           const tr = document.createElement("tr");
           tr.style.cursor = "pointer";
@@ -488,12 +594,30 @@ function passesRange(value, min, max) {
             site.Sublattice ||
             String.fromCharCode(65 + i);
 
+          const RA_value = hasAnyRA && Number.isFinite(rawRA[i])
+            ? rawRA[i]
+            : (weights[i] * 100);
+
+          const RA_isApprox = !hasAnyRA;
+
+          // --- HWHM handling (MUST come before the check) ---
+          const HWHM_raw = getValue(site, "hwhm");
+          const HWHM_value = Number.isFinite(HWHM_raw) ? HWHM_raw : DEFAULT_HWHM;
+          const HWHM_isApprox = !Number.isFinite(HWHM_raw);
+
+          // --- Approximation detection ---
+          if (RA_isApprox || HWHM_isApprox) {
+            hasApproximation = true;
+          }
+
           tr.innerHTML = `
-            <td>${site.Sample ?? "—"}</td>
-            <td>${siteName}</td>
-            <td>${site["IS [mm/s]"] ?? "—"}</td>
-            <td>${site["QS [mm/s]"] ?? "—"}</td>
-            <td>${site["Bhf [T]"] ?? "—"}</td>
+          <td>${site.Sample ?? "—"}</td>
+          <td>${siteName}</td>
+          <td>${site["IS [mm/s]"] ?? "—"}</td>
+          <td>${site["QS [mm/s]"] ?? "—"}</td>
+          <td>${site["Bhf [T]"] ?? "—"}</td>
+          <td>${RA_value.toFixed(1)}${RA_isApprox ? "*" : ""}</td>
+          <td>${HWHM_value.toFixed(3)}${HWHM_isApprox ? "*" : ""}</td>
           `;
 
           /* --- Click → highlight this site spectrum --- */
@@ -517,6 +641,7 @@ function passesRange(value, min, max) {
       }
 
       table.appendChild(tbody);
+
 
 
       // ---------- Download link ----------
@@ -553,15 +678,30 @@ function passesRange(value, min, max) {
 
       const tableWrapper = document.createElement("div");
 
-
       /* ---------- Assemble card ---------- */
-      // sitesBox.appendChild(table);
       tableWrapper.className = "sites-table-wrapper";
       tableWrapper.appendChild(table);
+      
+      // Add table wrapper
       sitesBox.appendChild(tableWrapper);
+
+      if (hasApproximation) {
+        const note = document.createElement("div");
+        note.className = "sites-note";
+        note.textContent =
+          "* indicates reference parameter unavailable, default value applied.";
+
+        // Insert directly below the table
+        tableWrapper.appendChild(note);
+      }
+
+
+      // --- Download row (below legend) ---
+      tableWrapper.appendChild(downloadRow);
+
+      // Assemble card
       wrapper.appendChild(spectrumBox);
       wrapper.appendChild(sitesBox);
-      tableWrapper.appendChild(downloadRow);
 
       return wrapper;
     }
@@ -723,6 +863,18 @@ function downloadSpectrumTxt(row, sites) {
   const sampleID = row.SampleID || "UnknownID";
   const temp = row["Temp [K]"] || "Unknown";
 
+  // --- Detect approximations (same logic as UI) ---
+  const rawRA = sites.map(s => getValue(s, "ra"));
+  const hasAnyRA = rawRA.some(v => Number.isFinite(v) && v > 0);
+
+  const hasApproxRA = !hasAnyRA;
+
+  const hasApproxHWHM = sites.some(
+    s => !Number.isFinite(getValue(s, "hwhm"))
+  );
+
+  const hasApproximation = hasApproxRA || hasApproxHWHM;
+
   let metaLines = [];
   metaLines.push(`# Sample: ${sample}`);
   metaLines.push(`# Interpretation: ${interpretation}`);
@@ -753,6 +905,22 @@ function downloadSpectrumTxt(row, sites) {
   metaLines.push(
     "# Notes: The Mössbauer spectra in this file are simulated from published hyperfine parameters."
   );
+  if (hasApproximation) {
+    metaLines.push(
+      "# Note: Parameters marked with '*' were approximated."
+    );
+
+    if (hasApproxRA) {
+      metaLines.push(
+        "#   * RA (%) values were not provided and were derived assuming equal site areas."
+      );
+    }
+    if (hasApproxHWHM) {
+      metaLines.push(
+        "#   * HWHM values were not provided and defaulted to 0.097 mm/s."
+      );
+    }
+  }
   metaLines.push(
     "# These data are intended for visualization, comparison, and educational use only."
   );
@@ -760,7 +928,7 @@ function downloadSpectrumTxt(row, sites) {
   metaLines.push(""); // blank line
 
   metaLines.push(
-    "# If you use this simulated spectrum, please cite:"
+    "# If you use this simulated spectrum in a publication or grant proposal, please cite:"
   );
   metaLines.push(
     "# Byrne, J. M. MinSight – a new concept for fitting and interpreting Mössbauer spectroscopy data."
@@ -802,13 +970,28 @@ function downloadSpectrumTxt(row, sites) {
 
   /* ---------- Build spectra ---------- */
   const spectra = [];
-  sites.forEach(site => {
-    const IS = getValue(site, "is");
-    const QS = getValue(site, "qs");
+  const weights = computeSiteWeights(sites);
+
+  sites.forEach((site, i) => {
+    const IS  = getValue(site, "is");
+    const QS  = getValue(site, "qs");
     const Bhf = getValue(site, "bhf");
+    const HWHM = getValue(site, "hwhm");
+
     if (isNaN(IS) || isNaN(QS)) return;
+
     const type = Bhf && Bhf > 0 ? "Sx" : "Db";
-    spectra.push(buildSpectrum({ IS, QS, Bhf, type }));
+
+    spectra.push(
+      buildSpectrum({
+        IS,
+        QS,
+        Bhf,
+        type,
+        HWHM,
+        weight: weights[i]
+      })
+    );
   });
 
   if (spectra.length === 0) return;
@@ -1254,11 +1437,10 @@ function renderMineralHighlight(mineralName) {
     });
 }
 
-    /* ---------- lorentzian handler ---------- */
-
-  function lorentzian(x, w, x0) {
-    return (1 / Math.PI) * (0.5 * w / ((x - x0) ** 2 + w ** 2));
-  }
+/* ---------- lorentzian handler ---------- */
+function lorentzian(x, w, x0) {
+  return (1 / Math.PI) * (w / ((x - x0) ** 2 + w ** 2));
+}
 
   function velocityAxis(vmin = -12, vmax = 12, n = 512) {
     const x = [];
