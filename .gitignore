@@ -1,7 +1,8 @@
 /_restricted
 
-/database/parameters/local_parameters_with_refID.py
-/database/extractMetainfo.py
+/database/parameters/src
+/database/parameters/parameters_PRIMARY.csv
+/database/parameters/parameters_PRIMARY_with_SampleID.csv
 /learn
 /learn/learn.html
 /python

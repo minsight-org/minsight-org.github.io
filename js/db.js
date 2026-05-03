@@ -1102,12 +1102,12 @@ document.addEventListener("keydown", e => {
         document.body.classList.remove("search-centered");
         document.body.classList.add("search-active");
       }
-      
-      // if (hasSampleQuery) {
-      //   renderMineralHighlight(query);
-      // } else {
-      //   renderMineralHighlight(null);
-      // }
+            
+      if (hasSampleQuery) {
+        renderMineralHighlight(query);
+      } else {
+        renderMineralHighlight(null);
+      }
 
 
       updateFilterChips();
@@ -1193,27 +1193,31 @@ document.addEventListener("keydown", e => {
 
 
 
-    /* ---------- Load data ---------- */
+/* ---------- Load data ---------- */
 
-    // fetch("database/parameters/parameters_with_ReferenceID.csv")
-    fetch("database/parameters/parameters_SECONDARY.csv")
-      .then(res => res.text())
-      .then(text => {
-        data = parseCSV(text).map(r => ({
-          ...r,
-          SampleID: r.SampleID?.trim() || null
-        }));
+// fetch("database/parameters/parameters_with_ReferenceID.csv")
+fetch("database/parameters/parameters_SECONDARY.csv")
+  .then(res => res.text())
+  .then(text => {
+    data = parseCSV(text).map(r => ({
+      ...r,
+      SampleID: r.SampleID?.trim() || null
+    }));
 
-        samples = [...new Set(data.map(d => d.Sample).filter(Boolean))];
+    samples = [...new Set(data.map(d => d.Sample).filter(Boolean))];
 
-        filterTable("");
-      });
+    filterTable("");
+  });
 
-    // fetch("database/mineral_profiles/mineral_profiles.csv")
-    //   .then(res => res.text())
-    //   .then(text => {
-    //     mineralProfiles = parseCSV(text);
-    //   });
+/* ---------- Load mineral profiles (JSON) ---------- */
+fetch("database/mineral_profiles/mineral_profiles.json")
+  .then(res => res.json())
+  .then(json => {
+    mineralProfiles = json;
+  })
+  .catch(err => {
+    console.error("Failed to load mineral profiles:", err);
+  });
 
     // fetch("database/parameters/references.csv")
     //   .then(res => res.text())
@@ -1254,12 +1258,13 @@ document.addEventListener("keydown", e => {
 
 function renderMineralHighlight(mineralName) {
   const container = document.getElementById("mineral-highlight");
-  container.innerHTML = "";
+  if (!container) return;
 
+  container.innerHTML = "";
   if (!mineralName) return;
 
   const profile = mineralProfiles.find(
-    m => m.Mineral.toLowerCase() === mineralName.toLowerCase()
+    m => m.mineral.toLowerCase() === mineralName.toLowerCase()
   );
 
   if (!profile) return;
@@ -1269,21 +1274,23 @@ function renderMineralHighlight(mineralName) {
 
   card.innerHTML = `
     <div class="mineral-highlight-header">
-      <h2>${profile.Mineral}</h2>
+      <h2>${profile.mineral}</h2>
     </div>
 
     <div class="mineral-highlight-body">
       ${
-        profile.Image
-          ? `<img src="${profile.Image}" alt="${profile.Mineral}">`
+        profile.image
+          ? `<img src="${profile.image}" alt="${profile.mineral}">`
           : ""
       }
 
       <p class="mineral-highlight-text">
-        ${profile.Description}
+        ${profile.description}
       </p>
 
-      <button class="mineral-highlight-toggle">Show more</button>
+      <button class="mineral-highlight-toggle">
+        Show more
+      </button>
     </div>
   `;
 
@@ -1298,9 +1305,7 @@ function renderMineralHighlight(mineralName) {
       toggle.textContent = expanded ? "Show less" : "Show more";
     });
   }
-
 }
-
 
 
     /* ---------- Search handler ---------- */
