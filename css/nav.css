@@ -1,27 +1,12 @@
 /* Site header and navigation, in the style of rustymagnets.com.
-   Fonts are self-hosted (see css/fonts.css and fonts/OFL.txt). */
-
-@import url("fonts.css");
+   Needs css/fonts.css and css/theme.css (for --header-bg and --header-text). */
 
 :root {
   --header-height: 60px;
   --logo-overhang: 28px;      /* how far the nav logo hangs below the bar */
-  --header-bg: #215f9a;       /* must match the notch fill in minsight-nav-logo.svg */
-  --header-text: #ffffff;
   --header-tint: rgba(255, 255, 255, 0.12);
   --header-tint-strong: rgba(255, 255, 255, 0.2);
   --nav-font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-/* The nav keeps #215f9a in dark mode too, so the logo notch still blends in */
-:root[data-theme="dark"] {
-  --header-text: #f1f5f9;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --header-text: #f1f5f9;
-  }
 }
 
 html {
@@ -106,11 +91,17 @@ html {
   margin-right: auto;
 }
 
-.brand-name {
-  font-size: 0.8rem;
-  font-weight: 300;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+/* The original MinSight text logo (white outline, so it reads on the blue bar) */
+.brand-wordmark {
+  display: block;
+  width: auto;
+  height: 44px;
+}
+
+@media (max-width: 600px) {
+  .brand-wordmark {
+    height: 36px;
+  }
 }
 
 /* Decorative: the name next to it is the link text.
@@ -325,7 +316,7 @@ body.search-in-navbar .navbar #search-block {
 }
 
 @media (max-width: 760px) {
-  body.search-in-navbar .brand-name {
+  body.search-in-navbar .brand-wordmark {
     display: none;
   }
 

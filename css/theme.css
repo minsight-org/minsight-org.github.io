@@ -1,0 +1,65 @@
+/* Colour tokens. Light mode by default, dark mode from the system setting
+   or from the toggle (data-theme on <html>). All text pairs meet WCAG AA. */
+
+:root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #e9eff5;
+    --surface-hover: #eef4fa;   /* faint blue tint for a card under the pointer */
+    --text: #18212b;
+    --muted: #4a5766;
+    --border: #d2dbe5;
+    --link: #1b5a94;
+    --accent: #215f9a;
+    --accent-text: #ffffff;
+    --accent-strong: #1b5288;   /* accent as text on light surfaces */
+    --highlight: #9a4f06;       /* sparing warm highlight, a nod to rustymagnets */
+    --header-bg: #215f9a;       /* must match the notch fill in images/minsight-nav-logo.svg */
+    --header-text: #ffffff;
+    --hero-overlay: rgba(11, 30, 50, 0.72);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 14px rgba(0, 0, 0, 0.05);
+    color-scheme: light;
+}
+
+/* The header keeps #215f9a in dark mode too, so the logo notch still blends in */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #0e1520;
+        --surface: #16202c;
+        --surface-alt: #121a25;
+        --surface-hover: #1d2a38;
+        --text: #e5ebf2;
+        --muted: #a6b3c1;
+        --border: #2a3746;
+        --link: #8cc3f0;
+        --accent: #7ab3e6;
+        --accent-text: #0b1520;
+        --accent-strong: #93c2ec;
+        --highlight: #f0a35a;
+        --header-bg: #215f9a;
+        --header-text: #f1f5f9;
+        --hero-overlay: rgba(5, 12, 20, 0.78);
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        color-scheme: dark;
+    }
+}
+
+:root[data-theme="dark"] {
+    --bg: #0e1520;
+    --surface: #16202c;
+    --surface-alt: #121a25;
+    --surface-hover: #1d2a38;
+    --text: #e5ebf2;
+    --muted: #a6b3c1;
+    --border: #2a3746;
+    --link: #8cc3f0;
+    --accent: #7ab3e6;
+    --accent-text: #0b1520;
+    --accent-strong: #93c2ec;
+    --highlight: #f0a35a;
+    --header-bg: #215f9a;
+    --header-text: #f1f5f9;
+    --hero-overlay: rgba(5, 12, 20, 0.78);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+}

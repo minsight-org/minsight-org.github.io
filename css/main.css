@@ -1,0 +1,435 @@
+/* Layout and components for the plain pages, in the style of rustymagnets.com.
+   Colours come from css/theme.css, the header from css/nav.css. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 1.125rem;   /* Source Sans runs small, so 18px reads like 17px */
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* The header sticks to the top on these pages. The placeholder keeps its
+   space (and colour) while navbar.html loads, so the page does not jump. */
+#nav-placeholder {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    min-height: var(--header-height);
+    background: var(--header-bg);
+}
+
+#nav-placeholder .site-header {
+    position: relative;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: var(--link);
+    text-underline-offset: 0.15em;
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+h1, h2, h3, h4 {
+    line-height: 1.25;
+    margin: 0 0 0.6em;
+}
+
+/* Page and section headings in the serif; smaller headings stay in the sans */
+h1, h2 {
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+h3, h4 {
+    font-weight: 600;
+}
+
+h2 {
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.1rem);
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 3rem;
+    height: 4px;
+    margin-top: 0.4rem;
+    border-radius: 2px;
+    background: var(--accent);
+}
+
+.center h2::after {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h3 {
+    font-size: 1.25rem;
+}
+
+p {
+    margin: 0 0 1em;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* Running text stops at about 70 characters a line, which is easier to read */
+.section .container > p {
+    max-width: 70ch;
+}
+
+.center {
+    text-align: center;
+}
+
+.center .container > p {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* BUTTONS */
+
+.button {
+    display: inline-block;
+    padding: 0.6rem 1.15rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font-weight: 600;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.button:hover {
+    filter: brightness(1.08);
+}
+
+.button-ghost {
+    background: transparent;
+    color: #ffffff;
+    box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+/* HERO */
+
+.hero {
+    position: relative;
+    color: #ffffff;
+    background: var(--header-bg) url("../media/main_banner_crop.png") center / cover no-repeat;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-overlay);
+}
+
+.hero-inner {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(3rem, 8vw, 6rem) 16px;
+}
+
+.hero h1 {
+    font-size: clamp(2.1rem, 1.4rem + 3.5vw, 3.6rem);
+    max-width: 18ch;
+}
+
+.hero-lead {
+    font-size: clamp(1.1rem, 1rem + 0.6vw, 1.35rem);
+    max-width: 40em;
+}
+
+.hero-meta {
+    opacity: 0.92;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* SECTIONS */
+
+.section {
+    padding: clamp(2.5rem, 6vw, 4rem) 0;
+}
+
+.section-alt {
+    background: var(--surface-alt);
+}
+
+/* CARDS (shared look) */
+
+.feature-card,
+.person {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Highlight the card under the pointer, or holding keyboard focus */
+.feature-card:focus-within,
+.person:focus-within {
+    background: var(--surface-hover);
+}
+
+@media (hover: hover) {
+    .feature-card:hover,
+    .person:hover {
+        background: var(--surface-hover);
+        box-shadow: var(--shadow), 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+}
+
+/* FEATURES: two cards across on wide screens, one on phones */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: 1.5rem;
+    margin-top: 1.75rem;
+}
+
+.feature-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* White in both themes, so the screenshots stay readable in dark mode */
+.feature-figure {
+    aspect-ratio: 16 / 10;
+    margin: 0;
+    overflow: hidden;
+    background: #ffffff;
+    border-bottom: 1px solid var(--border);
+}
+
+.feature-figure img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.75rem;
+}
+
+/* Screenshots with empty space below are cropped from the top instead */
+.feature-figure-top img {
+    object-fit: cover;
+    object-position: top left;
+    padding: 0;
+}
+
+.feature-text {
+    padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.feature-text p {
+    color: var(--muted);
+}
+
+/* PEOPLE */
+
+.people-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+    gap: 1.25rem;
+    margin-top: 1.75rem;
+}
+
+.person {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.1rem 1.25rem;
+}
+
+.person-photo {
+    flex: none;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--surface-alt);
+}
+
+.person-text {
+    min-width: 0;
+}
+
+.person-name {
+    font-size: 1.1rem;
+    margin-bottom: 0.15rem;
+}
+
+.person-role {
+    color: var(--accent-strong);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+}
+
+.person-description {
+    font-size: 0.95rem;
+}
+
+.person-description p:last-child {
+    margin-bottom: 0;
+}
+
+/* Long bios are cut to about four lines until Read more is pressed (see js/site.js) */
+.clamp:not(.clamp-open) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+}
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-strong);
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.read-more svg {
+    transition: transform 0.15s ease;
+}
+
+.read-more[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 480px) {
+    .person {
+        flex-direction: column;
+    }
+}
+
+/* FUNDING */
+
+/* White in both themes, so the coloured logo stays readable in dark mode */
+.funder-logo {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: #ffffff;
+    border-radius: 12px;
+}
+
+.funder-logo img {
+    display: block;
+    width: 220px;
+}
+
+/* FOOTER (markup in footer.html) */
+
+.site-footer {
+    padding: 2rem 0;
+    background: var(--header-bg);
+    color: var(--header-text);
+    font-size: 0.95rem;
+}
+
+.site-footer p {
+    margin: 0.25rem 0;
+}
+
+.site-footer .footer-small {
+    opacity: 0.85;
+    font-size: 0.875rem;
+}
+
+.site-footer a {
+    color: var(--header-text);
+}
+
+.site-footer :focus-visible {
+    outline-color: #ffffff;
+}
+
+/* Three columns on wide screens (contact, site links, links elsewhere), stacked on phones */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1.5rem 2.5rem;
+}
+
+.footer-title {
+    font-weight: 700;
+    margin-bottom: 0.5rem !important;
+}
+
+.site-footer address {
+    font-style: normal;
+    line-height: 1.6;
+}
+
+.footer-links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.footer-links li + li {
+    margin-top: 0.3rem;
+}
+
+.footer-bottom {
+    margin-top: 1.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+}

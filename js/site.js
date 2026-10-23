@@ -21,6 +21,48 @@
             setUpThemeToggle();
         });
 
+    // Pages without a #footer-placeholder (the database page) go without the footer
+    const footerSlot = document.getElementById("footer-placeholder");
+    if (footerSlot) {
+        fetch("/footer.html")
+            .then(r => r.text())
+            .then(html => {
+                footerSlot.innerHTML = html;
+                // The year in footer.html is the fallback without JavaScript
+                footerSlot.querySelectorAll(".current-year").forEach(node => {
+                    node.textContent = new Date().getFullYear();
+                });
+            });
+    }
+
+    // Measure once the fonts are in, since they change where the lines break
+    document.fonts.ready.then(setUpReadMore);
+
+    // --- Read more: text marked .clamp is cut to about four lines until opened ---
+    function setUpReadMore() {
+        const ARROW = '<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>';
+
+        document.querySelectorAll(".clamp").forEach(text => {
+            // Only add the button where the text is actually cut short
+            if (text.scrollHeight <= text.clientHeight + 1) return;
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "read-more";
+            button.setAttribute("aria-expanded", "false");
+            if (text.id) button.setAttribute("aria-controls", text.id);
+            button.innerHTML = "<span>Read more</span>" + ARROW;
+            text.after(button);
+
+            button.addEventListener("click", () => {
+                const open = text.classList.toggle("clamp-open");
+                button.setAttribute("aria-expanded", String(open));
+                button.querySelector("span").textContent = open ? "Show less" : "Read more";
+            });
+        });
+    }
+
     // --- Skip link: pages without a <main id="main"> skip to whatever follows the nav ---
     function setUpSkipLink() {
         if (document.getElementById("main")) return;

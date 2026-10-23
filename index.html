@@ -1,235 +1,201 @@
 <!DOCTYPE html>
-<html>
-   <head>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Privacy-friendly analytics by Plausible -->
-        <script async src="https://plausible.io/js/pa-Uznc0bkCdpH_Eb_EsUSMR.js"></script>
-        <script>
-        window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-        plausible.init()
-        </script>
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script async src="https://plausible.io/js/pa-Uznc0bkCdpH_Eb_EsUSMR.js"></script>
+    <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+    </script>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <title>MinSight - Rapid spectroscopy data fitting and interpretation</title>
+    <meta name="description" content="MinSight is an online application for fitting and interpreting Mössbauer spectroscopy data.">
 
-        <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
-        <link rel="stylesheet" type="text/css" href="css/index.css">
-        <link rel="stylesheet" type="text/css" href="css/nav.css">
-   </head>
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
 
-   <body onload="" style="background-image: url(media/main_banner.png); background-repeat: no-repeat; background-size: 100%; background-position: right top; background-attachment: fixed;">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
-        <div id="nav-placeholder"></div>
+    <link rel="preload" href="fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
 
-        <!-- Link to launch Minsight -->
-        <div class = "launch_container_bkgd", style ="padding-top:150px; padding-bottom:100px;">        
-            <div class = "launch_container">
-                <a href = "https://minsight.streamlit.app/" target="_blank" class="launchlink">Launch</a>
-            </div>
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <div class="hero" id="top">
+        <div class="hero-inner">
+            <h1>Rapid spectroscopy data fitting and interpretation</h1>
+            <p class="hero-lead">MinSight is an online application for fitting and interpreting Mössbauer spectroscopy data.</p>
+            <p class="hero-meta">School of Earth Sciences, University of Bristol</p>
+            <p class="hero-actions">
+                <a class="button" href="https://minsight.streamlit.app/" target="_blank" rel="noopener">Launch MinSight</a>
+                <a class="button button-ghost" href="database.html">Explore the database</a>
+            </p>
         </div>
+    </div>
 
-        <!-- Site description -->
-        <div class="IMGgrid-container" id="home">
-                
-            <div class = "contentcontainers">
+    <main id="main">
+
+        <section id="interface" class="section" aria-labelledby="interface-title">
+            <div class="container">
+                <h2 id="interface-title">What MinSight does</h2>
                 <p>
-                    Minsight is an online application for fitting and interpreting Mössbauer spectroscopy data. Unlike 
-                    other fitting software Minsight aims to handle the entire analytical pipeline so that once data is collected, 
-                    it can be readily and easily understood. Typical non-linear regression models combined with dynamic databases 
-                    enable discovery of similar spectra which have already been published. 
-                </p>
-            </div>
-        </div>
-
-        <div class = "containers" id="interface">
-           
-            <div class="grid-container">
-
-
-                <div class="grid-item">
-                    <div class = "polaroid">
-                        <img src = "media/project_screen.jpg", width = 100%>
-                    </div>
-                </div>
-
-                <div class="grid-item">
-                    <h1>Curated datasets</h1>
-                    <p>
-                        Handling lots of datasets and projects can often get complicated, with folders here or there and little interaction between them all.
-                        MinSight puts data in one place, meaning that you can access files from any computer or mobile device with an internet connection. Our projects are saved securely on a cloud based server (Firebase Console).
-                    </p>
-                    <p>
-                        Collaborate with students or colleauges so they can see your data, or you can see theirs and provide interactive feedback on the results.
-                    </p>
-
-                </div>
-
-                <div class="grid-item">
-                    <div class = "polaroid">
-                        <img src = "media/fit_v2.jpg", width = 100%>
-                    </div>
-                </div>
-
-                <div class="grid-item">
-                    <h1>Intuitive fitting</h1>
-                    <p>
-                        Add doublets and sextets into your model and adjust the hyperfine parameters to improve your fit. Select from a range of analytical models 
-                        including Lorentzian, Squared Lorentzian or Voigt. Use lock boxes to constrain fitting or adjust asymmetry.
-                    </p>
-                    <p>
-                        The colour of your spectral sites can be changed through a simple drop down menu, and annotation of each site can be handled with ease by modifying the Label.
-                    </p>
-                </div>
-
-
-                <div class="grid-item">
-                    <div class = "polaroid">
-                        <img src = "media/discover.jpg", width = 100%>
-                    </div>
-                </div>
-
-                <div class="grid-item">
-                    <h1>Discovery</h1>
-                    <p>
-                        Match your spectrum against published datasets and use the similarity score to determine the closeness of the approximation.
-                    </p>
-                    <p>
-                        If the match appears to be acceptable, simply select that model and directly import the hyperfine parameters from that publication into your own data. 
-                        A DOI provided means that you can learn more about the matched spectrum and potentially discover more about the similarties or differences between that and your own data.
-                    </p>
-                    <p>
-                        Confident that the match is acceptable? Simply press Select & Fit to get the fitting started.
-                    </p>
-                </div>
-
-
-
-                <div class="grid-item">
-                    <div class = "polaroid">
-                        <img src = "media/testabc_Mössbauer_Lorentzian_figure(1).png", width = 100%>
-                    </div>
-                </div>
-
-                <div class="grid-item">
-                    <h1>Automate publication ready figures</h1>
-                    <p>
-                        Even when a dataset has been fitted to an acceptable level, the job is still not over! The demands of reports or publication often means creating high quality figures which show the data in the best possible light.
-                    </p>
-                    <p>
-                        The figure wizard enables users to select the files they wish to present, and then draw multipanel figures which include residuals, standard colour sites, and Labels. A download button enables users to download a higher 
-                        resolution version.
-                    </p>
-
-                </div>
-
-            </div>
-        </div>
-
-
-        <div class="IMGgrid-container" id="about">
-
-            <div class="grid-item">
-
-                <div>
-                    <div class="container_img">
-
-                        <img src="media/profiles/profile_JB.jpg" alt="Data fitting" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
-
-                        <div class="overlay_img">
-                            <div class="text_img"><img src="media/profiles/profile_JB.jpg" alt="Data Fitting" class="image_img"></div>
-                        </div>
-                    </div> 
-                </div>
-
-            </div>
-
-            <div class="grid-item">
-
-                <div>
-                    <p class="head_2">
-                        Dr James Byrne		
-                    </p>
-                    <p>
-                        I am an Associate Professor in Environmental Mineralogy in the School of Earth Sciences at the University of Bristol, UK. 
-                        My research focuses on the formation of (bio)minerals (especially iron bearing minerals) thorough microbially mediated processes, 
-                        as well as through chemical synthesis. These mineral phases include magnetic magnetite nanoparticles, goethite, ferrihydrite, 
-                        siderite, green rust and others. They often have highly reactive properties which make them suitable 
-                        to a range of applicaitons including water treatment. 
-                    </p>
-                    <p>
-                        I routinely apply a range of analytical techniques such as M&ouml;ssbauer 
-                        spectroscopy, X-ray diffraction, FTIR, magnetometry, and synchrotron methods to understand the (physio)chemical properties of these minerals. 
-                        My interest in the understanding the different ways to intepret datasets coming from these techniques has led me to develop MinSight as a platform
-                        to combine multi-model analytics.
-                        
-                    </p>
-                </div>
-            </div>
-
-
-            <div class="grid-item">
-
-                <div>
-                    <div class="container_img">
-
-                        <img src="media/profiles/profile_BH.jpg" alt="Benedict" class="image_img" style="-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */filter: grayscale(100%);">
-
-                        <div class="overlay_img">
-                            <div class="text_img"><img src="media/profiles/profile_BH.jpg" alt="Benedict" class="image_img"></div>
-                        </div>
-                    </div> 
-                </div>
-
-            </div>
-
-            <div class="grid-item">
-
-                <div>
-                    <p class="head_2">
-                        Dr Benedict Heinen		
-                    </p>
-                    <p>
-                        Benedict Heinen is a mineral physicist and research software engineer based in the School of Earth Sciences at the University of Bristol. They use a variety of computational, 
-                        spectroscopic and synchrotron x-ray techniques to investigate the properties of minerals, melts and glasses at extreme conditions. Much of their research has focused on experimental 
-                        and analytical method development. Alongside this, Benedict develops user-friendly software to support the wider research community. They joined the MinSight project as 
-                        a software engineer in late 2025.
-                    </p>
-
-                </div>
-            </div>
-        </div>
-        
-        
-
-        <!-- Site description -->
-        <div class = "containers">        
-            <div class = "contentcontainers">
-                <p style="text-align: center;">
-                    The development of MinSight has been supported through a UKRI Future Leaders Fellowship.
-                    
+                    Unlike other fitting software, MinSight aims to handle the entire analytical pipeline so that once data is collected,
+                    it can be readily and easily understood. Typical non-linear regression models combined with dynamic databases
+                    enable discovery of similar spectra which have already been published.
                 </p>
 
-                <img src = "media/UKRI-Logo_Horiz-RGB.png" style="width: 20%; display: block; margin: auto;">
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <figure class="feature-figure feature-figure-top">
+                            <img src="media/project_screen.jpg" width="1939" height="979" loading="lazy" decoding="async"
+                                 alt="The MinSight projects page, with panels to create a new project, load a saved project and load a collaboration.">
+                        </figure>
+                        <div class="feature-text">
+                            <h3>Curated datasets</h3>
+                            <p>
+                                Handling lots of datasets and projects can often get complicated, with folders here or there and little interaction between them all.
+                                MinSight puts data in one place, meaning that you can access files from any computer or mobile device with an internet connection.
+                                Our projects are saved securely on a cloud based server (Firebase Console).
+                            </p>
+                            <p>
+                                Collaborate with students or colleagues so they can see your data, or you can see theirs and provide interactive feedback on the results.
+                            </p>
+                        </div>
+                    </article>
 
+                    <article class="feature-card">
+                        <figure class="feature-figure">
+                            <img src="media/fit_v2.jpg" width="1579" height="792" loading="lazy" decoding="async"
+                                 alt="A Mössbauer spectrum fitted with three coloured doublet sites, above a table of hyperfine parameters and a Fit button.">
+                        </figure>
+                        <div class="feature-text">
+                            <h3>Intuitive fitting</h3>
+                            <p>
+                                Add doublets and sextets into your model and adjust the hyperfine parameters to improve your fit. Select from a range of analytical models
+                                including Lorentzian, Squared Lorentzian or Voigt. Use lock boxes to constrain fitting or adjust asymmetry.
+                            </p>
+                            <p>
+                                The colour of your spectral sites can be changed through a simple drop down menu, and annotation of each site can be handled with ease by modifying the Label.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <figure class="feature-figure">
+                            <img src="media/discover.jpg" width="729" height="573" loading="lazy" decoding="async"
+                                 alt="Three published spectra overlaid on a user's spectrum, each with Select and Select &amp; Fit buttons, above a table of matches with DOIs and similarity scores.">
+                        </figure>
+                        <div class="feature-text">
+                            <h3>Discovery</h3>
+                            <p>
+                                Match your spectrum against published datasets and use the similarity score to determine the closeness of the approximation.
+                            </p>
+                            <p>
+                                If the match appears to be acceptable, simply select that model and directly import the hyperfine parameters from that publication into your own data.
+                                A DOI provided means that you can learn more about the matched spectrum and potentially discover more about the similarities or differences between that and your own data.
+                            </p>
+                            <p>
+                                Confident that the match is acceptable? Simply press Select &amp; Fit to get the fitting started.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <figure class="feature-figure">
+                            <img src="media/testabc_Mössbauer_Lorentzian_figure(1).png" width="6000" height="5400" loading="lazy" decoding="async"
+                                 alt="An example multipanel figure of fitted Mössbauer spectra produced by the figure wizard.">
+                        </figure>
+                        <div class="feature-text">
+                            <h3>Automate publication ready figures</h3>
+                            <p>
+                                Even when a dataset has been fitted to an acceptable level, the job is still not over! The demands of reports or publication often means creating high quality figures which show the data in the best possible light.
+                            </p>
+                            <p>
+                                The figure wizard enables users to select the files they wish to present, and then draw multipanel figures which include residuals, standard colour sites, and Labels.
+                                A download button enables users to download a higher resolution version.
+                            </p>
+                        </div>
+                    </article>
+                </div>
             </div>
+        </section>
 
+        <section id="about" class="section section-alt" aria-labelledby="about-title">
+            <div class="container">
+                <h2 id="about-title">Who we are</h2>
 
+                <div class="people-grid">
+                    <article class="person">
+                        <img class="person-photo" src="media/profiles/profile_JB.jpg" width="88" height="88" alt="" loading="lazy">
+                        <div class="person-text">
+                            <h3 class="person-name">Dr James Byrne</h3>
+                            <p class="person-role">Associate Professor in Environmental Mineralogy</p>
+                            <div class="person-description clamp" id="bio-jb">
+                                <p>
+                                    I am an Associate Professor in Environmental Mineralogy in the School of Earth Sciences at the University of Bristol, UK.
+                                    My research focuses on the formation of (bio)minerals (especially iron bearing minerals) through microbially mediated processes,
+                                    as well as through chemical synthesis. These mineral phases include magnetic magnetite nanoparticles, goethite, ferrihydrite,
+                                    siderite, green rust and others. They often have highly reactive properties which make them suitable
+                                    to a range of applications including water treatment.
+                                </p>
+                                <p>
+                                    I routinely apply a range of analytical techniques such as Mössbauer
+                                    spectroscopy, X-ray diffraction, FTIR, magnetometry, and synchrotron methods to understand the (physio)chemical properties of these minerals.
+                                    My interest in understanding the different ways to interpret datasets coming from these techniques has led me to develop MinSight as a platform
+                                    to combine multi-model analytics.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
 
-            <footer style="text-align: center; margin-top: 20px;">
-                <p>&copy; <span id="year"></span> MinSight. All rights reserved.</p>
-                <script>
-                    document.getElementById("year").textContent = new Date().getFullYear();
-                </script>
+                    <article class="person">
+                        <img class="person-photo" src="media/profiles/profile_BH.jpg" width="88" height="88" alt="" loading="lazy">
+                        <div class="person-text">
+                            <h3 class="person-name">Dr Benedict Heinen</h3>
+                            <p class="person-role">Mineral physicist and research software engineer</p>
+                            <div class="person-description clamp" id="bio-bh">
+                                <p>
+                                    Benedict Heinen is a mineral physicist and research software engineer based in the School of Earth Sciences at the University of Bristol. They use a variety of computational,
+                                    spectroscopic and synchrotron x-ray techniques to investigate the properties of minerals, melts and glasses at extreme conditions. Much of their research has focused on experimental
+                                    and analytical method development. Alongside this, Benedict develops user-friendly software to support the wider research community. They joined the MinSight project as
+                                    a software engineer in late 2025.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-                <a href="#" onclick="openCookieSettings()">Update cookie settings</a>
+        <section id="funding" class="section center" aria-labelledby="funding-title">
+            <div class="container">
+                <h2 id="funding-title">Funding</h2>
+                <p>The development of MinSight has been supported through a UKRI Future Leaders Fellowship.</p>
+                <span class="funder-logo"><img src="media/UKRI-Logo_Horiz-RGB.png" width="1200" height="354" alt="UK Research and Innovation" loading="lazy"></span>
+            </div>
+        </section>
 
-            </footer>
-        
-        </div>
+    </main>
 
-        <script src="js/site.js"></script>
+    <div id="footer-placeholder"></div>
 
-    </body>
+    <script src="js/site.js"></script>
+</body>
 </html>
-
