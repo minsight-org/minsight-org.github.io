@@ -1,12 +1,21 @@
+/* Shared control styling (search + filter button) */
+:root {
+  --control-height: 44px;
+  --control-font-size: 15px;
+  --control-line-height: 1.2;
+  --control-padding-x: 16px;
+}
+
 /* =========================================================
    Base
    ========================================================= */
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
+
 
 /* =========================================================
    Search bar positioning
@@ -15,7 +24,7 @@ body {
 #search-wrapper {
   position: absolute;
   z-index: 1000;
-  transition: top 0.5s ease, left 0.5s ease, transform 0.5s ease;
+  /* transition: top 0.5s ease, left 0.5s ease, transform 0.5s ease; */
 }
 
 body.search-centered #search-wrapper {
@@ -24,14 +33,9 @@ body.search-centered #search-wrapper {
   transform: translate(-50%, -50%);
 }
 
-/* body.search-active #search-wrapper {
-  top: 120px;
-  left: 20px;
-  transform: translate(0, 0);
-} */
 
 /* When search is active, return it to normal flow */
-body.search-active #search-wrapper {
+body.search-active:not(.search-in-navbar) #search-wrapper {
   position: relative;
   top: auto;
   padding-top: 20px;
@@ -39,6 +43,15 @@ body.search-active #search-wrapper {
   transform: none;
   margin: 20px;
 } 
+
+/* Keep search in navbar when filters/search are active */
+body.search-active.navbar #search-wrapper {
+  position: static;          /* let navbar control layout */
+  margin: 0;
+  padding: 0;
+  transform: none;
+}
+
 
 /* =========================================================
    Search input
@@ -52,18 +65,21 @@ body.search-active #search-wrapper {
 
 .search-container {
   position: relative;
-  width: 900px;
+  width: 700px;
   max-width: 90vw;
 }
 
 .search-container input {
+  height: var(--control-height);
+  font-size: var(--control-font-size);
+  line-height: var(--control-line-height);
+  padding: 0 80px 0 var(--control-padding-x); /* reserve space for icons */
   width: 100%;
-  padding: 14px 44px 14px 20px;
-  font-size: 15px;
   border-radius: 999px;
-  border: 1px solid #d0d0d0;
+  border: 0px solid #d0d0d0;
   outline: none;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-sizing: border-box;
 }
 
 #search-btn,
@@ -74,7 +90,7 @@ body.search-active #search-wrapper {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 15px;
   color: #666;
 }
 
@@ -117,7 +133,21 @@ body.search-active #search-wrapper {
   background: #f0f0f0;
 }
 
+.suggestion mark {
+  background: #dbe9fa;
+  color: #215F9A;
+  font-weight: 700;
+  padding: 0 1px;
+  border-radius: 2px;
+}
 
+.highlight {
+  background: #dbe9fa;
+  color: #215F9A;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 0 1px;
+}
 
 /* =========================================================
    Metadata
@@ -165,20 +195,95 @@ body.search-active #search-wrapper {
    Filters
    ========================================================= */
 
+
+.filters-toggle {
+  height: var(--control-height);
+  /* width: var(--control-height); */
+  font-size: var(--control-font-size);
+  line-height: var(--control-line-height);
+  padding: 0px var(--control-padding-x);
+  min-height: var(--control-height);
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 999px;
+  border: 1px solid #d0d0d0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+}
+/* Symbols (δ, ΔEQ, Bhf) */
+.filters-toggle .hf-symbol {
+  opacity: 0.6;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+  font-style: italic;
+  
+}
+/* Filters toggle button – hover + cursor */
+.filters-toggle {
+  cursor: pointer; /* hand cursor */
+
+}
+
+/* Mouse hover */
+.filters-toggle:hover {
+  background-color: #215F9A;   /* darker than default */
+  border-color: #9dbbe6;       /* stronger outline */
+  color: white;            /* white text */
+  box-shadow: 0 2px 6px rgba(6, 27, 45, 0.25);
+}
+
+/* Optional: active (mouse down) feedback */
+.filters-toggle:active {
+  background-color: #c9dcf4;
+}
+
+
+
+/* Active press */
+.filters-toggle:active {
+  transform: translateY(1px);
+}
+
+/* Focus visibility (keyboard users) */
+.filters-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(33, 95, 154, 0.25);
+}
+
+/* Caret */
+.filters-toggle .hf-caret {
+  font-size: 11px;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+/* Open state */
+.filters-panel.open + .filters-toggle,
+.filters-toggle.open {
+  background: #e1ecfa;
+  border-color: #9dbbe6;
+}
+
+/* Rotate caret when open */
+.filters-panel.open ~ .filters-toggle .hf-caret,
+.filters-toggle.open .hf-caret {
+  transform: rotate(180deg);
+}
+
+
 .filters-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 8px;
+  margin-top: 0px;
+  margin-left: 0px;
   flex-wrap: wrap;
 }
 
-.filters-toggle {
-  background: none;
-  border: none;
-  color: #215F9A;
-  cursor: pointer;
-  font-weight: 600;
+/* Optional: slight hover feedback */
+.filter-header:hover {
+  background: #305f98;
 }
 
 .filters-panel {
@@ -238,7 +343,7 @@ body.search-active #search-wrapper {
 
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
 /* Close (✕) button */
@@ -261,6 +366,44 @@ body.search-active #search-wrapper {
 .filter-chip:hover {
   background: #dbe9fa;
 }
+
+/* Landing page: center filters toggle under search */
+body.search-centered #toggle-filters {
+  /* margin: 12px auto 0; */
+  display: inline-flex;
+}
+
+/* Search active: move filters toggle into navbar layout */
+body.search-active #toggle-filters {
+  margin: 0;
+
+}
+
+.model-pill {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 2px 8px;
+  margin-bottom: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+/* Default / Lorentzian */
+.model-lorentz {
+  background: #e6e9ee;
+  color: #444;
+}
+
+/* Voigt-based fitting */
+.model-vbf {
+  background: #eef4ff;
+  color: #215f9a;
+  border: 1px solid #c7d7f2;
+}
+
 /* =========================================================
    Results table (DESKTOP)
    ========================================================= */
@@ -426,6 +569,7 @@ th {
 
 .db-title {
     text-align: center;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -521,6 +665,35 @@ body.search-active .db-subtitle {
   display: none;
 }
 
+/* Wrapper around results, highlight, messages */
+#results-wrapper {
+  padding: 100px 50px 32px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Slight spacing between sections */
+#mineral-highlight {
+  margin-bottom: 12px;
+}
+
+#no-results {
+  margin: 12px 0;
+}
+
+.vbf-component-row td {
+  background: #f7f9fc;
+  font-size: 0.85em;
+  color: #444;
+  padding: 6px 10px;
+  border-top: none;
+}
+
+.vbf-components {
+  margin-left: 10px;
+  font-style: italic;
+}
+
 /* =========================================================
    Mobile layout (CARDS ONLY)
    ========================================================= */
@@ -608,13 +781,12 @@ body.search-active .db-subtitle {
     box-sizing: border-box;
     
     margin: 12px auto;
-    padding: 0 12px;
 
   }
 
   .search-container input {
-      font-size: 16px; /* prevents iOS zoom */
-      padding: 12px 40px 12px 16px;
+      font-size: 16px;
+      padding: 12px 72px 12px 16px;
   }
   .search-container,
   .search-container * {
@@ -660,7 +832,7 @@ body.search-active .db-subtitle {
   }
 
   .filters-toggle {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .filter-row {
@@ -770,3 +942,21 @@ body.search-active .db-subtitle {
     display: none;
   }
 } */
+
+/* Keep full search width in navbar */
+body.search-in-navbar #search-block {
+  width: 420px;
+  max-width: 40vw;
+  padding-bottom: 50px;
+}
+
+body.search-in-navbar .search-container {
+  width: 100%;
+}
+
+
+body.search-in-navbar .search-row {
+  align-items: center;
+  margin: 0;
+}
+

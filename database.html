@@ -3,24 +3,21 @@
 
   <head>
     
-    <!-- Privacy-friendly analytics by Plausible -->
-    <script async src="https://plausible.io/js/pa-Uznc0bkCdpH_Eb_EsUSMR.js"></script>
-    <script defer
-      data-domain="minsight.org"
-      data-api="/api/event"
-      src="/js/script.file-downloads.js">
-      window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-      plausible.init()
-      
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
-    </script>
-
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-
-    <title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
+    <title>MinSight - Rapid spectroscopy data fitting and interpretation</title>
 
     <!-- <link rel="stylesheet" type="text/css" href="css/dropdown.css"> -->
+    <link rel="preload" href="fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" type="text/css" href="css/db.css">
     <link rel="stylesheet" type="text/css" href="css/nav.css">
 
@@ -36,88 +33,106 @@
   <!-- <div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script> -->
   
   <div id="search-wrapper">
-
-    <h1 class="db-title">Explore the MinSight database</h1>
-    <p class="db-subtitle">
-      Find published Mössbauer hyperfine parameters and see their corresponding spectra.
-    </p>
-
-    <!-- Search bar -->
-
-    <div class="search-row">
-
-      <div class="search-container">
-        <input
-          id="search"
-          type="text"
-          placeholder="Search Fe-bearing phase (e.g. Goethite, Magnetite...)"
-          autocomplete="off"
-        />
-
-        <button id="clear-btn" title="Clear search">✕</button>
-        <button id="search-btn" title="Search">🔍︎</button>
-
-        <div id="autocomplete"></div>
-      </div>
-
-      <span id="result-count" class="result-count"></span>
-
-    </div>
-
-    <div id="mineral-highlight"></div>
     
-    <!-- Filters header: button + chips -->
-    <div class="filters-header">
-      <button id="toggle-filters" class="filters-toggle">
-        ▾ Search by parameters
-      </button>
-      <div id="active-filters" class="active-filters"></div>
-    </div>
+    <div id="search-block">
 
+      <h1 class="db-title">Explore the MinSight database</h1>
+      <p class="db-subtitle">
+        Find published Mössbauer hyperfine parameters and see their corresponding spectra.
+      </p>
 
+      <!-- Search bar -->
+      <div class="search-row">
 
-    <!-- Collapsible filters panel (ALL fields INSIDE) -->
-    <div id="filters-panel" class="filters-panel">
+        <div class="search-container">
+          <input
+            id="search"
+            type="text"
+            placeholder="Search Fe-bearing phase (e.g. Goethite, Magnetite...)"
+            autocomplete="off">
+          </input>
+          <button id="clear-btn" title="Clear search">✕</button>
+          <button id="search-btn" title="Search">🔍︎</button>
 
-      <div class="filter-row">
-        <label>Temp [K]</label>
-        <input id="temp-min" type="number" placeholder="min" inputmode="decimal">
-        <span>–</span>
-        <input id="temp-max" type="number" placeholder="max" inputmode="decimal">
+          <div id="autocomplete"></div>
+        </div>
+
+      <!-- Filters header: button + chips -->
+      <div class="filters-header">
+        <button
+          id="toggle-filters"
+          class="filters-toggle hyperfine-toggle" aria-label="Filter by hyperfine parameters"
+          title="Filter by hyperfine parameters">    
+          <!-- <span class="hf-symbol"><sub>δ</sub>Δ<sub>B</sub></span> -->
+          <span class="hf-symbol">Filter</span>
+
+        </button>
+        
+        
       </div>
 
-      <div class="filter-row">
-        <label>IS [mm/s]</label>
-        <input id="is-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
-        <span>–</span>
-        <input id="is-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
+
+      </div>
+      <!-- Collapsible filters panel (ALL fields INSIDE) -->
+      <div id="filters-panel" class="filters-panel">
+
+        <div class="filter-row">
+          <label>Temp [K]</label>
+          <input id="temp-min" type="number" placeholder="min" inputmode="decimal">
+          <span>–</span>
+          <input id="temp-max" type="number" placeholder="max" inputmode="decimal">
+        </div>
+
+        <div class="filter-row">
+          <label>IS [mm/s]</label>
+          <input id="is-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
+          <span>–</span>
+          <input id="is-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
+        </div>
+
+        <div class="filter-row">
+          <label>QS [mm/s]</label>
+          <input id="qs-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
+          <span>–</span>
+          <input id="qs-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
+        </div>
+
+        <div class="filter-row">
+          <label>Bhf [T]</label>
+          <input id="bhf-min" type="number" step="0.1" placeholder="min" inputmode="decimal">
+          <span>–</span>
+          <input id="bhf-max" type="number" step="0.1" placeholder="max" inputmode="decimal">
+        </div>
+
+        <!-- <div class="filter-actions">
+          <button id="clear-filters">Clear filters</button>
+        </div> -->
+
       </div>
 
-      <div class="filter-row">
-        <label>QS [mm/s]</label>
-        <input id="qs-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
-        <span>–</span>
-        <input id="qs-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
-      </div>
+      <!-- Messages -->
+      <!-- <p id="result-count"></p> -->
+      
+      <!-- <p id="no-results">No results found.</p> -->
 
-      <div class="filter-row">
-        <label>Bhf [T]</label>
-        <input id="bhf-min" type="number" step="0.1" placeholder="min" inputmode="decimal">
-        <span>–</span>
-        <input id="bhf-max" type="number" step="0.1" placeholder="max" inputmode="decimal">
-      </div>
-
-      <!-- <div class="filter-actions">
-        <button id="clear-filters">Clear filters</button>
-      </div> -->
-
-    </div>
-
-    <!-- Messages -->
-    <p id="result-count"></p>
-    <p id="no-results">No results found.</p>
-
+    </div>  
   </div>
+
+  
+<!-- ✅ RESULTS MUST LIVE OUTSIDE -->
+<div id="results-wrapper">
+
+  <div id="active-filters" class="active-filters"></div>
+
+  <div id="mineral-highlight"></div>
+
+  <span id="result-count" class="result-count"></span>
+  <p id="no-results">No results found.</p>
+
+  <div id="results-cards"></div>
+  <table id="results"></table>
+</div>
+
 
 <!-- 
   <div id="mini-spectrum">
@@ -125,13 +140,12 @@
 </div> -->
 
 
-  <div id="results-cards"></div>
 
-  <table id="results"></table>
 
 
 <script src="js/db.js?v=20260427"></script>
-<script src="js/site.js"></script>
+<!-- <script type="module" src="/js/db.js"></script> -->
 
+<script src="js/site.js"></script>
 </body>
 </html>
