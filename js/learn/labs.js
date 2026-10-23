@@ -136,9 +136,12 @@ const LABS = {
         showWhen: v => v.type === "sextet" },
       { key: "fwhm", label: "Linewidth (FWHM)", unit: "mm/s", min: 0.194, max: 1, step: 0.002, value: 0.3 }
     ],
+    // Typical room-temperature values unless stated (see MINERALS below).
+    // TODO (James): check the siderite values before publishing.
     presets: [
-      { label: "Fe(III) doublet", values: { type: "doublet", IS: 0.35, QS: 0.7, fwhm: 0.3 } },
-      { label: "Fe(II) doublet", values: { type: "doublet", IS: 1.15, QS: 2.7, fwhm: 0.3 } },
+      { label: "Ferrihydrite, Fe(III)", values: { type: "doublet", IS: 0.35, QS: 0.7, fwhm: 0.4 } },
+      { label: "Lepidocrocite, Fe(III)", values: { type: "doublet", IS: 0.37, QS: 0.53, fwhm: 0.3 } },
+      { label: "Siderite, Fe(II)", values: { type: "doublet", IS: 1.24, QS: 1.8, fwhm: 0.3 } },
       { label: "Hematite", values: { type: "sextet", IS: 0.37, Bhf: 51.8, eps: -0.1, fwhm: 0.3 } },
       { label: "Goethite at 4.2 K", values: { type: "sextet", IS: 0.48, Bhf: 50.6, eps: -0.13, fwhm: 0.3 } }
     ],
@@ -146,7 +149,8 @@ const LABS = {
       if (v.type === "doublet") {
         return {
           sim: spectrum([site({ IS: v.IS, QS: v.QS, fwhm: v.fwhm })]),
-          readout: `A doublet with lines at ${fmt(v.IS - v.QS / 2)} and ${fmt(v.IS + v.QS / 2)} mm/s.`
+          readout: `A doublet with lines at ${fmt(v.IS - v.QS / 2)} and ${fmt(v.IS + v.QS / 2)} mm/s. ` +
+            (v.IS > 0.8 ? "A δ this large points to high-spin Fe(II)." : "A δ this small points to Fe(III).")
         };
       }
       return {
