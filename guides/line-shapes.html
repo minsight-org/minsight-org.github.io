@@ -57,6 +57,33 @@
                         Lorentzian lines assumes that every iron atom in a site has exactly the same hyperfine parameters. This works
                         well for well-crystalline minerals, and it keeps the number of fitted parameters small.
                     </p>
+                    <p>Each line is described by the Lorentzian function</p>
+                    <div class="equation">
+                        <math display="block" aria-label="L of v equals A over pi, times half Gamma, divided by v minus v nought squared plus half Gamma squared">
+                            <mrow>
+                                <mi>L</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo>
+                                <mo>=</mo>
+                                <mfrac><mi>A</mi><mi>π</mi></mfrac>
+                                <mo>&#x22C5;</mo>
+                                <mfrac>
+                                    <mrow><mi>Γ</mi><mo>/</mo><mn>2</mn></mrow>
+                                    <mrow>
+                                        <msup><mrow><mo stretchy="false">(</mo><mi>v</mi><mo>−</mo><msub><mi>v</mi><mn>0</mn></msub><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+                                        <mo>+</mo>
+                                        <msup><mrow><mo stretchy="false">(</mo><mi>Γ</mi><mo>/</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+                                    </mrow>
+                                </mfrac>
+                            </mrow>
+                        </math>
+                    </div>
+                    <ul class="equation-terms">
+                        <li><math><mi>v</mi></math> is the velocity (mm/s), and <math><msub><mi>v</mi><mn>0</mn></msub></math> the position of the line</li>
+                        <li><math><mi>Γ</mi></math> is the linewidth (FWHM, mm/s), so <math><mi>Γ</mi><mo>/</mo><mn>2</mn></math> is the half width at half maximum</li>
+                        <li><math><mi>A</mi></math> is the area of the line</li>
+                    </ul>
+                    <p>
+                        A doublet is two of these lines and a sextet is six, with their positions set by the hyperfine parameters.
+                    </p>
 
                     <h2>Why real lines are often broader</h2>
                     <p>
@@ -70,8 +97,50 @@
                     <p>
                         Voigt-based fitting, described by Rancourt and Ping (1991), describes each site by an average value and a
                         Gaussian spread, σ. For a doublet the spread is in the quadrupole splitting. For a sextet it is in the
-                        hyperfine field. Compare the two models below.
+                        hyperfine field.
                     </p>
+                    <p>
+                        In simplified form, a Voigt line is a Lorentzian smeared out by a Gaussian spread of line positions. Each small
+                        shift <math><mi>u</mi></math> away from the average position contributes a Lorentzian, weighted by how common
+                        that shift is.
+                    </p>
+                    <div class="equation">
+                        <math display="block" aria-label="V of v equals the integral of G of u times L of v minus u, d u">
+                            <mrow>
+                                <mi>V</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo>
+                                <mo>=</mo>
+                                <mo largeop="true" movablelimits="false" style="font-size:1.3em">∫</mo>
+                                <mi>G</mi><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo>
+                                <mspace width="0.17em"></mspace>
+                                <mi>L</mi><mo stretchy="false">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo stretchy="false">)</mo>
+                                <mspace width="0.17em"></mspace>
+                                <mi>d</mi><mi>u</mi>
+                            </mrow>
+                        </math>
+                        <math display="block" aria-label="where G of u equals 1 over sigma root 2 pi, times e to the minus u squared over 2 sigma squared">
+                            <mrow>
+                                <mi>G</mi><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo>
+                                <mo>=</mo>
+                                <mfrac><mn>1</mn><mrow><mi>σ</mi><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt></mrow></mfrac>
+                                <mspace width="0.17em"></mspace>
+                                <msup>
+                                    <mi>e</mi>
+                                    <mrow><mo>−</mo><msup><mi>u</mi><mn>2</mn></msup><mo>/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup></mrow>
+                                </msup>
+                            </mrow>
+                        </math>
+                    </div>
+                    <ul class="equation-terms">
+                        <li><math><mi>L</mi></math> is the Lorentzian above, and <math><mi>G</mi></math> a Gaussian of width <math><mi>σ</mi></math></li>
+                        <li>When <math><mi>σ</mi></math> shrinks to zero the Voigt becomes a Lorentzian, and when <math><mi>Γ</mi></math> shrinks to zero it becomes a Gaussian</li>
+                        <li>In VBF, <math><mi>σ</mi></math> is a spread in ΔE<sub>Q</sub> or B<sub>hf</sub>, which moves each line by a different amount, so
+                            the lines of a site are not all broadened equally</li>
+                    </ul>
+                    <p>
+                        The integral has no simple closed form, so fitting programs, including MinSight, calculate it with a fast
+                        numerical approximation.
+                    </p>
+                    <p>Compare the two models below.</p>
                     <div class="lab" data-lab="doublet-distribution"></div>
                     <p>
                         A spread of hyperfine fields broadens the outer lines of a sextet more than the inner ones, because the outer

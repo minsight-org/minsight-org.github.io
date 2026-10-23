@@ -796,3 +796,33 @@
     width: 100%;
     accent-color: var(--accent);
 }
+
+/* EQUATIONS (MathML, rendered by the browser) */
+
+.article > .equation,
+.article > .equation-terms {
+    max-width: var(--measure);
+}
+
+.equation {
+    margin: 1rem 0 1.25rem;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.equation math {
+    font-size: 1.25rem;
+}
+
+.equation-terms {
+    margin-bottom: 1.25rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.equation-terms li + li {
+    margin-top: 0.25rem;
+}
