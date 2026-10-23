@@ -13,9 +13,8 @@ export function indexSpectra(spectra) {
   spectra.forEach(s => {
     s.searchText = fold([
       s.sample,
-      s.material,
-      s.treatment,
-      ...s.sites.map(site => `${site.name} ${site.component}`),
+      s.mineralClass,
+      ...s.sites.map(site => `${site.name} ${site.fitModel}`),
       s.reference.title,
       s.reference.authors,
       s.reference.journal,
@@ -99,11 +98,11 @@ export function sortResults(results, sortKey) {
 
 /** The name shown for a spectrum (some papers leave the sample name blank). */
 export function displayName(spectrum) {
-  return spectrum.sample || spectrum.material || "Unnamed sample";
+  return spectrum.sample || spectrum.mineralClass || "Unnamed sample";
 }
 
 /**
- * Autocomplete suggestions: mineral profiles, sample names and materials that
+ * Autocomplete suggestions: mineral profiles, mineral names and classes that
  * contain the query, those starting with it first.
  */
 export function suggestions(spectra, profiles, query, limit = 8) {
@@ -118,7 +117,7 @@ export function suggestions(spectra, profiles, query, limit = 8) {
   profiles.forEach(p => add(p.mineral));
   spectra.forEach(s => {
     add(s.sample);
-    add(s.material);
+    add(s.mineralClass);
   });
 
   const matches = [...seen].filter(([key]) => key.includes(q));

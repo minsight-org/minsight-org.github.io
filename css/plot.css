@@ -72,13 +72,6 @@
 }
 
 /* Blocking temperature profile (learn guide on temperature) */
-.plot-dist {
-    fill: #c9d8e8;
-    stroke: none;
-}
-
 .plot-point {
     fill: #b4540a;
 }
-
-.key-dist::before { background: #c9d8e8; height: 10px; }

@@ -77,7 +77,13 @@ function shortCitation(ref) {
   else if (authors.length === 2) who = `${surname(authors[0])} and ${surname(authors[1])}`;
   else if (authors.length > 2) who = `${surname(authors[0])} et al.`;
   const year = ref.year ? ` (${ref.year})` : "";
-  return [who + year, ref.journal].filter(s => s.trim()).join(", ");
+  const citation = [who + year, ref.journal].filter(s => s.trim()).join(", ");
+  if (citation || !ref.url) return citation;
+  try {
+    return new URL(ref.url).hostname.replace(/^www\./, "");
+  } catch (e) {
+    return "";
+  }
 }
 
 function formatK(value) {
@@ -170,7 +176,7 @@ function run() {
   }
 
   results = sortResults(search(spectra, state.q, state.ranges), state.sort);
-  const papers = new Set(results.map(r => r.spectrum.reference.doi || r.spectrum.reference.title)).size;
+  const papers = new Set(results.map(r => r.spectrum.reference.doi || r.spectrum.reference.url)).size;
 
   $("result-count").textContent = results.length
     ? `${results.length} spectr${results.length === 1 ? "um" : "a"} from ${papers} paper${papers === 1 ? "" : "s"}`
@@ -211,7 +217,7 @@ function resultCard({ spectrum, matchedSites }) {
   title.append(highlighted(displayName(spectrum), state.q));
 
   const meta = [
-    spectrum.sample && spectrum.material ? spectrum.material : "",
+    spectrum.mineralClass,
     formatK(spectrum.temperatureK),
     `${spectrum.sites.length} site${spectrum.sites.length === 1 ? "" : "s"}`
   ].filter(Boolean).join(" · ");
@@ -258,6 +264,18 @@ function paramText(value, raw, fallback) {
   return { text: "—", approx: false };
 }
 
+const OXIDATION = { "0": "Fe(0)", "2": "Fe(II)", "2.5": "Fe(2.5+)", "3": "Fe(III)" };
+
+function oxidationLabel(value) {
+  return OXIDATION[value] || value || "—";
+}
+
+/** Add the published uncertainty, e.g. "0.33 ± 0.01". */
+function withError(param, error) {
+  if (param.approx || !Number.isFinite(error) || param.text === "—") return param;
+  return { ...param, text: `${param.text} ± ${error}` };
+}
+
 function detailView(spectrum, matchedSites) {
   const sim = simulateSpectrum(spectrum);
   const name = displayName(spectrum);
@@ -278,11 +296,10 @@ function detailView(spectrum, matchedSites) {
   const info = make("div", "detail-info");
   const facts = make("dl", "detail-facts");
   [
-    ["Sample", spectrum.sample],
-    ["Material", spectrum.material],
-    ["Treatment", spectrum.treatment],
+    ["Mineral", spectrum.sample],
+    ["Mineral class", spectrum.mineralClass],
     ["Temperature", formatK(spectrum.temperatureK)],
-    ["Fit", spectrum.fitType]
+    ["Fitted with", [...new Set(spectrum.sites.map(s => s.fitModel).filter(Boolean))].join(" and ")]
   ].forEach(([label, value]) => {
     if (!value) return;
     facts.append(make("dt", "", label), make("dd", "", value));
@@ -290,13 +307,13 @@ function detailView(spectrum, matchedSites) {
   info.append(facts);
 
   const ref = spectrum.reference;
-  if (ref.title || ref.doi) {
+  if (ref.title || ref.doi || ref.url) {
     const refBox = make("div", "detail-ref");
     refBox.append(make("p", "detail-ref-label", "Published in"));
     const titleP = make("p", "detail-ref-title");
-    if (ref.doi) {
-      const a = make("a", "", ref.title || ref.doi);
-      a.href = `https://doi.org/${ref.doi}`;
+    if (ref.doi || ref.url) {
+      const a = make("a", "", ref.title || ref.doi || "View the publication");
+      a.href = ref.doi ? `https://doi.org/${ref.doi}` : ref.url;
       a.target = "_blank";
       a.rel = "noopener";
       titleP.append(a);
@@ -315,7 +332,7 @@ function detailView(spectrum, matchedSites) {
 
   /* Sites table */
   const sites = spectrum.sites;
-  const showComponent = sites.some(s => s.component && s.component !== s.name);
+  const showOxidation = sites.some(s => s.oxidation);
   const showSigmaQS = sites.some(s => Number.isFinite(s.sigmaQS));
   const showSigmaBhf = sites.some(s => Number.isFinite(s.sigmaBhf));
 
@@ -324,7 +341,7 @@ function detailView(spectrum, matchedSites) {
   const headRow = make("tr");
   [
     ["Site"],
-    ...(showComponent ? [["Assignment"]] : []),
+    ...(showOxidation ? [["Fe", "", "Iron oxidation state"]] : []),
     ["IS", "mm/s", "Isomer shift"],
     ["QS", "mm/s", "Quadrupole splitting (doublets) or shift (sextets)"],
     ...(showSigmaQS ? [["σ(QS)", "mm/s", "Width of the quadrupole splitting distribution"]] : []),
@@ -332,7 +349,7 @@ function detailView(spectrum, matchedSites) {
     ...(showSigmaBhf ? [["σ(Bhf)", "T", "Width of the hyperfine field distribution"]] : []),
     ["FWHM", "mm/s", "Linewidth, full width at half maximum"],
     ["Area", "%", "Relative area"],
-    ["Line shape"]
+    ["Fitted with", "", "Line shape the paper used to fit this site"]
   ].forEach(([label, unit, title]) => {
     const th = make("th");
     th.scope = "col";
@@ -371,13 +388,13 @@ function detailView(spectrum, matchedSites) {
     th.scope = "row";
     th.append(button);
     tr.append(th);
-    if (showComponent) cell(tr, site.component || "—");
+    if (showOxidation) cell(tr, oxidationLabel(site.oxidation));
 
     const values = [
-      paramText(site.IS, site.raw.IS, "0"),
-      paramText(site.QS, site.raw.QS, "0"),
+      withError(paramText(site.IS, site.raw.IS, "0"), site.ISError),
+      withError(paramText(site.QS, site.raw.QS, "0"), site.QSError),
       ...(showSigmaQS ? [paramText(site.sigmaQS, site.raw.sigmaQS)] : []),
-      paramText(site.Bhf, site.raw.Bhf),
+      withError(paramText(site.Bhf, site.raw.Bhf), site.BhfError),
       ...(showSigmaBhf ? [paramText(site.sigmaBhf, site.raw.sigmaBhf)] : []),
       paramText(site.fwhm, site.raw.fwhm, String(DEFAULT_FWHM)),
       sim.areaGiven
@@ -389,7 +406,7 @@ function detailView(spectrum, matchedSites) {
       const td = cell(tr, v.text, "num");
       if (v.title) td.title = v.title;
     });
-    cell(tr, sim.sites[i].model === "vbf" ? "VBF" : "Lorentzian");
+    cell(tr, site.fitModel || "Not given");
     tbody.append(tr);
   });
   table.append(tbody);
@@ -636,7 +653,7 @@ async function start() {
   }
 
   indexSpectra(spectra);
-  const papers = new Set(spectra.map(s => s.reference.doi || s.reference.title)).size;
+  const papers = new Set(spectra.map(s => s.reference.doi || s.reference.url)).size;
   $("db-stats").textContent = `${spectra.length.toLocaleString("en-GB")} spectra from ${papers} papers`;
   run();
 }

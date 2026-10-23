@@ -15,13 +15,13 @@ export function spectrumText(spectrum) {
 
   const lines = [
     `# Sample: ${spectrum.sample || "Unknown sample"}`,
-    `# Material: ${spectrum.material || "Not given"}`,
+    `# Mineral class: ${spectrum.mineralClass || "Not given"}`,
     `# sample_id: ${spectrum.id}`,
     `# Temperature (K): ${temp}`,
     ""
   ];
 
-  const refText = [ref.title, ref.authors, ref.year, ref.doi && `https://doi.org/${ref.doi}`]
+  const refText = [ref.title, ref.authors, ref.year, ref.doi ? `https://doi.org/${ref.doi}` : ref.url]
     .filter(Boolean).join(". ");
   if (refText) lines.push(`# Reference: ${refText}`, "");
 
@@ -42,16 +42,22 @@ export function spectrumText(spectrum) {
   lines.push("");
 
   lines.push("# Sites table");
-  lines.push(["Site", "Isomer_Shift_mm_s", "Quadrupole_Splitting_mm_s", "Hyperfine_Field_T",
-              "Linewidth_FWHM_mm_s", "Relative_Area_percent", "Model"].join("\t"));
+  lines.push(["Site", "Oxidation_state", "Isomer_Shift_mm_s", "IS_error", "Quadrupole_Splitting_mm_s", "QS_error",
+              "Hyperfine_Field_T", "Bhf_error", "Linewidth_FWHM_mm_s", "Relative_Area_percent", "Fitted_with",
+              "Simulated_as"].join("\t"));
   sites.forEach((s, i) => {
     lines.push([
       s.name,
+      s.oxidation || "—",
       value(s.IS, s.raw.IS),
+      value(s.ISError),
       value(s.QS, s.raw.QS),
+      value(s.QSError),
       value(s.Bhf, s.raw.Bhf),
+      value(s.BhfError),
       value(s.fwhm, s.raw.fwhm),
       value(s.area, s.raw.area),
+      s.fitModel || "Not given",
       sim.sites[i].model === "vbf" ? "VBF" : "Lorentzian"
     ].join("\t"));
   });

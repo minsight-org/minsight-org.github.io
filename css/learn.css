@@ -829,3 +829,116 @@
     cursor: not-allowed;
     text-decoration: line-through;
 }
+
+/* QUIZ (js/learn/quiz.js) */
+
+.quiz-list {
+    display: grid;
+    gap: 1.25rem;
+    max-width: var(--measure);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: question;
+}
+
+.quiz-question {
+    counter-increment: question;
+    padding: 1.1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+    border-radius: 12px;
+}
+
+.quiz-question.is-right {
+    border-left-color: var(--accent);
+}
+
+.quiz-question.is-wrong-answer {
+    border-left-color: var(--highlight);
+}
+
+.quiz-question fieldset {
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.quiz-question legend {
+    margin-bottom: 0.6rem;
+    padding: 0;
+    font-weight: 600;
+}
+
+.quiz-question legend::before {
+    content: counter(question) ". ";
+    color: var(--accent-strong);
+}
+
+.quiz-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.quiz-option:hover {
+    background: var(--surface-hover);
+}
+
+.quiz-option input {
+    margin-top: 0.35rem;
+    accent-color: var(--accent);
+}
+
+.quiz-option:has(input:disabled) {
+    cursor: default;
+}
+
+.quiz-letter {
+    flex: none;
+    width: 1.2em;
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.quiz-option.is-answer {
+    border-color: var(--accent);
+    background: var(--surface-hover);
+}
+
+.quiz-option.is-wrong {
+    border-color: var(--highlight);
+}
+
+.quiz-feedback:not(:empty) {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface-alt);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.quiz-feedback p {
+    margin: 0 0 0.35rem;
+}
+
+.quiz-feedback p:last-child {
+    margin-bottom: 0;
+}
+
+.quiz-verdict {
+    font-weight: 700;
+}
+
+.quiz-score {
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+}

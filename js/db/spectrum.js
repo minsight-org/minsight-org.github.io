@@ -185,13 +185,12 @@ function isSextet(site) {
 }
 
 /**
- * Line shape for a site. A Model column ("VBF" or "Lorentzian") decides when
- * present; otherwise VBF is used when the paper gives a distribution width
- * (σ(QS) for doublets, σ(Bhf) for sextets), and Lorentzian when it does not.
+ * Line shape used to simulate a site: VBF when the source gives a distribution
+ * width (σ(QS) for doublets, σ(Bhf) for sextets), Lorentzian otherwise. The
+ * model the paper fitted with is shown separately; without σ a Voigt line has
+ * the same shape as a Lorentzian.
  */
 export function siteModel(site) {
-  if (site.model === "vbf") return "vbf";
-  if (site.model) return "lorentzian";
   const sigma = isSextet(site) ? site.sigmaBhf : site.sigmaQS;
   return Number.isFinite(sigma) && sigma > 0 ? "vbf" : "lorentzian";
 }

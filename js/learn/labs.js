@@ -163,17 +163,17 @@ const LABS = {
   // Illustrative model of nanoparticles with a spread of sizes (blocking temperatures)
   temperature: {
     label: "Illustrative iron oxide nanoparticles measured at different temperatures",
+    // Particles with a spread of sizes, half of them blocked below 120 K
+    initial: { TB: 120 },
     controls: [
-      { key: "T", label: "Measurement temperature", unit: "K", min: 4, max: 400, step: 1, value: 295 },
-      { key: "TB", label: "Particle size (median blocking temperature)", unit: "K", min: 20, max: 400, step: 5, value: 120 }
+      { key: "T", label: "Measurement temperature", unit: "K", min: 4, max: 400, step: 1, value: 295 }
     ],
     presets: [
       { label: "Liquid helium (4.2 K)", values: { T: 4 } },
       { label: "Liquid nitrogen (77 K)", values: { T: 77 } },
       { label: "Room temperature", values: { T: 295 } }
     ],
-    caption: '<span class="key key-dist">Spread of blocking temperatures</span> ' +
-             '<span class="key key-sum">Iron in the sextet</span> <span class="key key-reference">Iron in the doublet</span>',
+    caption: '<span class="key key-sum">Iron in the sextet</span> <span class="key key-reference">Iron in the doublet</span>',
     drawExtra: drawBlockingProfile,
     compute(v) {
       // 40 particle groups spread log-normally around the median blocking temperature
@@ -330,9 +330,8 @@ function blockedShare(T, medianTB) {
 }
 
 /**
- * Blocking temperature profile under the temperature lab: the spread of
- * blocking temperatures, and the share of iron in the sextet and doublet
- * at each temperature, with the current temperature marked.
+ * Profile under the temperature lab: the share of iron in the sextet and the
+ * doublet at each temperature, with the current temperature marked.
  */
 function drawBlockingProfile(svg, v) {
   const NS = "http://www.w3.org/2000/svg";
@@ -352,11 +351,8 @@ function drawBlockingProfile(svg, v) {
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
 
   const temps = Array.from({ length: 201 }, (_, i) => Math.max(1, i * Tmax / 200));
-  const pdf = temps.map(T => Math.exp(-((Math.log(T / v.TB) / BLOCKING_SPREAD) ** 2) / 2) / T);
-  const peak = Math.max(...pdf);
-  const line = f => temps.map((T, i) => `${i ? "L" : "M"}${sx(T).toFixed(1)} ${sy(f(T, i)).toFixed(1)}`).join("");
+  const line = f => temps.map((T, i) => `${i ? "L" : "M"}${sx(T).toFixed(1)} ${sy(f(T)).toFixed(1)}`).join("");
 
-  el("path", { class: "plot-dist", d: `${line((T, i) => 0.9 * pdf[i] / peak)}L${sx(Tmax)} ${sy(0)}L${sx(temps[0])} ${sy(0)}Z` });
   el("path", { class: "plot-reference", d: line(T => 1 - blockedShare(T, v.TB)) });
   el("path", { class: "plot-sum", d: line(T => blockedShare(T, v.TB)) });
 

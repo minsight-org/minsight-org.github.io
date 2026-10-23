@@ -5,33 +5,33 @@
 // body of loadSpectra() with a query that returns the same records.
 
 import { parseCSV } from "./csv.js";
-import { MIN_FWHM } from "./spectrum.js";
 
 const PARAMETERS_URL = "database/parameters/minsight_parameters.csv";
 const PROFILES_URL = "database/mineral_profiles/mineral_profiles.json";
 
 /**
  * @typedef {Object} Site
- * @property {string} name        Site label (e.g. "A", "Fe(III) oct")
- * @property {string} component   Phase the site is assigned to, if given
+ * @property {string} name        Site label, e.g. "Site 1"
+ * @property {string} oxidation   Iron oxidation state as given ("2", "3", "2.5") or ""
  * @property {number} IS          Isomer shift (mm/s), NaN if not given
  * @property {number} QS          Quadrupole splitting or shift (mm/s), NaN if not given
- * @property {number} sigmaQS     Width of the QS distribution (mm/s), NaN if not given
  * @property {number} Bhf         Hyperfine field (T), NaN for doublets
+ * @property {number} ISError     Published uncertainties, NaN if not given
+ * @property {number} QSError
+ * @property {number} BhfError
+ * @property {number} sigmaQS     Width of the QS distribution (mm/s), NaN if not given
  * @property {number} sigmaBhf    Width of the Bhf distribution (T), NaN if not given
  * @property {number} fwhm        Linewidth, full width at half maximum (mm/s), NaN if not given
  * @property {number} area        Relative area (%), NaN if not given
- * @property {string} model       "vbf", "lorentzian" or "" when the source does not say
+ * @property {string} fitModel    Model the paper fitted with ("Lorentzian", "VBF", "xVBF") or ""
  * @property {Object<string,string>} raw  Original text of each parameter, for display
  *
  * @typedef {Object} Spectrum
- * @property {string} id            Unique spectrum id (sample_id)
- * @property {string} sample        Sample name as given in the paper
- * @property {string} material      Material or composition
- * @property {string} treatment     Treatment or condition
+ * @property {string} id            Unique spectrum id
+ * @property {string} sample        Mineral name as given in the source
+ * @property {string} mineralClass  Mineral class, e.g. "Phyllosilicate"
  * @property {number} temperatureK  Measurement temperature (K), NaN if not given
- * @property {string} fitType       Fit description from the paper
- * @property {{doi: string, title: string, authors: string, journal: string, year: string}} reference
+ * @property {{doi: string, url: string, title: string, authors: string, journal: string, year: string}} reference
  * @property {Site[]} sites
  */
 
@@ -47,66 +47,54 @@ function toText(value) {
   return /^(?:[-–—]+|nil|n\/?a|none)$/i.test(text) ? "" : text;
 }
 
-function toYear(value) {
-  const n = toNumber(value);
-  return Number.isFinite(n) ? String(Math.round(n)) : String(value ?? "").trim();
-}
+const FIT_MODELS = { lor: "Lorentzian", vbf: "VBF", xvbf: "xVBF" };
 
 function siteFromRow(row, index) {
-  const raw = {
-    IS: row.Isomer_Shift_mm_s,
-    QS: row.Quadrupole_Splitting_mm_s,
-    sigmaQS: row["sigma(Quadrupole_Splitting)"],
-    Bhf: row.Hyperfine_Field_T,
-    sigmaBhf: row["sigma(Hyperfine_Field_T)"],
-    fwhm: row.Linewidth_mm_s,
-    area: row.Relative_Area_percent
-  };
-
+  // This table gives no linewidths, areas or distribution widths, so those stay
+  // missing and the simulation uses its defaults
+  const raw = { IS: row.IS, QS: row.QS, Bhf: row.Bhf, sigmaQS: "", sigmaBhf: "", fwhm: "", area: "" };
   return {
-    name: toText(row.Site) || toText(row.Site_Assignment) || toText(row.Component) || String.fromCharCode(65 + index),
-    component: toText(row.Component) || toText(row.Site_Assignment),
-    IS: toNumber(raw.IS),
-    QS: toNumber(raw.QS),
-    sigmaQS: toNumber(raw.sigmaQS),
-    Bhf: toNumber(raw.Bhf),
-    sigmaBhf: toNumber(raw.sigmaBhf),
-    // Linewidths narrower than 57Fe allows are data errors, so treat them as missing
-    fwhm: toNumber(raw.fwhm) >= MIN_FWHM ? toNumber(raw.fwhm) : NaN,
-    area: toNumber(raw.area),
-    model: String(row.Model || "").trim().toLowerCase(),
+    name: toText(row.site) ? `Site ${toText(row.site)}` : String.fromCharCode(65 + index),
+    oxidation: toText(row.oxidation_state),
+    IS: toNumber(row.IS),
+    QS: toNumber(row.QS),
+    Bhf: toNumber(row.Bhf),
+    ISError: toNumber(row.IS_error),
+    QSError: toNumber(row.QS_error),
+    BhfError: toNumber(row.Bhf_error),
+    sigmaQS: NaN,
+    sigmaBhf: NaN,
+    fwhm: NaN,
+    area: NaN,
+    fitModel: FIT_MODELS[toText(row.fit_model).toLowerCase()] || "",
     raw
   };
 }
 
-/** Group site rows into spectra (one per sample_id). */
+/** Group site rows into spectra (one per spectrum_id), keeping their order. */
 export function spectraFromRows(rows) {
   const groups = new Map();
-
-  rows
-    .filter(r => String(r.Review_sample).trim().toLowerCase() !== "true")
-    .forEach(r => {
-      const id = (r.sample_id || "").trim() || (r.record_id || "").trim();
-      if (!id) return;
-      if (!groups.has(id)) groups.set(id, []);
-      groups.get(id).push(r);
-    });
+  rows.forEach(r => {
+    const id = (r.spectrum_id || "").trim();
+    if (!id) return;
+    if (!groups.has(id)) groups.set(id, []);
+    groups.get(id).push(r);
+  });
 
   return [...groups].map(([id, siteRows]) => {
     const first = siteRows[0];
     return {
       id,
-      sample: toText(first.Sample),
-      material: toText(first["Material / Composition"]),
-      treatment: toText(first["Treatment/Condition"]),
-      temperatureK: toNumber(first.Temperature_K),
-      fitType: toText(first.Fit_Type),
+      sample: toText(first.mineral),
+      mineralClass: toText(first.mineral_class),
+      temperatureK: toNumber(first.temperature_K),
       reference: {
-        doi: (first.doi || "").trim(),
-        title: (first.cr_title || "").trim(),
-        authors: (first.cr_authors || "").trim(),
-        journal: (first.cr_journal || "").trim(),
-        year: toYear(first.cr_year)
+        doi: toText(first.doi),
+        url: toText(first.url),
+        title: toText(first.title),
+        authors: toText(first.authors),
+        journal: toText(first.journal),
+        year: toText(first.year)
       },
       sites: siteRows.map(siteFromRow)
     };
