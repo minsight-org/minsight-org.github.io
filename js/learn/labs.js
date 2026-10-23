@@ -172,6 +172,9 @@ const LABS = {
       { label: "Liquid nitrogen (77 K)", values: { T: 77 } },
       { label: "Room temperature", values: { T: 295 } }
     ],
+    caption: '<span class="key key-dist">Spread of blocking temperatures</span> ' +
+             '<span class="key key-sum">Iron in the sextet</span> <span class="key key-reference">Iron in the doublet</span>',
+    drawExtra: drawBlockingProfile,
     compute(v) {
       // 40 particle groups spread log-normally around the median blocking temperature
       const n = 40;
@@ -198,6 +201,8 @@ const LABS = {
       const blockedPercent = Math.round(blockedShare * 100);
       return {
         sim: spectrum([y]),
+        // One scale for every temperature: 100% is the depth when all the iron is in the doublet
+        options: { depth: Math.max(...doublet.map(Math.abs)), yAxis: true },
         readout: `${blockedPercent}% of the iron is in particles that are magnetically blocked (sextet) ` +
           `and ${100 - blockedPercent}% is superparamagnetic (doublet).`
       };
@@ -259,8 +264,7 @@ const LABS = {
  * Typical parameters (δ relative to α-Fe, mm/s; QS is ΔEQ for doublets and ε
  * for sextets, mm/s; Bhf in T), after Murad and Cashion (2004) and Cornell and
  * Schwertmann (2003). Real samples vary with crystallinity, substitution and
- * particle size.
- * TODO (James): check these values before publishing.
+ * particle size. The table in guides/iron-oxides.html shows the same values.
  */
 export const MINERALS = {
   hematite: {
@@ -322,7 +326,76 @@ export const MINERALS = {
   }
 };
 
-/* ---------- Maths helper ---------- */
+const BLOCKING_SPREAD = 0.6;
+
+/** Share of particles still blocked (sextet) at temperature T. */
+function blockedShare(T, medianTB) {
+  return 1 - normalCdf(Math.log(T / medianTB) / BLOCKING_SPREAD);
+}
+
+/**
+ * Blocking temperature profile under the temperature lab: the spread of
+ * blocking temperatures, and the share of iron in the sextet and doublet
+ * at each temperature, with the current temperature marked.
+ */
+function drawBlockingProfile(svg, v) {
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 480, H = 210;
+  const pad = { left: 52, right: 16, top: 18, bottom: 44 };
+  const plotW = W - pad.left - pad.right, plotH = H - pad.top - pad.bottom;
+  const Tmax = 400;
+  const sx = T => pad.left + T / Tmax * plotW;
+  const sy = f => pad.top + (1 - f) * plotH;
+  const el = (name, attrs) => {
+    const node = document.createElementNS(NS, name);
+    Object.entries(attrs).forEach(([k, val]) => node.setAttribute(k, val));
+    svg.appendChild(node);
+    return node;
+  };
+  svg.replaceChildren();
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  const temps = Array.from({ length: 201 }, (_, i) => Math.max(1, i * Tmax / 200));
+  const pdf = temps.map(T => Math.exp(-((Math.log(T / v.TB) / BLOCKING_SPREAD) ** 2) / 2) / T);
+  const peak = Math.max(...pdf);
+  const line = f => temps.map((T, i) => `${i ? "L" : "M"}${sx(T).toFixed(1)} ${sy(f(T, i)).toFixed(1)}`).join("");
+
+  el("path", { class: "plot-dist", d: `${line((T, i) => 0.9 * pdf[i] / peak)}L${sx(Tmax)} ${sy(0)}L${sx(temps[0])} ${sy(0)}Z` });
+  el("path", { class: "plot-reference", d: line(T => 1 - blockedShare(T, v.TB)) });
+  el("path", { class: "plot-sum", d: line(T => blockedShare(T, v.TB)) });
+
+  // Axes
+  const axisY = sy(0) + 6;
+  el("line", { class: "plot-axis", x1: pad.left, x2: W - pad.right, y1: axisY, y2: axisY });
+  [0, 100, 200, 300, 400].forEach(T => {
+    el("line", { class: "plot-axis", x1: sx(T), x2: sx(T), y1: axisY, y2: axisY + 5 });
+    el("text", { class: "plot-text", x: sx(T), y: axisY + 18, "text-anchor": "middle" }).textContent = T;
+  });
+  el("text", { class: "plot-text", x: pad.left + plotW / 2, y: H - 4, "text-anchor": "middle" }).textContent = "Temperature (K)";
+  const ax = pad.left - 8;
+  el("line", { class: "plot-axis", x1: ax, x2: ax, y1: sy(0), y2: sy(1) });
+  [0, 50, 100].forEach(pct => {
+    el("line", { class: "plot-axis", x1: ax - 5, x2: ax, y1: sy(pct / 100), y2: sy(pct / 100) });
+    el("text", { class: "plot-text", x: ax - 8, y: sy(pct / 100) + 4, "text-anchor": "end" }).textContent = pct;
+  });
+  el("text", { class: "plot-text", x: 12, y: pad.top + plotH / 2, "text-anchor": "middle",
+               transform: `rotate(-90 12 ${pad.top + plotH / 2})` }).textContent = "Share of iron (%)";
+
+  // Current temperature
+  const share = blockedShare(Math.max(v.T, 1), v.TB);
+  el("line", { class: "plot-marker", x1: sx(v.T), x2: sx(v.T), y1: sy(1) - 6, y2: axisY });
+  el("circle", { class: "plot-point", cx: sx(v.T), cy: sy(share), r: 4.5 });
+}
+
+/* ---------- Maths helpers ---------- */
+
+/** Standard normal cumulative distribution (Abramowitz and Stegun 7.1.26). */
+function normalCdf(z) {
+  const t = 1 / (1 + 0.3275911 * Math.abs(z) / Math.SQRT2);
+  const erf = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t *
+    Math.exp(-(z * z) / 2);
+  return z >= 0 ? 0.5 * (1 + erf) : 0.5 * (1 - erf);
+}
 
 /** Inverse of the standard normal distribution (Acklam's approximation). */
 function normalQuantile(p) {
@@ -366,7 +439,16 @@ function setUpLab(root) {
   svg.setAttribute("role", "img");
   svg.setAttribute("aria-label", config.label);
   const caption = make("figcaption", "lab-caption");
-  figure.append(svg, caption);
+  figure.append(svg);
+  let extra = null;
+  if (config.drawExtra) {
+    extra = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    extra.setAttribute("class", "lab-extra");
+    extra.setAttribute("role", "img");
+    extra.setAttribute("aria-label", "How the share of iron in the sextet and the doublet changes with temperature");
+    figure.append(extra);
+  }
+  figure.append(caption);
 
   const panel = make("div", "lab-controls");
   const outputs = {};
@@ -450,8 +532,10 @@ function setUpLab(root) {
     });
     const result = config.compute(values);
     drawSpectrum(svg, result.sim, -1, result.options || {});
-    caption.innerHTML = result.caption || "";
-    caption.hidden = !result.caption;
+    if (extra) config.drawExtra(extra, values);
+    const captionHtml = result.caption || config.caption || "";
+    caption.innerHTML = captionHtml;
+    caption.hidden = !captionHtml;
     readout.textContent = result.readout || "";
     readout.hidden = !result.readout;
   }

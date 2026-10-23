@@ -247,9 +247,16 @@
     height: auto;
 }
 
+.lab-figure .lab-extra {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #d2dbe5;
+}
+
 .lab-caption {
     display: flex;
-    gap: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.35rem 1.25rem;
     padding: 0.25rem 0.5rem;
     color: #4a5766;
     font-size: 0.85rem;
@@ -740,4 +747,56 @@
     .instrument {
         grid-template-columns: minmax(0, 1fr);
     }
+}
+
+/* SUPERPARAMAGNETISM ANIMATION (js/learn/spins.js) */
+
+.spins-figure {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.spins-particle {
+    fill: var(--surface-alt);
+    stroke: var(--border);
+    stroke-width: 1.5;
+}
+
+.spins-arrow line {
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+.spins-arrow path {
+    fill: var(--accent);
+}
+
+.spins-flipping .spins-arrow {
+    opacity: 0.35;
+}
+
+.spins-status-blocked {
+    fill: var(--accent-strong);
+    font-weight: 600;
+}
+
+.spins-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem 0.75rem;
+}
+
+.spins-controls label {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    grid-column: 1 / -1;
+    font-weight: 600;
+}
+
+.spins-controls input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
 }
