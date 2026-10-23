@@ -230,7 +230,9 @@
     }
 }
 
+/* The white panel only covers the plot, centred beside taller controls */
 .lab-figure {
+    align-self: center;
     margin: 0;
     padding: 0.5rem;
     background: #ffffff;
