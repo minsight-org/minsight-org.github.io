@@ -1,0 +1,625 @@
+/* Database page. Builds on css/main.css; colours come from css/theme.css. */
+
+.db-stats {
+    font-weight: 600;
+    color: var(--accent-strong) !important;
+}
+
+/* SEARCH STRIP: sticks under the header while the results scroll */
+
+.search-strip {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 50;
+    padding: 0.9rem 0 1rem;
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--border);
+}
+
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.search-box {
+    position: relative;
+    flex: 1 1 320px;
+}
+
+.search-box input {
+    width: 100%;
+    height: 48px;
+    padding: 0 3.25rem 0 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    box-shadow: var(--shadow);
+}
+
+.search-box input::placeholder {
+    color: var(--muted);
+    opacity: 1;
+}
+
+.search-box input:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+}
+
+.search-submit {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-text);
+    cursor: pointer;
+}
+
+.search-submit:hover {
+    filter: brightness(1.08);
+}
+
+.filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    height: 48px;
+    padding: 0 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+}
+
+.filters-toggle:hover,
+.filters-toggle[aria-expanded="true"] {
+    background: var(--surface-hover);
+    border-color: var(--accent);
+}
+
+/* Autocomplete list under the search box */
+.suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 60;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow), 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.suggestion {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.suggestion:hover,
+.suggestion[aria-selected="true"] {
+    background: var(--surface-hover);
+}
+
+mark {
+    background: none;
+    color: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+}
+
+/* Parameter filters */
+.filters-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    max-width: 760px;
+    margin: 0.9rem auto 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.filters-panel fieldset {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.filters-panel legend {
+    float: left;
+    margin-right: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.filters-panel input {
+    width: 5.5rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.95rem;
+}
+
+.filters-note {
+    flex-basis: 100%;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--link);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    cursor: pointer;
+}
+
+/* Active filter chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    max-width: 760px;
+    margin: 0.75rem auto 0;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.75rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-text);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.chip:hover {
+    filter: brightness(1.08);
+}
+
+/* Phones: search and a short Filter button share one row */
+@media (max-width: 600px) {
+    .search-strip {
+        padding: 0.75rem 0;
+    }
+
+    .search-box {
+        flex-basis: 0;
+        min-width: 0;
+    }
+
+    .filters-label-long {
+        display: none;
+    }
+}
+
+/* LANDING AND TOOLBAR */
+
+.results-section {
+    padding-top: 1.75rem;
+}
+
+.landing p {
+    max-width: 70ch;
+}
+
+.results-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.results-toolbar[hidden] {
+    display: none;
+}
+
+.result-count {
+    margin: 0;
+    font-weight: 600;
+}
+
+.sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.sort select {
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+}
+
+.button-outline {
+    background: transparent;
+    color: var(--accent-strong);
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
+button.button {
+    border: 0;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* MINERAL PROFILE */
+
+.profile-card {
+    margin-bottom: 1.75rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.profile-card h2 {
+    margin-bottom: 0.75rem;
+}
+
+.profile-text {
+    max-width: 70ch;
+    margin: 0;
+}
+
+.profile-image {
+    float: right;
+    width: min(40%, 240px);
+    margin: 0 0 1rem 1.5rem;
+    border-radius: 8px;
+}
+
+.profile-credit {
+    clear: both;
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* RESULTS */
+
+.results-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.result-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (hover: hover) {
+    .result-card:not(.is-open):hover {
+        background: var(--surface-hover);
+        box-shadow: var(--shadow), 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.result-heading {
+    margin: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+.result-heading::after {
+    display: none;
+}
+
+.result-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    border: 0;
+    border-radius: 12px;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.result-text {
+    display: grid;
+    gap: 0.1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.result-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.result-meta,
+.result-ref {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.result-ref {
+    font-style: italic;
+}
+
+.result-head svg {
+    flex: none;
+    color: var(--accent-strong);
+    transition: transform 0.15s ease;
+}
+
+.result-head[aria-expanded="true"] svg {
+    transform: rotate(180deg);
+}
+
+/* DETAIL VIEW */
+
+.result-detail {
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+}
+
+.detail-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-top: 1.25rem;
+}
+
+@media (max-width: 760px) {
+    .detail-top {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* White in both themes, like the screenshots on the homepage */
+.detail-plot {
+    margin: 0;
+    padding: 0.5rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #18212b;
+}
+
+.detail-plot svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.detail-plot figcaption {
+    padding: 0.25rem 0.5rem 0.25rem;
+    color: #4a5766;
+    font-size: 0.85rem;
+}
+
+.plot-axis {
+    stroke: #4a5766;
+    stroke-width: 1;
+}
+
+.plot-text {
+    fill: #4a5766;
+    font-size: 12px;
+    font-family: "Source Sans 3", system-ui, sans-serif;
+}
+
+.plot-site {
+    fill: none;
+    stroke: #8393a3;
+    stroke-width: 1.2;
+}
+
+.plot-site-selected {
+    stroke: #b4540a;
+    stroke-width: 1.6;
+    stroke-dasharray: 5 3;
+}
+
+.plot-sum {
+    fill: none;
+    stroke: #215f9a;
+    stroke-width: 1.8;
+}
+
+/* Little line keys in the caption */
+.key::before {
+    content: "";
+    display: inline-block;
+    width: 1.25em;
+    height: 3px;
+    margin-right: 0.3em;
+    vertical-align: middle;
+    border-radius: 2px;
+}
+
+.key-sum::before { background: #215f9a; }
+.key-site::before { background: repeating-linear-gradient(90deg, #b4540a 0 5px, transparent 5px 8px); }
+
+.detail-facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.25rem 1rem;
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+}
+
+.detail-facts dt {
+    color: var(--muted);
+}
+
+.detail-facts dd {
+    margin: 0;
+}
+
+.detail-ref {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.95rem;
+}
+
+.detail-ref p {
+    margin: 0 0 0.25rem;
+}
+
+.detail-ref-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.detail-ref-title {
+    font-weight: 600;
+}
+
+.detail-ref-authors,
+.detail-ref-journal {
+    color: var(--muted);
+}
+
+/* Sites table */
+.table-scroll {
+    margin-top: 1.25rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.sites-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.sites-table caption {
+    padding: 0.6rem 0.9rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: left;
+}
+
+.sites-table th,
+.sites-table td {
+    padding: 0.45rem 0.9rem;
+    border-top: 1px solid var(--border);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.sites-table thead th {
+    background: var(--surface-alt);
+    font-weight: 600;
+}
+
+.sites-table abbr {
+    text-decoration: none;
+}
+
+.sites-table .unit {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.sites-table .num {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Sites that match the parameter filters get a bar on the left */
+.sites-table .site-match th {
+    box-shadow: inset 4px 0 0 var(--accent);
+}
+
+.site-select {
+    padding: 0.15rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.site-select[aria-pressed="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+}
+
+.sites-note {
+    margin: 0.6rem 0 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.detail-actions {
+    margin: 1rem 0 0;
+}
+
+/* The plot scales down on phones, so draw its labels larger */
+@media (max-width: 600px) {
+    .plot-text {
+        font-size: 18px;
+    }
+}

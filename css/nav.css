@@ -201,7 +201,7 @@ html {
 .menu-icon::before { top: -6px; }
 .menu-icon::after { top: 6px; }
 
-/* Collapsed menu, shared by both breakpoints below */
+/* Narrow screens: the links collapse behind the menu button */
 @media (max-width: 820px) {
   .menu-toggle {
     display: block;
@@ -225,124 +225,5 @@ html {
 
   .nav-links a {
     padding: 0.75rem;
-  }
-}
-
-/* DATABASE SEARCH DOCKED IN THE NAV (see dockSearchInNavbar in js/db.js) */
-
-.navbar-search-slot,
-.navbar-filters-slot {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-.navbar-search-slot:empty,
-.navbar-filters-slot:empty {
-  display: none;
-}
-
-/* Let the bar use the full width while the search sits in it */
-body.search-in-navbar .navbar {
-  max-width: none;
-}
-
-body.search-in-navbar .brand {
-  margin-right: 0.5rem;
-}
-
-body.search-in-navbar .navbar-filters-slot {
-  margin-right: auto;
-}
-
-body.search-in-navbar .navbar #search-block {
-  width: 420px;
-  max-width: 40vw;
-  padding-bottom: 0;
-}
-
-/* Collapsed by db.css, but their margins would still push the search down */
-.navbar .db-title,
-.navbar .db-subtitle {
-  display: none;
-}
-
-.navbar .search-container {
-  width: 100%;
-}
-
-.navbar .search-row {
-  align-items: center;
-  margin: 0;
-}
-
-/* Hide filter panel in navbar ONLY when closed */
-.navbar .filters-panel:not(.open) {
-  display: none;
-}
-
-.navbar .filters-panel.open {
-  position: absolute;
-  top: calc(100% + 40px);
-  left: auto;
-  z-index: 2000;
-}
-
-/* With the search docked the links run out of room sooner */
-@media (max-width: 1200px) {
-  body.search-in-navbar .menu-toggle {
-    display: block;
-  }
-
-  body.search-in-navbar .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    padding: 0.5rem 16px 1rem;
-    background: var(--header-bg);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  body.search-in-navbar .nav-links.open {
-    display: flex;
-  }
-
-  body.search-in-navbar .nav-links a {
-    padding: 0.75rem;
-  }
-}
-
-@media (max-width: 760px) {
-  body.search-in-navbar .brand-wordmark {
-    display: none;
-  }
-
-  body.search-in-navbar .navbar #search-block {
-    width: auto;
-    max-width: none;
-    flex: 1;
-  }
-
-  body.search-in-navbar .navbar-search-slot {
-    flex: 1;
-    min-width: 0;
-  }
-
-  body.search-in-navbar .navbar {
-    gap: 0.4rem;
-  }
-
-  body.search-in-navbar .navbar .filters-toggle {
-    padding: 0 12px;
-  }
-}
-
-/* Phones: give the docked search the theme button's space */
-@media (max-width: 480px) {
-  body.search-in-navbar .theme-toggle {
-    display: none;
   }
 }

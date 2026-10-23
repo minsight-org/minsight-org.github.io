@@ -1,0 +1,56 @@
+// Small SVG plot of a simulated spectrum: each site in grey, the selected site
+// highlighted, and the sum on top. Colours come from css/database.css, so the
+// plot follows the light and dark themes.
+
+const NS = "http://www.w3.org/2000/svg";
+const W = 480;
+const H = 260;
+const PAD = { left: 16, right: 16, top: 16, bottom: 44 };
+const TICKS = [-12, -8, -4, 0, 4, 8, 12];
+
+function el(name, attrs, parent) {
+  const node = document.createElementNS(NS, name);
+  Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+  if (parent) parent.appendChild(node);
+  return node;
+}
+
+/**
+ * Draw `simulation` (from simulateSpectrum) into an <svg>.
+ * @param {SVGSVGElement} svg
+ * @param {number} selected  Index of the site to highlight, or -1
+ */
+export function drawSpectrum(svg, simulation, selected = -1) {
+  svg.replaceChildren();
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+  const { x, sum, sites } = simulation;
+  const all = [...sum, ...sites.flatMap(s => s.y)].map(Math.abs).filter(Number.isFinite);
+  const depth = Math.max(...all) || 1;
+
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top - PAD.bottom;
+  const sx = v => PAD.left + (v - x[0]) / (x[x.length - 1] - x[0]) * plotW;
+  // Baseline at the top, absorption lines dip downwards
+  const sy = v => PAD.top + (-v / depth) * plotH * 0.95;
+
+  const path = y => y.map((v, i) => `${i ? "L" : "M"}${sx(x[i]).toFixed(1)} ${sy(v).toFixed(1)}`).join("");
+
+  // Axis, ticks and label
+  const axisY = H - PAD.bottom + 8;
+  el("line", { class: "plot-axis", x1: PAD.left, x2: W - PAD.right, y1: axisY, y2: axisY }, svg);
+  TICKS.forEach(v => {
+    el("line", { class: "plot-axis", x1: sx(v), x2: sx(v), y1: axisY, y2: axisY + 5 }, svg);
+    el("text", { class: "plot-text", x: sx(v), y: axisY + 18, "text-anchor": "middle" }, svg).textContent = v;
+  });
+  el("text", { class: "plot-text", x: W / 2, y: H - 4, "text-anchor": "middle" }, svg).textContent = "Velocity (mm/s)";
+
+  // Other sites, then the sum, then the selected site on top
+  sites.forEach((site, i) => {
+    if (i !== selected) el("path", { class: "plot-site", d: path(site.y) }, svg);
+  });
+  el("path", { class: "plot-sum", d: path(sum) }, svg);
+  if (selected >= 0 && selected < sites.length) {
+    el("path", { class: "plot-site plot-site-selected", d: path(sites[selected].y) }, svg);
+  }
+}

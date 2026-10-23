@@ -1,151 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <head>
-    
     <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
     <script data-goatcounter="https://minsight.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
+
+    <title>Database - MinSight</title>
+    <meta name="description" content="Search published Mössbauer hyperfine parameters and see simulated spectra.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
 
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
-    <title>MinSight - Rapid spectroscopy data fitting and interpretation</title>
-
-    <!-- <link rel="stylesheet" type="text/css" href="css/dropdown.css"> -->
     <link rel="preload" href="fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/theme.css">
-    <link rel="stylesheet" type="text/css" href="css/db.css">
-    <link rel="stylesheet" type="text/css" href="css/nav.css">
+    <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/database.css">
+</head>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8" />
+<body>
 
-  </head>
+    <div id="nav-placeholder"></div>
 
-<body class="search-centered">
+    <main id="main">
 
-  <div id="nav-placeholder"></div>
-
-  <!-- <div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script> -->
-  
-  <div id="search-wrapper">
-    
-    <div id="search-block">
-
-      <h1 class="db-title">Explore the MinSight database</h1>
-      <p class="db-subtitle">
-        Find published Mössbauer hyperfine parameters and see their corresponding spectra.
-      </p>
-
-      <!-- Search bar -->
-      <div class="search-row">
-
-        <div class="search-container">
-          <input
-            id="search"
-            type="text"
-            placeholder="Search Fe-bearing phase (e.g. Goethite, Magnetite...)"
-            autocomplete="off">
-          </input>
-          <button id="clear-btn" title="Clear search">✕</button>
-          <button id="search-btn" title="Search">🔍︎</button>
-
-          <div id="autocomplete"></div>
+        <div class="page-title">
+            <div class="container">
+                <h1>Explore the MinSight database</h1>
+                <p>Find published Mössbauer hyperfine parameters and see their simulated spectra.</p>
+                <p class="db-stats" id="db-stats" aria-live="polite">Loading the database…</p>
+            </div>
         </div>
 
-      <!-- Filters header: button + chips -->
-      <div class="filters-header">
-        <button
-          id="toggle-filters"
-          class="filters-toggle hyperfine-toggle" aria-label="Filter by hyperfine parameters"
-          title="Filter by hyperfine parameters">    
-          <!-- <span class="hf-symbol"><sub>δ</sub>Δ<sub>B</sub></span> -->
-          <span class="hf-symbol">Filter</span>
+        <!-- Stays under the header while you scroll the results -->
+        <div class="search-strip">
+            <div class="container">
+                <form id="search-form" class="search-form" role="search">
+                    <div class="search-box">
+                        <label for="search" class="visually-hidden">Search the database</label>
+                        <input id="search" type="search" autocomplete="off" spellcheck="false"
+                               placeholder="Search a mineral, sample or paper"
+                               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestions">
+                        <button type="submit" class="search-submit" aria-label="Search">
+                            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+                        </button>
+                        <ul id="suggestions" class="suggestions" role="listbox" aria-label="Suggestions" hidden></ul>
+                    </div>
+                    <button type="button" id="filters-toggle" class="filters-toggle" aria-expanded="false" aria-controls="filters-panel">
+                        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"></path></svg>
+                        Filter<span class="filters-label-long"> by parameters</span><span id="filter-count"></span>
+                    </button>
+                </form>
 
-        </button>
-        
-        
-      </div>
+                <div id="filters-panel" class="filters-panel" hidden>
+                    <fieldset>
+                        <legend>Temperature (K)</legend>
+                        <label><span class="visually-hidden">Minimum temperature</span><input id="t-min" type="number" step="any" inputmode="decimal" placeholder="min"></label>
+                        <span aria-hidden="true">to</span>
+                        <label><span class="visually-hidden">Maximum temperature</span><input id="t-max" type="number" step="any" inputmode="decimal" placeholder="max"></label>
+                    </fieldset>
+                    <fieldset>
+                        <legend><abbr title="Isomer shift">IS</abbr> (mm/s)</legend>
+                        <label><span class="visually-hidden">Minimum isomer shift</span><input id="is-min" type="number" step="any" inputmode="decimal" placeholder="min"></label>
+                        <span aria-hidden="true">to</span>
+                        <label><span class="visually-hidden">Maximum isomer shift</span><input id="is-max" type="number" step="any" inputmode="decimal" placeholder="max"></label>
+                    </fieldset>
+                    <fieldset>
+                        <legend><abbr title="Quadrupole splitting">QS</abbr> (mm/s)</legend>
+                        <label><span class="visually-hidden">Minimum quadrupole splitting</span><input id="qs-min" type="number" step="any" inputmode="decimal" placeholder="min"></label>
+                        <span aria-hidden="true">to</span>
+                        <label><span class="visually-hidden">Maximum quadrupole splitting</span><input id="qs-max" type="number" step="any" inputmode="decimal" placeholder="max"></label>
+                    </fieldset>
+                    <fieldset>
+                        <legend><abbr title="Hyperfine field">Bhf</abbr> (T)</legend>
+                        <label><span class="visually-hidden">Minimum hyperfine field</span><input id="bhf-min" type="number" step="any" inputmode="decimal" placeholder="min"></label>
+                        <span aria-hidden="true">to</span>
+                        <label><span class="visually-hidden">Maximum hyperfine field</span><input id="bhf-max" type="number" step="any" inputmode="decimal" placeholder="max"></label>
+                    </fieldset>
+                    <p class="filters-note">IS, QS and Bhf must all match the same site. <button type="button" id="clear-filters" class="link-button">Clear filters</button></p>
+                </div>
 
-
-      </div>
-      <!-- Collapsible filters panel (ALL fields INSIDE) -->
-      <div id="filters-panel" class="filters-panel">
-
-        <div class="filter-row">
-          <label>Temp [K]</label>
-          <input id="temp-min" type="number" placeholder="min" inputmode="decimal">
-          <span>–</span>
-          <input id="temp-max" type="number" placeholder="max" inputmode="decimal">
+                <div id="active-filters" class="chips" hidden></div>
+            </div>
         </div>
 
-        <div class="filter-row">
-          <label>IS [mm/s]</label>
-          <input id="is-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
-          <span>–</span>
-          <input id="is-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
-        </div>
+        <section class="section results-section" aria-label="Results">
+            <div class="container">
+                <div id="mineral-profile"></div>
 
-        <div class="filter-row">
-          <label>QS [mm/s]</label>
-          <input id="qs-min" type="number" step="0.01" placeholder="min" inputmode="decimal">
-          <span>–</span>
-          <input id="qs-max" type="number" step="0.01" placeholder="max" inputmode="decimal">
-        </div>
+                <div id="landing" class="landing">
+                    <p>
+                        Search for a mineral, sample, material or paper, or filter by hyperfine parameters.
+                        Each result is one published spectrum. Open it to see its sites, a simulated spectrum
+                        and the original paper.
+                    </p>
+                    <p>
+                        Spectra are simulated from the published parameters, not taken from the measured data.
+                    </p>
+                    <p><button type="button" id="browse-all" class="button">Browse all spectra</button></p>
+                </div>
 
-        <div class="filter-row">
-          <label>Bhf [T]</label>
-          <input id="bhf-min" type="number" step="0.1" placeholder="min" inputmode="decimal">
-          <span>–</span>
-          <input id="bhf-max" type="number" step="0.1" placeholder="max" inputmode="decimal">
-        </div>
+                <div id="results-toolbar" class="results-toolbar" hidden>
+                    <p id="result-count" class="result-count" aria-live="polite"></p>
+                    <label class="sort">Sort by <select id="sort"></select></label>
+                </div>
 
-        <!-- <div class="filter-actions">
-          <button id="clear-filters">Clear filters</button>
-        </div> -->
+                <ol id="results" class="results-list"></ol>
+                <p class="center"><button type="button" id="show-more" class="button button-outline" hidden>Show more</button></p>
+            </div>
+        </section>
 
-      </div>
+    </main>
 
-      <!-- Messages -->
-      <!-- <p id="result-count"></p> -->
-      
-      <!-- <p id="no-results">No results found.</p> -->
+    <div id="footer-placeholder"></div>
 
-    </div>  
-  </div>
-
-  
-<!-- ✅ RESULTS MUST LIVE OUTSIDE -->
-<div id="results-wrapper">
-
-  <div id="active-filters" class="active-filters"></div>
-
-  <div id="mineral-highlight"></div>
-
-  <span id="result-count" class="result-count"></span>
-  <p id="no-results">No results found.</p>
-
-  <div id="results-cards"></div>
-  <table id="results"></table>
-</div>
-
-
-<!-- 
-  <div id="mini-spectrum">
-<svg width="500" height="150" viewBox="0 0 500 150"></svg>
-</div> -->
-
-
-
-
-
-<script src="js/db.js?v=20260427"></script>
-<!-- <script type="module" src="/js/db.js"></script> -->
-
-<script src="js/site.js"></script>
+    <script src="js/site.js"></script>
+    <script type="module" src="js/db/main.js"></script>
 </body>
 </html>

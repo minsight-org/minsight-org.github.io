@@ -41,6 +41,11 @@ body {
     position: relative;
 }
 
+/* Components set their own display, which would otherwise beat the hidden attribute */
+[hidden] {
+    display: none !important;
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -198,6 +203,21 @@ p {
 
 .section-alt {
     background: var(--surface-alt);
+}
+
+/* Title band at the top of pages without a hero */
+.page-title {
+    padding: 2.5rem 0 1rem;
+    background: var(--surface-alt);
+}
+
+.page-title h1 {
+    font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+}
+
+.page-title p {
+    max-width: 70ch;
+    color: var(--muted);
 }
 
 /* CARDS (shared look) */
