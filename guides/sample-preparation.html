@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>Preparing a sample - MinSight</title>
+    <meta name="description" content="How much sample you need, with a calculator, and three ways to prepare samples for measurement.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 2 of 6</span>
+                <h1>Preparing a sample</h1>
+                <p>Good spectra start with a good sample. For measurements in transmission, the sample has to be thin, even and solid, and contain enough iron-57 to give a usable spectrum in a reasonable time.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2>What makes a good sample</h2>
+                    <ul>
+                        <li><strong>Solid and fixed in place.</strong> The Mössbauer effect needs the iron atoms to be held in a solid,
+                            so they can absorb gamma rays without recoiling. Liquids and wet pastes have to be frozen.</li>
+                        <li><strong>Thin and even.</strong> Gamma rays that pass through holes or thin patches miss the iron, which
+                            makes the lines shallower. Patches that are too thick broaden the lines and distort the relative areas.</li>
+                        <li><strong>The right amount of iron.</strong> Too little and the measurement takes far longer. Too much and the
+                            sample absorbs so strongly that the lines become distorted. The calculator below estimates the ideal amount.</li>
+                        <li><strong>Protected from change.</strong> Fe(II) can oxidise in air within minutes, and drying can transform
+                            some minerals. Prepare oxygen-sensitive samples in a glovebox and only take them out in a well-sealed,
+                            oxygen-free container.</li>
+                    </ul>
+                    <p>
+                        A well-prepared sample usually gives a usable spectrum within about a day. Environmental samples with little
+                        iron can take longer.
+                    </p>
+
+                    <h2 id="how-much">How much sample do I need?</h2>
+                    <p>
+                        Following Rancourt and others (1993), the ideal thickness of a sample is set by how strongly all of its
+                        elements absorb gamma rays at 14.4 keV, not just the iron. The calculator gives this as a mass per square
+                        centimetre. Multiply by the area of your holder to get the mass to weigh out.
+                    </p>
+
+                    <form class="calculator" aria-labelledby="calc-title">
+                        <p class="calc-title" id="calc-title">Ideal thickness calculator</p>
+                        <fieldset class="lab-choice">
+                            <legend>What do you know about your sample?</legend>
+                            <label class="lab-pill"><input type="radio" name="method" value="formula" checked><span>Its formula</span></label>
+                            <label class="lab-pill"><input type="radio" name="method" value="percent"><span>Its iron content (wt%)</span></label>
+                            <label class="lab-pill"><input type="radio" name="method" value="concentration"><span>Iron concentration in a liquid</span></label>
+                        </fieldset>
+
+                        <div class="calc-fields">
+                            <div class="calc-field" data-method-panel="formula">
+                                <label for="calc-formula">Formula</label>
+                                <input id="calc-formula" name="formula" type="text" value="Fe3O4" autocomplete="off" spellcheck="false" aria-describedby="calc-formula-hint">
+                                <p class="calc-hint" id="calc-formula-hint">For example Fe2O3, FeOOH, Fe0.9Al0.1OOH or FeSO4·7H2O.</p>
+                            </div>
+                            <div class="calc-field" data-method-panel="percent" hidden>
+                                <label for="calc-percent">Iron content (wt%)</label>
+                                <input id="calc-percent" name="percent" type="number" min="0" max="100" step="any" value="30" inputmode="decimal">
+                            </div>
+                            <div class="calc-field" data-method-panel="concentration" hidden>
+                                <label for="calc-concentration">Iron concentration (mM)</label>
+                                <input id="calc-concentration" name="concentration" type="number" min="0" step="any" value="2" inputmode="decimal">
+                            </div>
+                            <div class="calc-field">
+                                <label for="calc-area">Holder or filter area (cm²)</label>
+                                <input id="calc-area" name="area" type="number" min="0" step="any" value="1" inputmode="decimal">
+                            </div>
+                        </div>
+
+                        <div class="calc-result" aria-live="polite"></div>
+                    </form>
+
+                    <p>
+                        Knowing the formula gives the best estimate. If you only know the iron content, the estimate ignores other
+                        strongly absorbing elements and may suggest too much sample. Not knowing what is in a sample at all is worth
+                        avoiding, because it makes the spectrum much harder to interpret.
+                    </p>
+                    <p>
+                        If the ideal amount is too small to spread into an even layer, mix the sample with an iron-free, unreactive
+                        powder such as glucose or boron nitride.
+                    </p>
+
+                    <h2>Three ways to prepare a sample</h2>
+                    <p>
+                        These are the methods we use for measurements in transmission. Each holder can be cleaned and reused by
+                        soaking it in 0.5% oxalic acid for 2 to 3 days to remove all traces of iron, then rinsing with deionised water
+                        and drying.
+                    </p>
+
+                    <h3 id="filtration">1. Filtering a wet sample</h3>
+                    <p>
+                        Good for samples taken from a liquid, such as microbial cultures or sediment slurries. It is relatively easy,
+                        but filters block quickly, which can leave too little iron on the filter and lengthen the measurement.
+                    </p>
+                    <figure class="guide-figure">
+                        <img src="/images/learn/prep-filter-holder.jpg" width="1126" height="288" loading="lazy"
+                             alt="Three photos. A, the parts of a filter holder: a Luer lock end, a screw cap, an O-ring and a round filter. B, the assembled holder against a ruler, about 3.5 cm long. C, a filter with a dark sample sealed between two layers of orange Kapton tape and labelled in pen.">
+                        <figcaption>The filter holder. A, its parts. B, assembled, with a scale in cm. C, a finished Kapton–filter–Kapton sample.</figcaption>
+                    </figure>
+                    <p><strong>You will need</strong> a Luer lock end, an O-ring, a screw cap, a filter (1 cm², 0.44 µm pores
+                        recommended), a Luer lock syringe with a needle, and Kapton tape.</p>
+                    <ol>
+                        <li>Place the O-ring inside the Luer lock end, then the filter on top, free of its protective paper. Screw on
+                            the cap.</li>
+                        <li>Cut two pieces of Kapton tape and lay one down, sticky side up.</li>
+                        <li>Draw about 2 ml of sample into the syringe, adjusting the volume for your iron concentration (see the
+                            calculator). Remove the needle and attach the syringe to the filter holder.</li>
+                        <li>Push the sample through the filter. If the plunger becomes hard to push, stop, as the filter already holds
+                            enough material.</li>
+                        <li>Unscrew the holder, lift out the filter with tweezers and blot it on tissue paper to remove excess liquid.
+                            Keep the O-ring for reuse if it comes away cleanly.</li>
+                        <li>Place the filter on the sticky Kapton tape and lower the second piece on top, sticky side down.</li>
+                        <li>Press the air out with the back of a pair of tweezers, working around the sample rather than on it, and
+                            leave a small channel for the air to escape. Then close the channel.</li>
+                        <li>Label the sample, place it in a container and store it frozen (−20 °C or colder) until it is measured.</li>
+                    </ol>
+                    <ul class="pros-cons">
+                        <li class="pro">No drying needed, so sorbed iron and wet minerals can be measured.</li>
+                        <li class="pro">Can be done in a glovebox.</li>
+                        <li class="con">Filters block easily. Several can be stacked, but use no more than three, or the sample
+                            becomes too thick.</li>
+                        <li class="con">The sample stays frozen, so it can only be measured below room temperature.</li>
+                    </ul>
+
+                    <h3 id="powder">2. Dry powder in a Plexiglas holder</h3>
+                    <p>
+                        Good for air-dried or freeze-dried samples. Our holders were made in a workshop, but a similar design is
+                        straightforward to make.
+                    </p>
+                    <figure class="guide-figure">
+                        <img src="/images/learn/prep-powder-holder.jpg" width="1149" height="395" loading="lazy"
+                             alt="A drawing and two photos of the powder holder. The inner part (1.6 cm across, 0.4 cm deep) fits inside the outer part (1.8 cm across, 0.45 cm deep), squeezing a thin layer of sample between them. The photos show the two clear plastic parts, and a finished holder with a reddish-brown sample next to a ruler.">
+                        <figcaption>The powder holder. The inner part fits inside the outer part and spreads the sample into a thin, even layer.</figcaption>
+                    </figure>
+                    <p><strong>You will need</strong> the inner and outer parts of the holder and a small piece of Parafilm. Check
+                        first that the two parts slide together and apart smoothly.</p>
+                    <ol>
+                        <li>Grind the sample to a fine, even powder, about as fine as talcum powder.</li>
+                        <li>Weigh the sample into the outer part (see the calculator). As a rule of thumb, 30 to 40 mg is enough for a
+                            pure iron oxide. Samples with less iron need more, but about 150 to 200 mg is the most a holder can take
+                            and still give a good spectrum.</li>
+                        <li>Spread the powder into a fairly even layer, then gently press the inner part into the outer part.</li>
+                        <li>Rotate the inner part back and forth to spread the sample thinly and evenly.</li>
+                        <li>Hold the holder up to the light and look for holes. If you see any, keep rotating, or take out the inner
+                            part and spread the powder again.</li>
+                        <li>Wrap Parafilm around the edge so the two parts stay firmly together, and store the sample until it is
+                            measured.</li>
+                    </ol>
+                    <ul class="pros-cons">
+                        <li class="pro">Quick and straightforward.</li>
+                        <li class="pro">Works at all measurement temperatures.</li>
+                        <li class="pro">Can be done in a glovebox.</li>
+                        <li class="con">Some samples change as they dry, so the dried sample may not represent the original.</li>
+                    </ul>
+
+                    <h3 id="frozen">3. A viscous liquid frozen in a cap</h3>
+                    <p>
+                        We rarely use this method, only for samples that cannot be filtered or dried. It uses Teflon caps made in our
+                        workshop.
+                    </p>
+                    <figure class="guide-figure guide-figure-small">
+                        <img src="/images/learn/prep-frozen-cap.jpg" width="695" height="260" loading="lazy"
+                             alt="A drawing and a photo of the Teflon cap, 1.5 cm across and 0.7 cm deep, with a layer of sample in the bottom.">
+                        <figcaption>The Teflon cap for viscous samples.</figcaption>
+                    </figure>
+                    <p><strong>You will need</strong> a Teflon cap and Kapton tape.</p>
+                    <ol>
+                        <li>Place the cap on a flat surface and add the sample. The right volume depends on the iron content, but
+                            about 150 µl works well.</li>
+                        <li>Seal the top of the cap with Kapton tape.</li>
+                        <li>Keeping the cap completely flat, freeze it overnight, then store it frozen (−20 °C or colder) until it is
+                            measured.</li>
+                    </ol>
+                    <ul class="pros-cons">
+                        <li class="pro">An option when filtering and drying are not possible.</li>
+                        <li class="pro">Can be done in a glovebox.</li>
+                        <li class="con">Can only be measured below the freezing point of the sample.</li>
+                        <li class="con">Hard to judge the best volume without knowing the iron content.</li>
+                    </ul>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Rancourt, D. G., McDonald, A. M., Lalonde, A. E. and Ping, J. Y. 1993. Mössbauer absorber thicknesses for accurate site populations in Fe-bearing minerals. <em>American Mineralogist</em>, 78, 1–7.</li>
+                        <li>Gütlich, P., Bill, E. and Trautwein, A. X. 2011. <em>Mössbauer Spectroscopy and Transition Metal Chemistry: Fundamentals and Applications</em>. Springer, Berlin.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="first-look.html"><span>Previous guide</span><strong>A first look at Mössbauer spectroscopy</strong></a>
+                        <a class="next" href="hyperfine-parameters.html"><span>Next guide</span><strong>Hyperfine parameters</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/thickness.js"></script>
+</body>
+</html>
