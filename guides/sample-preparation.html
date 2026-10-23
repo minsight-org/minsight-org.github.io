@@ -9,7 +9,7 @@
             async src="//gc.zgo.at/count.js"></script>
 
     <title>Preparing a sample - MinSight</title>
-    <meta name="description" content="How much sample you need, with a calculator, and three ways to prepare samples for measurement.">
+    <meta name="description" content="What makes a good sample, how much you need, and three ways to prepare samples for measurement.">
 
     <!-- Apply the saved theme before the page draws -->
     <script>
@@ -58,7 +58,7 @@
                         <li><strong>Thin and even.</strong> Gamma rays that pass through holes or thin patches miss the iron, which
                             makes the lines shallower. Patches that are too thick broaden the lines and distort the relative areas.</li>
                         <li><strong>The right amount of iron.</strong> Too little and the measurement takes far longer. Too much and the
-                            sample absorbs so strongly that the lines become distorted. The calculator below estimates the ideal amount.</li>
+                            sample absorbs so strongly that the lines become distorted.</li>
                         <li><strong>Protected from change.</strong> Fe(II) can oxidise in air within minutes, and drying can transform
                             some minerals. Prepare oxygen-sensitive samples in a glovebox and only take them out in a well-sealed,
                             oxygen-free container.</li>
@@ -70,52 +70,23 @@
 
                     <h2 id="how-much">How much sample do I need?</h2>
                     <p>
-                        Following Rancourt and others (1993), the ideal thickness of a sample is set by how strongly all of its
-                        elements absorb gamma rays at 14.4 keV, not just the iron. The calculator gives this as a mass per square
-                        centimetre. Multiply by the area of your holder to get the mass to weigh out.
-                    </p>
-
-                    <form class="calculator" aria-labelledby="calc-title">
-                        <p class="calc-title" id="calc-title">Ideal thickness calculator</p>
-                        <fieldset class="lab-choice">
-                            <legend>What do you know about your sample?</legend>
-                            <label class="lab-pill"><input type="radio" name="method" value="formula" checked><span>Its formula</span></label>
-                            <label class="lab-pill"><input type="radio" name="method" value="percent"><span>Its iron content (wt%)</span></label>
-                            <label class="lab-pill"><input type="radio" name="method" value="concentration"><span>Iron concentration in a liquid</span></label>
-                        </fieldset>
-
-                        <div class="calc-fields">
-                            <div class="calc-field" data-method-panel="formula">
-                                <label for="calc-formula">Formula</label>
-                                <input id="calc-formula" name="formula" type="text" value="Fe3O4" autocomplete="off" spellcheck="false" aria-describedby="calc-formula-hint">
-                                <p class="calc-hint" id="calc-formula-hint">For example Fe2O3, FeOOH, Fe0.9Al0.1OOH or FeSO4·7H2O.</p>
-                            </div>
-                            <div class="calc-field" data-method-panel="percent" hidden>
-                                <label for="calc-percent">Iron content (wt%)</label>
-                                <input id="calc-percent" name="percent" type="number" min="0" max="100" step="any" value="30" inputmode="decimal">
-                            </div>
-                            <div class="calc-field" data-method-panel="concentration" hidden>
-                                <label for="calc-concentration">Iron concentration (mM)</label>
-                                <input id="calc-concentration" name="concentration" type="number" min="0" step="any" value="2" inputmode="decimal">
-                            </div>
-                            <div class="calc-field">
-                                <label for="calc-area">Holder or filter area (cm²)</label>
-                                <input id="calc-area" name="area" type="number" min="0" step="any" value="1" inputmode="decimal">
-                            </div>
-                        </div>
-
-                        <div class="calc-result" aria-live="polite"></div>
-                    </form>
-
-                    <p>
-                        Knowing the formula gives the best estimate. If you only know the iron content, the estimate ignores other
-                        strongly absorbing elements and may suggest too much sample. Not knowing what is in a sample at all is worth
-                        avoiding, because it makes the spectrum much harder to interpret.
+                        The ideal amount depends on how much iron the sample contains and on everything else in it, because all
+                        elements absorb some of the gamma rays (Rancourt and others, 1993). As a rough guide, 30 to 40 mg of a pure
+                        iron oxide is plenty for a powder holder, and samples with less iron need more.
                     </p>
                     <p>
-                        If the ideal amount is too small to spread into an even layer, mix the sample with an iron-free, unreactive
-                        powder such as glucose or boron nitride.
+                        If the amount you have is too small to spread into an even layer, mix it with an iron-free, unreactive powder
+                        such as glucose or boron nitride.
                     </p>
+
+                    <div class="callout">
+                        <p class="callout-title">Not sure if your samples are suitable?</p>
+                        <p>
+                            Please <a href="mailto:james.byrne@bristol.ac.uk?subject=Mössbauer%20samples">get in touch</a> before
+                            you prepare them. Samples with little iron, unusual compositions or small amounts of material can often
+                            still be measured, and it is much easier to plan this together than to repeat a preparation.
+                        </p>
+                    </div>
 
                     <h2>Three ways to prepare a sample</h2>
                     <p>
@@ -140,8 +111,8 @@
                         <li>Place the O-ring inside the Luer lock end, then the filter on top, free of its protective paper. Screw on
                             the cap.</li>
                         <li>Cut two pieces of Kapton tape and lay one down, sticky side up.</li>
-                        <li>Draw about 2 ml of sample into the syringe, adjusting the volume for your iron concentration (see the
-                            calculator). Remove the needle and attach the syringe to the filter holder.</li>
+                        <li>Draw about 2 ml of sample into the syringe, adjusting the volume for how much iron your sample
+                            contains. Remove the needle and attach the syringe to the filter holder.</li>
                         <li>Push the sample through the filter. If the plunger becomes hard to push, stop, as the filter already holds
                             enough material.</li>
                         <li>Unscrew the holder, lift out the filter with tweezers and blot it on tissue paper to remove excess liquid.
@@ -173,7 +144,7 @@
                         first that the two parts slide together and apart smoothly.</p>
                     <ol>
                         <li>Grind the sample to a fine, even powder, about as fine as talcum powder.</li>
-                        <li>Weigh the sample into the outer part (see the calculator). As a rule of thumb, 30 to 40 mg is enough for a
+                        <li>Weigh the sample into the outer part. As a rule of thumb, 30 to 40 mg is enough for a
                             pure iron oxide. Samples with less iron need more, but about 150 to 200 mg is the most a holder can take
                             and still give a good spectrum.</li>
                         <li>Spread the powder into a fairly even layer, then gently press the inner part into the outer part.</li>
@@ -234,6 +205,5 @@
     <div id="footer-placeholder"></div>
 
     <script src="/js/site.js"></script>
-    <script type="module" src="/js/learn/thickness.js"></script>
 </body>
 </html>
