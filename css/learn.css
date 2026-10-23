@@ -806,11 +806,7 @@
 
 .equation {
     margin: 1rem 0 1.25rem;
-    padding: 1rem 1.25rem;
     overflow-x: auto;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
 }
 
 .equation math {
