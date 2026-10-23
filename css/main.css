@@ -115,9 +115,15 @@ p {
     padding: 0 16px;
 }
 
-/* Running text stops at about 70 characters a line, which is easier to read */
+/* Two widths only, both starting at the container's left edge:
+   --measure for running text (about 70 characters a line), and the full
+   container for plots, tables and card grids. */
+:root {
+    --measure: 42rem;
+}
+
 .section .container > p {
-    max-width: 70ch;
+    max-width: var(--measure);
 }
 
 .center {
@@ -230,7 +236,7 @@ button.button {
 }
 
 .page-title p {
-    max-width: 70ch;
+    max-width: var(--measure);
     color: var(--muted);
 }
 

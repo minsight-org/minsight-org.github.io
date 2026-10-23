@@ -20,8 +20,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    max-width: 760px;
-    margin: 0 auto;
+    max-width: var(--measure);
 }
 
 .search-box {
@@ -135,8 +134,8 @@ mark {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem 1.5rem;
-    max-width: 760px;
-    margin: 0.9rem auto 0;
+    max-width: var(--measure);
+    margin: 0.9rem 0 0;
     padding: 1rem 1.25rem;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -192,10 +191,9 @@ mark {
 .chips {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 0.5rem;
-    max-width: 760px;
-    margin: 0.75rem auto 0;
+    max-width: var(--measure);
+    margin: 0.75rem 0 0;
 }
 
 .chip {
@@ -240,7 +238,7 @@ mark {
 }
 
 .landing p {
-    max-width: 70ch;
+    max-width: var(--measure);
 }
 
 .results-toolbar {
@@ -295,7 +293,7 @@ mark {
 }
 
 .profile-text {
-    max-width: 70ch;
+    max-width: var(--measure);
     margin: 0;
 }
 

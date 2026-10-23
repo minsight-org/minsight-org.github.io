@@ -84,21 +84,17 @@
     margin-bottom: 0.25rem;
 }
 
-/* The article uses the full container. Running text stays at a readable
-   width, while plots, diagrams and tables use the extra space. */
-.article > .callout,
-.article > .table-scroll,
-.article > .guide-figure {
-    max-width: 900px;
+/* Text, lists and callouts share the text width; plots, tables and photos use
+   the full container (see --measure in main.css). */
+.article > p,
+.article > ul,
+.article > ol,
+.article > .callout {
+    max-width: var(--measure);
 }
 
 .article h2 {
     margin-top: 2.5rem;
-}
-
-.article > p,
-.article li {
-    max-width: 70ch;
 }
 
 .article .lead {
@@ -614,9 +610,9 @@
 
 .concept {
     display: grid;
-    grid-template-columns: minmax(0, 70ch) minmax(280px, 400px);
-    justify-content: space-between;
-    gap: 1.5rem;
+    /* Text at the text width, the diagram filling the rest of the row */
+    grid-template-columns: minmax(0, var(--measure)) minmax(0, 1fr);
+    gap: 2rem;
     align-items: start;
 }
 
