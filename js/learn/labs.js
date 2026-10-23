@@ -241,21 +241,17 @@ const LABS = {
 
   "iron-oxides": {
     label: "Typical spectra of common iron oxides",
+    // Magnetite and maghemite are not simulated at 4.2 K, so those buttons switch off together
     choices: [
-      { key: "mineral", label: "Mineral", options: () => Object.entries(MINERALS).map(([k, m]) => [k, m.name]), value: "hematite" },
-      { key: "temp", label: "Temperature", options: () => [["rt", "Room temperature"], ["lt", "4.2 K"]], value: "rt" }
+      { key: "mineral", label: "Mineral", options: () => Object.entries(MINERALS).map(([k, m]) => [k, m.name]), value: "hematite",
+        disabled: (option, v) => v.temp === "lt" && !MINERALS[option].lt },
+      { key: "temp", label: "Temperature", options: () => [["rt", "Room temperature"], ["lt", "4.2 K"]], value: "rt",
+        disabled: (option, v) => option === "lt" && !MINERALS[v.mineral].lt }
     ],
     compute(v) {
       const mineral = MINERALS[v.mineral];
-      const sites = mineral[v.temp];
-      if (!sites) {
-        return { sim: spectrum([new Array(velocityAxis().length).fill(0)]), readout: mineral.note[v.temp] };
-      }
-      const ys = sites.map(s => site(s));
-      return {
-        sim: spectrum(ys),
-        readout: mineral.note[v.temp]
-      };
+      const readout = mineral.lt ? mineral.note[v.temp] : `${mineral.note.rt} ${mineral.note.lt}`;
+      return { sim: spectrum(mineral[v.temp].map(s => site(s))), readout };
     }
   }
 };
@@ -312,7 +308,7 @@ export const MINERALS = {
     lt: null,
     note: {
       rt: "Two sextets. The tetrahedral (A) site holds Fe(III); the octahedral (B) site holds Fe(II) and Fe(III) that swap electrons quickly, so it looks like Fe(2.5+). In stoichiometric magnetite the B site has about twice the area of the A site.",
-      lt: "Below the Verwey transition (about 120 K) the electron hopping stops and the spectrum becomes complex, so it is not shown here."
+      lt: "There is no 4.2 K spectrum here, because below the Verwey transition (about 120 K) the electron hopping stops and the spectrum becomes too complex to show simply."
     }
   },
   maghemite: {
@@ -321,7 +317,7 @@ export const MINERALS = {
     lt: null,
     note: {
       rt: "A single sextet from Fe(III) on both sites. The missing Fe(2.5+) site is what separates it from magnetite.",
-      lt: "At 4.2 K the field rises a little. The two sites can only be separated with an applied magnetic field, so this is not shown here."
+      lt: "There is no 4.2 K spectrum here. The field rises a little on cooling, but the two sites can only be separated with an applied magnetic field."
     }
   }
 };
@@ -454,6 +450,7 @@ function setUpLab(root) {
   const outputs = {};
   const inputs = {};
   const radios = {};
+  const disabling = [];
   const conditional = [];
 
   (config.choices || []).forEach(c => {
@@ -465,6 +462,7 @@ function setUpLab(root) {
       const radio = make("input");
       Object.assign(radio, { type: "radio", name: `${id}-${c.key}`, value, checked: value === c.value });
       radios[`${c.key}=${value}`] = radio;
+      if (c.disabled) disabling.push([radio, label, () => c.disabled(value, values)]);
       radio.addEventListener("change", () => {
         values[c.key] = value;
         update();
@@ -526,6 +524,10 @@ function setUpLab(root) {
 
   function update() {
     conditional.forEach(([wrap, showWhen]) => { wrap.hidden = !showWhen(values); });
+    disabling.forEach(([radio, label, isDisabled]) => {
+      radio.disabled = isDisabled();
+      label.classList.toggle("is-disabled", radio.disabled);
+    });
     Object.values(outputs).forEach(({ node, control }) => {
       const digits = String(control.step).split(".")[1]?.length ?? 0;
       node.textContent = `${Number(values[control.key]).toFixed(digits)} ${control.unit}`;

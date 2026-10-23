@@ -822,3 +822,10 @@
 .equation-terms li + li {
     margin-top: 0.25rem;
 }
+
+/* A choice that does not apply to the current selection */
+.lab-pill.is-disabled span {
+    opacity: 0.45;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
