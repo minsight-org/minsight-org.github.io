@@ -1,105 +1,357 @@
+/* Site header and navigation, in the style of rustymagnets.com.
+   Fonts are self-hosted (see css/fonts.css and fonts/OFL.txt). */
+
+@import url("fonts.css");
+
+:root {
+  --header-height: 60px;
+  --logo-overhang: 28px;      /* how far the nav logo hangs below the bar */
+  --header-bg: #215f9a;       /* must match the notch fill in minsight-nav-logo.svg */
+  --header-text: #ffffff;
+  --header-tint: rgba(255, 255, 255, 0.12);
+  --header-tint-strong: rgba(255, 255, 255, 0.2);
+  --nav-font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* The nav keeps #215f9a in dark mode too, so the logo notch still blends in */
+:root[data-theme="dark"] {
+  --header-text: #f1f5f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --header-text: #f1f5f9;
+  }
+}
+
+html {
+  scroll-padding-top: calc(var(--header-height) + var(--logo-overhang) + 12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header * { transition: none !important; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -3rem;
+  z-index: 10001;
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  color: #1b5a94;
+  border-radius: 6px;
+  font-family: var(--nav-font);
+}
+
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+/* HEADER AND NAVIGATION */
+
+/* Fixed rather than sticky for now, because the current pages already leave
+   space at the top for a fixed bar. */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  background: var(--header-bg);
+  color: var(--header-text);
+  font-family: var(--nav-font);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.site-header *,
+.site-header *::before,
+.site-header *::after {
+  box-sizing: border-box;
+}
 
 .navbar {
-    display: flex;
-    align-items: center;   /* ✅ vertical centering */
-    justify-content: space-between;
-    height: 70px;          /* or whatever you want */
-    padding: 0 16px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10000;
-    background: #215F9A;
-
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: var(--header-height);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
-.navbar a {
-    color: white;
-    text-decoration: none;
-    padding: 0.6rem 1rem;
-    font-size: 1.05rem;
+.site-header :focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
 }
 
-/* DESKTOP LINKS */
+.brand {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--header-text);
+  text-decoration: none;
+  margin-right: auto;
+}
+
+.brand-name {
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Decorative: the name next to it is the link text.
+   The image is square on top (lost against the bar) and round below,
+   so it hangs under the bar as a notch. Negative margins keep the bar 60px tall. */
+.brand-logo {
+  flex: none;
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin: -12px 0;
+  top: 16px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --logo-overhang: 12px;
+  }
+
+  .brand-logo {
+    width: 68px;
+    height: 68px;
+    margin: -4px 0;
+    top: 8px;
+  }
+}
+
 .nav-links {
   display: flex;
-  align-items: center;   /* ✅ vertical centering */
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-
-/* MOBILE HAMBURGER */
-.hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    cursor: pointer;
-}
-
-.hamburger span {
-    width: 24px;
-    height: 3px;
-    background: white;
-    border-radius: 2px;
-}
-.nav-logo {
-  height: 65px;
-  width: auto;
+.nav-links a {
   display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  color: var(--header-text);
+  text-decoration: none;
 }
 
-
-/* MOBILE MENU */
-@media (max-width: 750px) {
-    .navbar {
-        justify-content: flex-start;  /* ✅ left align horizontally */
-            
-        flex-direction: column;
-        align-items: flex-start;  /* ✅ left align in column layout */
-
-    }
-
-    .nav-links {
-        display: none;
-        justify-content: flex-start;
-        text-align: left;
-        position: absolute;
-        top: 60px;
-        left: 0; right: 0;
-        background: #215F9A;
-        flex-direction: column;
-        padding: 1rem;
-        
-    align-items: flex-start;
-    width: 100%;
-
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .hamburger {
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-
-    }
-    .nav-logo {
-        
-        max-width: 70vw;     /* never overflow screen */
-    }
-
+.nav-links a:hover,
+.nav-links a[aria-current] {
+  background: var(--header-tint);
 }
 
-/* THEME TOGGLE BUTTON */
-.theme-btn {
-    padding: 0.45rem 0.8rem;
-    background: var(--card-bg);
-    color: var(--text);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.theme-toggle,
+.menu-toggle {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--header-tint);
+  color: var(--header-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover {
+  background: var(--header-tint-strong);
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.menu-icon,
+.menu-icon::before,
+.menu-icon::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin: 0 auto;
+  background: currentColor;
+  border-radius: 1px;
+  position: relative;
+}
+
+.menu-icon::before,
+.menu-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.menu-icon::before { top: -6px; }
+.menu-icon::after { top: 6px; }
+
+/* Collapsed menu, shared by both breakpoints below */
+@media (max-width: 640px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 0.5rem 16px 1rem;
+    background: var(--header-bg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 0.75rem;
+  }
+}
+
+/* DATABASE SEARCH DOCKED IN THE NAV (see dockSearchInNavbar in js/db.js) */
+
+.navbar-search-slot,
+.navbar-filters-slot {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-search-slot:empty,
+.navbar-filters-slot:empty {
+  display: none;
+}
+
+/* Let the bar use the full width while the search sits in it */
+body.search-in-navbar .navbar {
+  max-width: none;
+}
+
+body.search-in-navbar .brand {
+  margin-right: 0.5rem;
+}
+
+body.search-in-navbar .navbar-filters-slot {
+  margin-right: auto;
+}
+
+body.search-in-navbar .navbar #search-block {
+  width: 420px;
+  max-width: 40vw;
+  padding-bottom: 0;
+}
+
+/* Collapsed by db.css, but their margins would still push the search down */
+.navbar .db-title,
+.navbar .db-subtitle {
+  display: none;
+}
+
+.navbar .search-container {
+  width: 100%;
+}
+
+.navbar .search-row {
+  align-items: center;
+  margin: 0;
+}
+
+/* Hide filter panel in navbar ONLY when closed */
+.navbar .filters-panel:not(.open) {
+  display: none;
+}
+
+.navbar .filters-panel.open {
+  position: absolute;
+  top: calc(100% + 40px);
+  left: auto;
+  z-index: 2000;
+}
+
+/* With the search docked the links run out of room sooner */
+@media (max-width: 1060px) {
+  body.search-in-navbar .menu-toggle {
+    display: block;
+  }
+
+  body.search-in-navbar .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 0.5rem 16px 1rem;
+    background: var(--header-bg);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  body.search-in-navbar .nav-links.open {
+    display: flex;
+  }
+
+  body.search-in-navbar .nav-links a {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 760px) {
+  body.search-in-navbar .brand-name {
+    display: none;
+  }
+
+  body.search-in-navbar .navbar #search-block {
+    width: auto;
+    max-width: none;
+    flex: 1;
+  }
+
+  body.search-in-navbar .navbar-search-slot {
+    flex: 1;
+    min-width: 0;
+  }
+
+  body.search-in-navbar .navbar {
+    gap: 0.4rem;
+  }
+
+  body.search-in-navbar .navbar .filters-toggle {
+    padding: 0 12px;
+  }
+}
+
+/* Phones: give the docked search the theme button's space */
+@media (max-width: 480px) {
+  body.search-in-navbar .theme-toggle {
+    display: none;
+  }
 }
