@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>Hyperfine parameters - MinSight</title>
+    <meta name="description" content="The isomer shift, quadrupole splitting, hyperfine field and more, with sliders to see what each one does.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 2 of 5</span>
+                <h1>Hyperfine parameters</h1>
+                <p>Hyperfine parameters are the values found by fitting a Mössbauer spectrum. Each comes from a different interaction between the iron nucleus and its surroundings. Move the sliders to see what each one does.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2 id="isomer-shift">Isomer shift (δ)</h2>
+                    <p>
+                        The isomer shift comes from the interaction between the nucleus and the electrons around it. It moves the
+                        whole spectrum left or right. Strictly, it is only called the isomer shift when the source and the sample
+                        are at the same temperature. Otherwise centre shift is the better term, although the two are often used
+                        interchangeably.
+                    </p>
+                    <p>
+                        The isomer shift is given relative to a calibration, usually metallic iron (α-Fe) at room temperature,
+                        which is defined as 0 mm/s. It is very sensitive to the oxidation state. At room temperature, high-spin
+                        Fe(III) usually lies between about 0.2 and 0.5 mm/s and high-spin Fe(II) between about 0.9 and 1.3 mm/s.
+                    </p>
+                    <div class="lab" data-lab="isomer-shift"></div>
+
+                    <h2 id="quadrupole-splitting">Quadrupole splitting (ΔE<sub>Q</sub>)</h2>
+                    <p>
+                        The excited state of the iron-57 nucleus is not spherical. When the electric field around it is not
+                        symmetrical, because of the iron's own electrons or the atoms around it, the single line splits into two.
+                        This pair is called a doublet. The isomer shift is the midpoint of the two lines and the quadrupole splitting
+                        is the distance between them.
+                    </p>
+                    <p>
+                        The quadrupole splitting also depends on the oxidation state. High-spin Fe(II) usually has a large splitting
+                        (often above 1.5 mm/s), while high-spin Fe(III) usually has a smaller one (often below 1 mm/s). Plotting δ
+                        against ΔE<sub>Q</sub> is a quick way to tell the two apart.
+                    </p>
+                    <div class="lab" data-lab="quadrupole"></div>
+
+                    <h2 id="hyperfine-field">Hyperfine field (B<sub>hf</sub>)</h2>
+                    <p>
+                        When the iron atoms in a mineral are magnetically ordered, the nucleus feels a strong magnetic field. This
+                        splits the spectrum into six lines, called a sextet. The larger the field, the further apart the lines.
+                        In a powder, where the crystals point in all directions, the six lines have areas in the ratio 3:2:1:1:2:3.
+                    </p>
+                    <p>
+                        The total area stays the same, so as the lines spread out each one becomes shallower. Metallic iron has a
+                        field of about 33 T and hematite about 52 T, which is why spectrometers are usually run from −12 to
+                        +12 mm/s. A narrower range would cut off the outer lines.
+                    </p>
+                    <div class="lab" data-lab="hyperfine-field"></div>
+
+                    <h2 id="quadrupole-shift">Quadrupole shift (ε)</h2>
+                    <p>
+                        In a sextet, the quadrupole interaction no longer splits lines into pairs. Instead it shifts the two outer
+                        lines one way and the four inner lines the other, so the sextet becomes slightly lopsided. This is the
+                        quadrupole shift. It is related to the quadrupole splitting by ε = (ΔE<sub>Q</sub>/2)(3cos²θ − 1)/2, where θ
+                        is the angle between the magnetic field and the main axis of the electric field.
+                    </p>
+                    <p>
+                        The quadrupole shift is usually small compared with the hyperfine field, but it can help identify minerals.
+                        Goethite, for example, has a clearly negative ε. Take care when reading papers, because some report 2ε
+                        instead of ε, and some call it quadrupole splitting.
+                    </p>
+                    <div class="lab" data-lab="quadrupole-shift"></div>
+
+                    <h2 id="linewidth">Linewidth</h2>
+                    <p>
+                        Each line has a width, usually given as the full width at half maximum (FWHM). The natural linewidth of
+                        iron-57 is 0.097 mm/s, and because both the source and the sample contribute, the narrowest line you can
+                        measure is about 0.19 mm/s. Thick samples, the instrument and a spread of slightly different iron
+                        environments all make lines broader.
+                    </p>
+                    <div class="lab" data-lab="linewidth"></div>
+
+                    <h2 id="relative-area">Relative area</h2>
+                    <p>
+                        When a spectrum is fitted with several sites, the share of the total area in each site gives an estimate of
+                        how much of the iron is in that environment, for example the Fe(II) to Fe(III) ratio. Different environments
+                        can absorb with different efficiency (the recoil-free fraction), so the estimate is approximate,
+                        especially at room temperature.
+                    </p>
+
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <caption>The hyperfine parameters at a glance</caption>
+                            <thead>
+                                <tr><th scope="col">Parameter</th><th scope="col">Unit</th><th scope="col">What it shows in the spectrum</th><th scope="col">What it tells you</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><th scope="row">Isomer shift δ</th><td>mm/s</td><td>Position of the whole spectrum</td><td>Oxidation and spin state</td></tr>
+                                <tr><th scope="row">Quadrupole splitting ΔE<sub>Q</sub></th><td>mm/s</td><td>Gap between the two lines of a doublet</td><td>Oxidation state and the symmetry of the surroundings</td></tr>
+                                <tr><th scope="row">Hyperfine field B<sub>hf</sub></th><td>T</td><td>Spread of the six lines of a sextet</td><td>Magnetic ordering, and which mineral</td></tr>
+                                <tr><th scope="row">Quadrupole shift ε</th><td>mm/s</td><td>Lopsidedness of a sextet</td><td>Symmetry of the surroundings in a magnetic phase</td></tr>
+                                <tr><th scope="row">Linewidth (FWHM)</th><td>mm/s</td><td>Width of each line</td><td>Sample quality and how varied the iron environments are</td></tr>
+                                <tr><th scope="row">Relative area</th><td>%</td><td>Share of the total absorption</td><td>Roughly how much iron is in each environment</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>
+                        The information here is a starting point only. For more detail, see the books and reviews below.
+                    </p>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Dyar, M. D., Agresti, D. G., Schaefer, M. W., Grant, C. A. and Sklute, E. C. 2006. Mössbauer spectroscopy of earth and planetary materials. <em>Annual Review of Earth and Planetary Sciences</em>, 34, 83–125.</li>
+                        <li>Greenwood, N. N. and Gibb, T. C. 1971. <em>Mössbauer Spectroscopy</em>. Chapman and Hall, London.</li>
+                        <li>Gütlich, P., Bill, E. and Trautwein, A. X. 2011. <em>Mössbauer Spectroscopy and Transition Metal Chemistry: Fundamentals and Applications</em>. Springer, Berlin.</li>
+                        <li>Murad, E. and Cashion, J. 2004. <em>Mössbauer Spectroscopy of Environmental Materials and their Industrial Utilization</em>. Kluwer Academic Publishers, Boston.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="first-look.html"><span>Previous guide</span><strong>A first look at Mössbauer spectroscopy</strong></a>
+                        <a class="next" href="temperature.html"><span>Next guide</span><strong>Temperature: from doublet to sextet</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/labs.js"></script>
+</body>
+</html>

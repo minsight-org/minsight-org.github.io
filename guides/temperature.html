@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>Temperature: from doublet to sextet - MinSight</title>
+    <meta name="description" content="Why the same sample can give a doublet at room temperature and a sextet when cooled.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 3 of 5</span>
+                <h1>Temperature: from doublet to sextet</h1>
+                <p>The same sample can give a doublet at room temperature and a sextet when it is cooled. Understanding why is the key to identifying poorly crystalline and nanoparticulate minerals.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2>Magnetic ordering</h2>
+                    <p>
+                        Every magnetic material has an ordering temperature, called the Curie temperature for ferro- and ferrimagnets
+                        and the Néel temperature for antiferromagnets. Above it, the magnetic moments of the iron atoms point in random,
+                        constantly changing directions, so the nucleus feels no steady field and you see a doublet. Below it the
+                        moments line up, the nucleus feels a hyperfine field and you see a sextet. The field grows as the sample is
+                        cooled further.
+                    </p>
+                    <p>
+                        Ordering temperatures vary widely. Hematite and magnetite order far above room temperature, goethite at around
+                        400 K, and lepidocrocite only below about 77 K, which is why lepidocrocite is a doublet at room temperature.
+                    </p>
+
+                    <h2>Superparamagnetism in small particles</h2>
+                    <p>
+                        In very small particles, a few nanometres across, thermal energy can flip the magnetisation of a whole
+                        particle from one direction to another. A Mössbauer measurement takes about 10<sup>−8</sup> seconds to
+                        “see” a field. If the flipping is faster than that, the field averages out to zero and the particle gives a
+                        doublet, even though it is magnetically ordered. This is called superparamagnetism.
+                    </p>
+                    <p>
+                        Cooling slows the flipping down. Below the blocking temperature the magnetisation stays put for long enough,
+                        and the sextet appears. Larger particles have higher blocking temperatures. Real samples contain a range of
+                        particle sizes, so over a range of temperatures you see a sextet and a doublet together.
+                    </p>
+                    <p>
+                        Try lowering the temperature below, then change the particle size.
+                    </p>
+
+                    <div class="lab" data-lab="temperature"></div>
+
+                    <div class="callout">
+                        <p class="callout-title">About this model</p>
+                        <p>
+                            The plot is an illustration, not a particular mineral. It assumes a spread of blocking temperatures and
+                            a small drop in field as each particle nears its blocking temperature. Real spectra in this range often
+                            show broad, uneven lines from magnetic relaxation, which this simple model leaves out.
+                        </p>
+                    </div>
+
+                    <h2>Why measure at 77 K and 4.2 K?</h2>
+                    <p>
+                        Many Fe(III) minerals give almost the same doublet at room temperature. Cooling with liquid nitrogen (77 K)
+                        or liquid helium (4.2 K) makes them order or block one after another, so they can be told apart. A
+                        2-line ferrihydrite, for example, is still a doublet at 77 K but a sextet at 4.2 K. The guide on
+                        <a href="iron-oxides.html">iron oxides</a> shows this mineral by mineral.
+                    </p>
+
+                    <h2>Other effects of temperature</h2>
+                    <ul>
+                        <li><strong>Isomer shift.</strong> The second-order Doppler shift makes δ rise on cooling, by roughly
+                            0.1 mm/s between room temperature and 4.2 K. Compare values measured at the same temperature.</li>
+                        <li><strong>Absorption strength.</strong> The recoil-free fraction increases on cooling, so lines get deeper
+                            and relative areas become more reliable.</li>
+                        <li><strong>Phase transitions.</strong> Some minerals change their magnetic structure on cooling. Hematite
+                            passes through the Morin transition at about 260 K, where its quadrupole shift changes sign, and
+                            magnetite passes through the Verwey transition at about 120 K.</li>
+                    </ul>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Cornell, R. M. and Schwertmann, U. 2003. <em>The Iron Oxides: Structure, Properties, Reactions, Occurrences and Uses</em>, 2nd edn. Wiley-VCH, Weinheim.</li>
+                        <li>Murad, E. and Cashion, J. 2004. <em>Mössbauer Spectroscopy of Environmental Materials and their Industrial Utilization</em>. Kluwer Academic Publishers, Boston.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="hyperfine-parameters.html"><span>Previous guide</span><strong>Hyperfine parameters</strong></a>
+                        <a class="next" href="line-shapes.html"><span>Next guide</span><strong>Line shapes: Lorentzian or Voigt?</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/labs.js"></script>
+</body>
+</html>

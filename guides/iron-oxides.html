@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>Telling iron oxides apart - MinSight</title>
+    <meta name="description" content="Typical spectra of hematite, goethite, magnetite and other common iron oxides, and how to separate them.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 5 of 5</span>
+                <h1>Telling iron oxides apart</h1>
+                <p>Iron oxides and oxyhydroxides are among the most common minerals studied with Mössbauer spectroscopy. At room temperature many of them look alike, but their hyperfine fields and how they change on cooling set them apart.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2>Compare typical spectra</h2>
+                    <p>
+                        Choose a mineral and a temperature. The spectra are simulated from typical published values, listed in the
+                        table further down.
+                    </p>
+                    <div class="lab" data-lab="iron-oxides"></div>
+
+                    <h2>Typical values</h2>
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <caption>Typical hyperfine parameters. δ is relative to α-Fe. For sextets the middle column is ε; for doublets it is ΔE<sub>Q</sub>.</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Mineral</th>
+                                    <th scope="col">Temperature</th>
+                                    <th scope="col">Spectrum</th>
+                                    <th scope="col">δ (mm/s)</th>
+                                    <th scope="col">ΔE<sub>Q</sub> or ε (mm/s)</th>
+                                    <th scope="col">B<sub>hf</sub> (T)</th>
+                                </tr>
+                            </thead>
+                            <!-- TODO (James): check these typical values against Murad and Cashion (2004)
+                                 and Cornell and Schwertmann (2003) before publishing. They match js/learn/labs.js. -->
+                            <tbody>
+                                <tr><th scope="row" rowspan="2">Hematite</th><td>Room temperature</td><td>Sextet</td><td class="num">0.37</td><td class="num">−0.10</td><td class="num">51.8</td></tr>
+                                <tr><td>4.2 K</td><td>Sextet</td><td class="num">0.48</td><td class="num">+0.20</td><td class="num">54.2</td></tr>
+                                <tr><th scope="row" rowspan="2">Goethite</th><td>Room temperature</td><td>Sextet, often broad</td><td class="num">0.37</td><td class="num">−0.13</td><td class="num">about 38</td></tr>
+                                <tr><td>4.2 K</td><td>Sextet</td><td class="num">0.48</td><td class="num">−0.13</td><td class="num">50.6</td></tr>
+                                <tr><th scope="row" rowspan="2">Lepidocrocite</th><td>Room temperature</td><td>Doublet</td><td class="num">0.37</td><td class="num">0.53</td><td class="num">—</td></tr>
+                                <tr><td>4.2 K</td><td>Sextet</td><td class="num">0.47</td><td class="num">0.01</td><td class="num">45.8</td></tr>
+                                <tr><th scope="row" rowspan="2">Ferrihydrite (2-line)</th><td>Room temperature</td><td>Doublet</td><td class="num">0.35</td><td class="num">about 0.7</td><td class="num">—</td></tr>
+                                <tr><td>4.2 K</td><td>Broad sextet</td><td class="num">0.47</td><td class="num">about 0</td><td class="num">about 47</td></tr>
+                                <tr><th scope="row" rowspan="2">Magnetite</th><td>Room temperature, A site</td><td>Sextet</td><td class="num">0.26</td><td class="num">0</td><td class="num">49.0</td></tr>
+                                <tr><td>Room temperature, B site</td><td>Sextet</td><td class="num">0.67</td><td class="num">0</td><td class="num">46.0</td></tr>
+                                <tr><th scope="row">Maghemite</th><td>Room temperature</td><td>Sextet</td><td class="num">0.32</td><td class="num">0</td><td class="num">about 50</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        These are typical values for well-characterised samples. Real samples vary with crystallinity, particle size
+                        and substitution, so treat them as a guide rather than a rule. To see the published values for real samples,
+                        search the database, for example for <a href="/database.html?q=hematite">hematite</a>,
+                        <a href="/database.html?q=goethite">goethite</a> or <a href="/database.html?q=ferrihydrite">ferrihydrite</a>.
+                    </p>
+
+                    <h2>Tips for telling them apart</h2>
+                    <ul>
+                        <li><strong>The isomer shift is not enough.</strong> All of these minerals are mainly Fe(III), with δ between
+                            about 0.3 and 0.5 mm/s at room temperature. The hyperfine field and its behaviour on cooling are more useful.</li>
+                        <li><strong>Hematite or goethite?</strong> At room temperature hematite's field (about 52 T) is much larger than
+                            goethite's (38 T or less). At 4.2 K their fields are closer, but hematite's ε is positive while goethite's
+                            stays negative.</li>
+                        <li><strong>Magnetite or maghemite?</strong> Magnetite has a second sextet with δ near 0.67 mm/s from the
+                            Fe(2.5+) site. Maghemite does not. Partly oxidised magnetite falls in between, and the ratio of the two
+                            sites shows how far it has oxidised.</li>
+                        <li><strong>A doublet at room temperature?</strong> It could be lepidocrocite, ferrihydrite or very small
+                            particles of goethite or hematite. Measure at 77 K and 4.2 K to tell them apart, as the guide on
+                            <a href="temperature.html">temperature</a> explains.</li>
+                        <li><strong>Lower fields and broad lines</strong> often point to small particles or substitution, such as
+                            aluminium in goethite or hematite.</li>
+                    </ul>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Cornell, R. M. and Schwertmann, U. 2003. <em>The Iron Oxides: Structure, Properties, Reactions, Occurrences and Uses</em>, 2nd edn. Wiley-VCH, Weinheim.</li>
+                        <li>Murad, E. and Cashion, J. 2004. <em>Mössbauer Spectroscopy of Environmental Materials and their Industrial Utilization</em>. Kluwer Academic Publishers, Boston.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="line-shapes.html"><span>Previous guide</span><strong>Line shapes: Lorentzian or Voigt?</strong></a>
+                        <a class="next" href="/learn.html"><span>Back to</span><strong>All guides</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/labs.js"></script>
+</body>
+</html>

@@ -1,76 +1,88 @@
 <!DOCTYPE html>
-<html>
-   <head>
-    	<title>MinSight - Rapid spectroscopy data fitting and intepreration</title>
-      	<link rel="stylesheet" type="text/css" href="css/index.css">
-      	<link rel="stylesheet" type="text/css" href="css/dropdown.css">
-		<link rel="stylesheet" type="text/css" href="css/searchdata.css">
-		<link rel="stylesheet" type="text/css" href="css/moess_index.css">
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<script type="text/javascript" src="js/jquery-latest.js"></script>
-		<script type="text/javascript" src="js/searchdata_short_CSV.js"></script>
-		<script type="text/javascript" src="js/expander.js"></script>
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
 
-   </head>
-	
+    <title>Learn - MinSight</title>
+    <meta name="description" content="Short guides to Mössbauer spectroscopy for anyone new to the technique, with interactive plots.">
 
-	<body>
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
 
-		<div id="navbar"></div> <script> fetch("navbar.html") .then(response => response.text()) .then(data => { document.getElementById("navbar").innerHTML = data; }); </script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
 
-<h4>M&ouml;ssbauer Learning Tools</h4>
+<body>
 
-<div style="width:80%; margin-top: 0%; margin-left: 10%; background-color: white; opacity: 1">
+    <div id="nav-placeholder"></div>
 
+    <main id="main">
 
-<center><table class="team">
-	<tr>
+        <div class="page-title">
+            <div class="container">
+                <h1>Learn Mössbauer spectroscopy</h1>
+                <p>Short guides for anyone new to the technique. Most have interactive plots, so you can see how a spectrum changes as you move a slider.</p>
+            </div>
+        </div>
 
-		<td><p><a href="learn/html/learn_recoil.html" class="learnlink">Fitting M&ouml;ssbauer data with Recoil<br></a></a></p>
-		<i>Published online: 20.01.2020</i>
-		<br><i>Written by: Kath Rothwell</i>
-		</td>
+        <section class="section" aria-labelledby="guides-title">
+            <div class="container">
+                <h2 id="guides-title" class="visually-hidden">Guides</h2>
+                <ol class="guide-list">
+                    <li class="guide-card">
+                        <span class="guide-number">Guide 1</span>
+                        <h2><a href="guides/first-look.html">A first look at Mössbauer spectroscopy</a></h2>
+                        <p>What the technique measures, how a spectrum is recorded and what it can tell you.</p>
+                    </li>
+                    <li class="guide-card">
+                        <span class="guide-number">Guide 2</span>
+                        <h2><a href="guides/hyperfine-parameters.html">Hyperfine parameters</a></h2>
+                        <p>The isomer shift, quadrupole splitting, hyperfine field and more, with sliders to see what each one does.</p>
+                    </li>
+                    <li class="guide-card">
+                        <span class="guide-number">Guide 3</span>
+                        <h2><a href="guides/temperature.html">Temperature: from doublet to sextet</a></h2>
+                        <p>Why the same sample can give a doublet at room temperature and a sextet when cooled.</p>
+                    </li>
+                    <li class="guide-card">
+                        <span class="guide-number">Guide 4</span>
+                        <h2><a href="guides/line-shapes.html">Line shapes: Lorentzian or Voigt?</a></h2>
+                        <p>Why real lines are often broader than a simple model expects, and how Voigt-based fitting helps.</p>
+                    </li>
+                    <li class="guide-card">
+                        <span class="guide-number">Guide 5</span>
+                        <h2><a href="guides/iron-oxides.html">Telling iron oxides apart</a></h2>
+                        <p>Typical spectra of hematite, goethite, magnetite and other common iron oxides, and how to separate them.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
 
-				<td><p><a href="learn/html/learn_feisotopes.html" class="learnlink">The use of stable Fe isotopes in M&ouml;ssbauer<br></a></a></p>
-		<i>Published online: 14.01.2020</i>
-		<br><i>Written by: Kath Rothwell</i>
-		</td>
+    </main>
 
-		<td><p><a href="learn/html/learn_calib.html" class="learnlink">Folding and calibrating<br>(What happens in the background)</a></a></p>
-		<i>Published online: 24.06.2019</i>
-		<br><i>Written by: James Byrne</i>
-		</td>
+    <div id="footer-placeholder"></div>
 
-	</tr>
-	<tr>
-	
-		<td><p><a href="learn/html/learn_thickness.html" class="learnlink">Ideal thickness calculator <br>(i.e. how much material do I need to prepare a sample?)</a></p>
-		<i>Published online: 12.06.2019</i>
-		<br><i>Written by: James Byrne</i>
-		</td>
-
-		<td><p><a href="learn/html/learn_prep.html" class="learnlink">Sample preparation</a></p>
-		<i>Published online: 03.06.2019</i>
-		<br><i>Written by: James Byrne</i>
-		</td>
-	
-		<td><p><a href="learn/html/learn_hyperparam.html" class="learnlink">Hyperfine parameters</a></p>
-		<i>Published online: 03.06.2019</i>
-		<br><i>Written by: James Byrne</i>
-		</td>
-
-	</tr>
-	<tr>
-
-		<td><p><a href="learn/html/learn_fitprog.html" class="learnlink">Build your own fitting software</a></p>
-		<i>Published online: 26.05.2019</i>
-		<br><i>Written by: James Byrne</i></td>
-
-	</tr>
-</table></center>
-
-
-
+    <script src="/js/site.js"></script>
 </body>
 </html>

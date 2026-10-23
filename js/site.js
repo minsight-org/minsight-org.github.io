@@ -98,7 +98,10 @@
 
     // --- Faint highlight on the link for the current page ---
     function markCurrentPage() {
-        const path = location.pathname.replace(/\.html$/, "").replace(/\/$/, "");
+        // The guides belong to the Learn section
+        const path = location.pathname.startsWith("/guides/")
+            ? "/learn"
+            : location.pathname.replace(/\.html$/, "").replace(/\/$/, "");
         document.querySelectorAll(".nav-links a").forEach(link => {
             if (link.hostname !== location.hostname || link.hash) return;
             const linkPath = link.pathname.replace(/\.html$/, "").replace(/\/$/, "");

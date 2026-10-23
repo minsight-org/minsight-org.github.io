@@ -19,20 +19,25 @@ function el(name, attrs, parent) {
  * Draw `simulation` (from simulateSpectrum) into an <svg>.
  * @param {SVGSVGElement} svg
  * @param {number} selected  Index of the site to highlight, or -1
+ * @param {{depth?: number, reference?: number[], marker?: number}} options
+ *   depth: fixed absorption depth for the full plot height, so lines visibly
+ *   shrink as they split (the learn guides); otherwise scaled to the deepest line.
+ *   reference: an extra curve drawn dashed for comparison.
+ *   marker: a velocity to mark with a vertical line.
  */
-export function drawSpectrum(svg, simulation, selected = -1) {
+export function drawSpectrum(svg, simulation, selected = -1, options = {}) {
   svg.replaceChildren();
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
 
   const { x, sum, sites } = simulation;
   const all = [...sum, ...sites.flatMap(s => s.y)].map(Math.abs).filter(Number.isFinite);
-  const depth = Math.max(...all) || 1;
+  const depth = options.depth || Math.max(...all) || 1;
 
   const plotW = W - PAD.left - PAD.right;
   const plotH = H - PAD.top - PAD.bottom;
   const sx = v => PAD.left + (v - x[0]) / (x[x.length - 1] - x[0]) * plotW;
   // Baseline at the top, absorption lines dip downwards
-  const sy = v => PAD.top + (-v / depth) * plotH * 0.95;
+  const sy = v => PAD.top + Math.min(-v / depth, 1.04) * plotH * 0.95;
 
   const path = y => y.map((v, i) => `${i ? "L" : "M"}${sx(x[i]).toFixed(1)} ${sy(v).toFixed(1)}`).join("");
 
@@ -49,6 +54,10 @@ export function drawSpectrum(svg, simulation, selected = -1) {
   sites.forEach((site, i) => {
     if (i !== selected) el("path", { class: "plot-site", d: path(site.y) }, svg);
   });
+  if (Number.isFinite(options.marker)) {
+    el("line", { class: "plot-marker", x1: sx(options.marker), x2: sx(options.marker), y1: PAD.top - 8, y2: axisY }, svg);
+  }
+  if (options.reference) el("path", { class: "plot-reference", d: path(options.reference) }, svg);
   el("path", { class: "plot-sum", d: path(sum) }, svg);
   if (selected >= 0 && selected < sites.length) {
     el("path", { class: "plot-site plot-site-selected", d: path(sites[selected].y) }, svg);

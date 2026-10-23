@@ -1,0 +1,358 @@
+/* Learn section: the guide list (learn.html) and the guides in guides/.
+   Builds on css/main.css and css/plot.css. */
+
+/* GUIDE LIST */
+
+.guide-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 1.25rem;
+    margin: 1.75rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.guide-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.guide-card:focus-within {
+    background: var(--surface-hover);
+}
+
+@media (hover: hover) {
+    .guide-card:hover {
+        background: var(--surface-hover);
+        box-shadow: var(--shadow), 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.guide-number {
+    color: var(--accent-strong);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.guide-card h2 {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 1.3rem;
+}
+
+.guide-card h2::after {
+    display: none;
+}
+
+/* The title link covers the whole card */
+.guide-card h2 a {
+    color: var(--text);
+    text-decoration: none;
+}
+
+.guide-card h2 a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+}
+
+.guide-card p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.guide-card .guide-meta {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* GUIDE ARTICLE */
+
+.guide-header .guide-number {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.article {
+    max-width: 760px;
+}
+
+.article h2 {
+    margin-top: 2.5rem;
+}
+
+.article > p,
+.article li {
+    max-width: 70ch;
+}
+
+.article .lead {
+    font-size: 1.2rem;
+}
+
+.callout {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+}
+
+.callout p:last-child {
+    margin-bottom: 0;
+}
+
+.callout-title {
+    margin-bottom: 0.35rem;
+    font-weight: 700;
+}
+
+/* Parameter tables */
+.table-scroll {
+    margin: 1.25rem 0;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table caption {
+    padding: 0.6rem 0.9rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+    text-align: left;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.45rem 0.9rem;
+    border-top: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.data-table thead th {
+    background: var(--surface-alt);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.data-table .num {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.references {
+    padding-left: 1.25rem;
+    font-size: 0.95rem;
+}
+
+.references li + li {
+    margin-top: 0.4rem;
+}
+
+.guide-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+.guide-nav a {
+    display: inline-flex;
+    flex-direction: column;
+    max-width: 48%;
+    text-decoration: none;
+}
+
+.guide-nav a span {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.guide-nav a strong {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.guide-nav .next {
+    margin-left: auto;
+    text-align: right;
+}
+
+/* LAB: an interactive plot with its controls (js/learn/labs.js) */
+
+.lab {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+/* Labs inside the narrow article column stack their controls under the plot */
+.article .lab {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 760px) {
+    .lab {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 1rem;
+    }
+}
+
+.lab-figure {
+    margin: 0;
+    padding: 0.5rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: #18212b;
+}
+
+.lab-figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.lab-caption {
+    display: flex;
+    gap: 1.25rem;
+    padding: 0.25rem 0.5rem;
+    color: #4a5766;
+    font-size: 0.85rem;
+}
+
+.lab-controls {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+}
+
+.lab-control label {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-weight: 600;
+}
+
+.lab-value {
+    color: var(--accent-strong);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.lab-control input[type="range"] {
+    width: 100%;
+    margin: 0.35rem 0 0;
+    accent-color: var(--accent);
+}
+
+.lab-presets {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lab-presets-label {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.lab-preset {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.lab-preset:hover {
+    border-color: var(--accent);
+    background: var(--surface-hover);
+}
+
+.lab-choice {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.lab-choice legend {
+    width: 100%;
+    margin-bottom: 0.4rem;
+    padding: 0;
+    font-weight: 600;
+}
+
+.lab-pill {
+    position: relative;
+}
+
+.lab-pill input {
+    position: absolute;
+    opacity: 0;
+}
+
+.lab-pill span {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.lab-pill input:checked + span {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-text);
+    font-weight: 600;
+}
+
+.lab-pill input:focus-visible + span {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.lab-readout {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    background: var(--surface-alt);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}

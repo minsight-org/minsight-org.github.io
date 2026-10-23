@@ -453,49 +453,6 @@ button.button {
     font-size: 0.85rem;
 }
 
-.plot-axis {
-    stroke: #4a5766;
-    stroke-width: 1;
-}
-
-.plot-text {
-    fill: #4a5766;
-    font-size: 12px;
-    font-family: "Source Sans 3", system-ui, sans-serif;
-}
-
-.plot-site {
-    fill: none;
-    stroke: #8393a3;
-    stroke-width: 1.2;
-}
-
-.plot-site-selected {
-    stroke: #b4540a;
-    stroke-width: 1.6;
-    stroke-dasharray: 5 3;
-}
-
-.plot-sum {
-    fill: none;
-    stroke: #215f9a;
-    stroke-width: 1.8;
-}
-
-/* Little line keys in the caption */
-.key::before {
-    content: "";
-    display: inline-block;
-    width: 1.25em;
-    height: 3px;
-    margin-right: 0.3em;
-    vertical-align: middle;
-    border-radius: 2px;
-}
-
-.key-sum::before { background: #215f9a; }
-.key-site::before { background: repeating-linear-gradient(90deg, #b4540a 0 5px, transparent 5px 8px); }
-
 .detail-facts {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -615,11 +572,4 @@ button.button {
 
 .detail-actions {
     margin: 1rem 0 0;
-}
-
-/* The plot scales down on phones, so draw its labels larger */
-@media (max-width: 600px) {
-    .plot-text {
-        font-size: 18px;
-    }
 }

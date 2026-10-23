@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>A first look at Mössbauer spectroscopy - MinSight</title>
+    <meta name="description" content="What the technique measures, how a spectrum is recorded and what it can tell you.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 1 of 5</span>
+                <h1>A first look at Mössbauer spectroscopy</h1>
+                <p>Mössbauer spectroscopy uses gamma rays to look at the iron atoms in a sample. It tells you what kinds of iron are present and how they are bonded, which helps identify minerals.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2>What happens in the instrument</h2>
+                    <p>
+                        A radioactive source (cobalt-57, which decays to iron-57) gives off gamma rays with an energy of 14.4 keV.
+                        Iron-57 nuclei in your sample can absorb these gamma rays, but only when the energy matches one of their
+                        nuclear transitions almost exactly.
+                    </p>
+                    <p>
+                        The chemistry around each iron atom shifts and splits these transition energies by tiny amounts. To scan
+                        across them, the source is moved backwards and forwards. The Doppler effect then raises or lowers the energy
+                        of the gamma rays very slightly. A detector behind the sample counts how many get through at each velocity.
+                    </p>
+
+                    <div class="lab" data-lab="velocity"></div>
+
+                    <h2>Reading a spectrum</h2>
+                    <p>
+                        The horizontal axis is the velocity of the source in millimetres per second. It stands for energy, and
+                        1 mm/s is about 48 neV, an extremely small change. Most spectrometers sweep from −12 to +12 mm/s, which is
+                        wide enough for the magnetic iron oxides.
+                    </p>
+                    <p>
+                        The vertical axis shows how many gamma rays pass through the sample. Where the iron absorbs them the count
+                        drops, so the spectrum shows dips, often called lines or peaks. Their positions, spacing and shapes are
+                        described by the <a href="hyperfine-parameters.html">hyperfine parameters</a>.
+                    </p>
+
+                    <h2>What it can tell you</h2>
+                    <ul>
+                        <li><strong>Oxidation state.</strong> Fe(II) and Fe(III) give clearly different lines.</li>
+                        <li><strong>Bonding and coordination.</strong> The symmetry of the surroundings changes how the lines split.</li>
+                        <li><strong>Magnetic ordering.</strong> Magnetically ordered iron gives six lines instead of one or two.</li>
+                        <li><strong>Proportions.</strong> The area of each set of lines is roughly proportional to the amount of iron
+                            in that environment. It is only roughly proportional, because some environments absorb more strongly
+                            than others (the recoil-free fraction).</li>
+                    </ul>
+                    <p>
+                        Together these let you identify iron minerals, follow how they change in experiments, and measure how much
+                        of the iron is Fe(II) or Fe(III).
+                    </p>
+
+                    <div class="callout">
+                        <p class="callout-title">Worth knowing early on</p>
+                        <ul>
+                            <li>Only iron-57 takes part, which is about 2% of natural iron, so samples need enough iron in them.</li>
+                            <li>A measurement often takes hours or days, so careful sample preparation pays off.</li>
+                            <li>Temperature matters a great deal. Many minerals look alike at room temperature and only separate when
+                                cooled, as the guide on <a href="temperature.html">temperature</a> explains.</li>
+                            <li>Fitting a spectrum means choosing a model, and different choices can fit equally well. The guide on
+                                <a href="line-shapes.html">line shapes</a> covers this.</li>
+                        </ul>
+                    </div>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Dyar, M. D., Agresti, D. G., Schaefer, M. W., Grant, C. A. and Sklute, E. C. 2006. Mössbauer spectroscopy of earth and planetary materials. <em>Annual Review of Earth and Planetary Sciences</em>, 34, 83–125.</li>
+                        <li>Gütlich, P., Bill, E. and Trautwein, A. X. 2011. <em>Mössbauer Spectroscopy and Transition Metal Chemistry: Fundamentals and Applications</em>. Springer, Berlin.</li>
+                        <li>Murad, E. and Cashion, J. 2004. <em>Mössbauer Spectroscopy of Environmental Materials and their Industrial Utilization</em>. Kluwer Academic Publishers, Boston.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="/learn.html"><span>Back to</span><strong>All guides</strong></a>
+                        <a class="next" href="hyperfine-parameters.html"><span>Next guide</span><strong>Hyperfine parameters</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/labs.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- GoatCounter: cookieless visit counts (https://minsight.goatcounter.com) -->
+    <script data-goatcounter="https://minsight.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+
+    <title>Line shapes: Lorentzian or Voigt? - MinSight</title>
+    <meta name="description" content="Why real lines are often broader than a simple model expects, and how Voigt-based fitting helps.">
+
+    <!-- Apply the saved theme before the page draws -->
+    <script>
+        try {
+            var savedTheme = localStorage.getItem("theme");
+            if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+        } catch (e) {}
+    </script>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+
+    <link rel="preload" href="/fonts/source-sans-3-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/source-serif-4-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/fonts.css">
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/plot.css">
+    <link rel="stylesheet" href="/css/learn.css">
+</head>
+
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main id="main">
+
+        <div class="page-title guide-header">
+            <div class="container">
+                <span class="guide-number">Guide 4 of 5</span>
+                <h1>Line shapes: Lorentzian or Voigt?</h1>
+                <p>To get hyperfine parameters from a spectrum you fit it with a model. The shape you assume for each line affects the result, so it is worth knowing the options.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <article class="article">
+
+                    <h2>Lorentzian lines</h2>
+                    <p>
+                        A single, well-defined iron environment gives absorption lines with a Lorentzian shape. Fitting with
+                        Lorentzian lines assumes that every iron atom in a site has exactly the same hyperfine parameters. This works
+                        well for well-crystalline minerals, and it keeps the number of fitted parameters small.
+                    </p>
+
+                    <h2>Why real lines are often broader</h2>
+                    <p>
+                        In natural and many synthetic samples, no two iron atoms sit in quite the same place. Substitution (for example
+                        aluminium in place of iron), vacancies, defects and small particle sizes give each atom a slightly different
+                        quadrupole splitting or hyperfine field. The spectrum is then the sum of many Lorentzian lines spread around an
+                        average value. If that spread follows a Gaussian distribution, the combined line has a Voigt shape.
+                    </p>
+
+                    <h2>Voigt-based fitting (VBF)</h2>
+                    <p>
+                        Voigt-based fitting, described by Rancourt and Ping (1991), describes each site by an average value and a
+                        Gaussian spread, σ. For a doublet the spread is in the quadrupole splitting. For a sextet it is in the
+                        hyperfine field. Compare the two models below.
+                    </p>
+                    <div class="lab" data-lab="doublet-distribution"></div>
+                    <p>
+                        A spread of hyperfine fields broadens the outer lines of a sextet more than the inner ones, because the outer
+                        lines move furthest when the field changes. This is typical of poorly crystalline or substituted goethite.
+                    </p>
+                    <div class="lab" data-lab="sextet-distribution"></div>
+
+                    <h2>Choosing a model</h2>
+                    <ul>
+                        <li>Start with the simplest model that describes the spectrum, and look at the residuals (the difference
+                            between the data and the fit).</li>
+                        <li>Use a distribution model such as VBF when the lines are clearly broad or uneven, or when a Lorentzian fit
+                            only works by adding extra sites that have no physical meaning.</li>
+                        <li>More parameters will always fit a little better. Check that each one is justified and that the fitted
+                            values make physical sense.</li>
+                        <li>Report which model you used. Parameters from different models are not always directly comparable.</li>
+                    </ul>
+
+                    <div class="callout">
+                        <p class="callout-title">In MinSight</p>
+                        <p>
+                            The <a href="https://minsight.streamlit.app/" target="_blank" rel="noopener">fitting app</a> offers
+                            Lorentzian, Squared Lorentzian and Voigt models. In the <a href="/database.html">database</a>, a site is
+                            simulated with VBF when the paper gives a σ value, and with Lorentzian lines otherwise.
+                        </p>
+                    </div>
+
+                    <h2 id="further-reading">Further reading</h2>
+                    <ul class="references">
+                        <li>Rancourt, D. G. and Ping, J. Y. 1991. Voigt-based methods for arbitrary-shape static hyperfine parameter distributions in Mössbauer spectroscopy. <em>Nuclear Instruments and Methods in Physics Research B</em>, 58, 85–97.</li>
+                        <li>Gütlich, P., Bill, E. and Trautwein, A. X. 2011. <em>Mössbauer Spectroscopy and Transition Metal Chemistry: Fundamentals and Applications</em>. Springer, Berlin.</li>
+                        <li>Murad, E. and Cashion, J. 2004. <em>Mössbauer Spectroscopy of Environmental Materials and their Industrial Utilization</em>. Kluwer Academic Publishers, Boston.</li>
+                    </ul>
+
+                    <nav class="guide-nav" aria-label="Guides">
+                        <a class="prev" href="temperature.html"><span>Previous guide</span><strong>Temperature: from doublet to sextet</strong></a>
+                        <a class="next" href="iron-oxides.html"><span>Next guide</span><strong>Telling iron oxides apart</strong></a>
+                    </nav>
+                </article>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/site.js"></script>
+    <script type="module" src="/js/learn/labs.js"></script>
+</body>
+</html>
