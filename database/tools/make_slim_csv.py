@@ -1,8 +1,12 @@
 """Make the slim CSV that database.html loads.
 
 The full export repeats each paper's summary text on every site row, which makes
-it about 10 MB. This keeps only the columns the page uses (about 1.5 MB), and
+it about 10 MB. This keeps only the columns the page uses (about 1 MB), and
 reports cells that should be numbers but are not, so they can be fixed at source.
+
+Source tables with summaries or abstracts live in database/private, which git
+ignores: they must not be published, as the text belongs to the journals.
+Never add a summary, abstract or notes column to KEEP below.
 
 Usage, from the repository root:
     python database/tools/make_slim_csv.py
@@ -19,10 +23,11 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_IN = ROOT / "database/parameters/merged_Journal_output.csv"
+DEFAULT_IN = ROOT / "database/private/merged_Journal_output.csv"
 DEFAULT_OUT = ROOT / "database/parameters/minsight_parameters.csv"
 
 # Columns the page uses, in output order. Missing ones are written empty.
+# Short bibliographic fields only: no summary, abstract or notes text.
 KEEP = [
     "record_id",
     "sample_id",
@@ -44,7 +49,6 @@ KEEP = [
     "Fit_Type",
     "line_Type",
     "Model",
-    "Notes",
     "doi",
     "cr_title",
     "cr_authors",

@@ -9,10 +9,20 @@
 export const DEFAULT_FWHM = 0.194;
 export const DEFAULT_HWHM = DEFAULT_FWHM / 2;
 
+/**
+ * Narrowest linewidth (FWHM, mm/s) accepted from the data: the natural
+ * linewidth of 57Fe. Anything narrower is a data entry
+ * error (usually a shifted column) and the default is used instead.
+ */
+export const MIN_FWHM = 0.097;
+
+/** Points on the velocity axis. 1024 keeps even narrow lines smooth (step 0.023 mm/s). */
+export const N_POINTS = 1024;
+
 const SQRT2 = Math.sqrt(2);
 const SQRT2PI = Math.sqrt(2 * Math.PI);
 
-export function velocityAxis(vmin = -12, vmax = 12, n = 512) {
+export function velocityAxis(vmin = -12, vmax = 12, n = N_POINTS) {
   const x = [];
   const step = (vmax - vmin) / (n - 1);
   for (let i = 0; i < n; i++) {
@@ -54,7 +64,7 @@ export function VBF(phi, gamma, w0, sigma_in, h) {
 
 /** Lorentzian doublet ("Db") or sextet ("Sx"). */
 export function buildLorentzianSite({ IS, QS, Bhf, type, HWHM, weight = 1 }) {
-  const x = velocityAxis(-12, 12, 512);
+  const x = velocityAxis();
   const y = Array(x.length).fill(0);
 
   const gamma = Number.isFinite(HWHM) ? HWHM * 2 : DEFAULT_HWHM * 2;
@@ -95,7 +105,7 @@ export function buildLorentzianSite({ IS, QS, Bhf, type, HWHM, weight = 1 }) {
 
 /** VBF doublet, or sextet when Bhf is non-zero. */
 export function buildVBFSite(site, weight = 1) {
-  const x = velocityAxis(-12, 12, 512);
+  const x = velocityAxis();
 
   const IS = Number.isFinite(site.IS) ? site.IS : 0.0;
   const QS = Number.isFinite(site.QS) ? site.QS : 0.0;
@@ -212,7 +222,7 @@ export function simulateSpectrum(spectrum) {
     return { y, model };
   });
 
-  const x = velocityAxis(-12, 12, 512);
+  const x = velocityAxis();
   const sum = x.map((_, i) => simulated.reduce((acc, s) => acc + s.y[i], 0));
 
   return { x, sum, sites: simulated, weights, areaGiven };

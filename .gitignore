@@ -6,3 +6,7 @@
 /learn
 /learn/learn.html
 /python
+
+# Source tables that include paper summaries or abstracts. Keep them local only:
+# publishing them could breach the journals' copyright.
+/database/private

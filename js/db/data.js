@@ -5,6 +5,7 @@
 // body of loadSpectra() with a query that returns the same records.
 
 import { parseCSV } from "./csv.js";
+import { MIN_FWHM } from "./spectrum.js";
 
 const PARAMETERS_URL = "database/parameters/minsight_parameters.csv";
 const PROFILES_URL = "database/mineral_profiles/mineral_profiles.json";
@@ -70,8 +71,8 @@ function siteFromRow(row, index) {
     sigmaQS: toNumber(raw.sigmaQS),
     Bhf: toNumber(raw.Bhf),
     sigmaBhf: toNumber(raw.sigmaBhf),
-    // A linewidth of 0 cannot be simulated (it divides by zero), so treat it as missing
-    fwhm: toNumber(raw.fwhm) > 0 ? toNumber(raw.fwhm) : NaN,
+    // Linewidths narrower than 57Fe allows are data errors, so treat them as missing
+    fwhm: toNumber(raw.fwhm) >= MIN_FWHM ? toNumber(raw.fwhm) : NaN,
     area: toNumber(raw.area),
     model: String(row.Model || "").trim().toLowerCase(),
     raw

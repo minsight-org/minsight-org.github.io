@@ -1,7 +1,7 @@
 // "Download simulated spectrum": a tab-separated text file with the sample
 // details, the reference, the site parameters and the simulated curves.
 
-import { DEFAULT_FWHM, simulateSpectrum } from "./spectrum.js";
+import { DEFAULT_FWHM, MIN_FWHM, simulateSpectrum } from "./spectrum.js";
 
 function value(v, raw) {
   return Number.isFinite(v) ? String(v) : (raw || "—");
@@ -31,7 +31,7 @@ export function spectrumText(spectrum) {
   lines.push("# Notes: The Mössbauer spectra in this file are simulated from published hyperfine parameters.");
   lines.push(`# Line shapes: ${sim.sites.map((s, i) => `${sites[i].name} ${s.model === "vbf" ? "VBF" : "Lorentzian"}`).join(", ")}.`);
   if (!sim.areaGiven) lines.push("#   * Relative areas were not provided, so equal site areas were assumed.");
-  if (noFwhm) lines.push(`#   * Where linewidths were not provided, FWHM ${DEFAULT_FWHM} mm/s (HWHM ${DEFAULT_FWHM / 2} mm/s) was used.`);
+  if (noFwhm) lines.push(`#   * Where linewidths were not provided, or were below ${MIN_FWHM} mm/s (narrower than the natural linewidth of 57Fe), FWHM ${DEFAULT_FWHM} mm/s (HWHM ${DEFAULT_FWHM / 2} mm/s) was used.`);
   if (noIsQs) lines.push("#   * Where IS or QS were not provided, 0 mm/s was used.");
   lines.push("# These data are intended for visualisation, comparison and educational use only.");
   lines.push("");

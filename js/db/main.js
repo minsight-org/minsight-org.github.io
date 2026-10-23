@@ -5,7 +5,7 @@
 
 import { loadSpectra, loadMineralProfiles } from "./data.js";
 import { FILTERS, SORTS, displayName, fold, hasActiveFilters, indexSpectra, search, sortResults, suggestions } from "./search.js";
-import { DEFAULT_FWHM, modelLabel, simulateSpectrum } from "./spectrum.js";
+import { DEFAULT_FWHM, MIN_FWHM, modelLabel, simulateSpectrum } from "./spectrum.js";
 import { drawSpectrum } from "./plot.js";
 import { downloadSpectrum } from "./download.js";
 
@@ -406,6 +406,7 @@ function detailView(spectrum, matchedSites) {
     wrapper.append(make("p", "sites-note",
       `* Not given as a single value in the paper, so the simulation used a default ` +
       `(0 mm/s for IS and QS, ${DEFAULT_FWHM} mm/s for FWHM, equal areas when none are given). ` +
+      `Linewidths below ${MIN_FWHM} mm/s are narrower than 57Fe allows and are treated as errors. ` +
       `Point at a starred value to see what the paper gives.`));
   }
   if (matchedSites.length) {
