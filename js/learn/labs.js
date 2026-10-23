@@ -137,11 +137,11 @@ const LABS = {
       { key: "fwhm", label: "Linewidth (FWHM)", unit: "mm/s", min: 0.194, max: 1, step: 0.002, value: 0.3 }
     ],
     // Typical room-temperature values unless stated (see MINERALS below).
-    // TODO (James): check the siderite values before publishing.
+    // Siderite δ from Dyar et al. (2006).
     presets: [
       { label: "Ferrihydrite, Fe(III)", values: { type: "doublet", IS: 0.35, QS: 0.7, fwhm: 0.4 } },
       { label: "Lepidocrocite, Fe(III)", values: { type: "doublet", IS: 0.37, QS: 0.53, fwhm: 0.3 } },
-      { label: "Siderite, Fe(II)", values: { type: "doublet", IS: 1.24, QS: 1.8, fwhm: 0.3 } },
+      { label: "Siderite, Fe(II)", values: { type: "doublet", IS: 1.22, QS: 1.8, fwhm: 0.3 } },
       { label: "Hematite", values: { type: "sextet", IS: 0.37, Bhf: 51.8, eps: -0.1, fwhm: 0.3 } },
       { label: "Goethite at 4.2 K", values: { type: "sextet", IS: 0.48, Bhf: 50.6, eps: -0.13, fwhm: 0.3 } }
     ],
