@@ -202,7 +202,7 @@ html {
 .menu-icon::after { top: 6px; }
 
 /* Collapsed menu, shared by both breakpoints below */
-@media (max-width: 640px) {
+@media (max-width: 820px) {
   .menu-toggle {
     display: block;
   }
@@ -289,7 +289,7 @@ body.search-in-navbar .navbar #search-block {
 }
 
 /* With the search docked the links run out of room sooner */
-@media (max-width: 1060px) {
+@media (max-width: 1200px) {
   body.search-in-navbar .menu-toggle {
     display: block;
   }
