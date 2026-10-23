@@ -19,11 +19,10 @@ function el(name, attrs, parent) {
  * Draw `simulation` (from simulateSpectrum) into an <svg>.
  * @param {SVGSVGElement} svg
  * @param {number} selected  Index of the site to highlight, or -1
- * @param {{depth?: number, reference?: number[], marker?: number}} options
+ * @param {{depth?: number, reference?: number[]}} options
  *   depth: fixed absorption depth for the full plot height, so lines visibly
  *   shrink as they split (the learn guides); otherwise scaled to the deepest line.
  *   reference: an extra curve drawn dashed for comparison.
- *   marker: a velocity to mark with a vertical line.
  */
 export function drawSpectrum(svg, simulation, selected = -1, options = {}) {
   svg.replaceChildren();
@@ -54,9 +53,6 @@ export function drawSpectrum(svg, simulation, selected = -1, options = {}) {
   sites.forEach((site, i) => {
     if (i !== selected) el("path", { class: "plot-site", d: path(site.y) }, svg);
   });
-  if (Number.isFinite(options.marker)) {
-    el("line", { class: "plot-marker", x1: sx(options.marker), x2: sx(options.marker), y1: PAD.top - 8, y2: axisY }, svg);
-  }
   if (options.reference) el("path", { class: "plot-reference", d: path(options.reference) }, svg);
   el("path", { class: "plot-sum", d: path(sum) }, svg);
   if (selected >= 0 && selected < sites.length) {

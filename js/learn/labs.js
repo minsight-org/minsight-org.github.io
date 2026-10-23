@@ -40,28 +40,6 @@ const fmt = (v, digits = 2) => Number(v).toFixed(digits);
 /* ---------- Lab definitions ---------- */
 
 const LABS = {
-  // How a spectrum is recorded, one velocity at a time
-  velocity: {
-    label: "A Mössbauer spectrum built up as the source moves",
-    controls: [
-      { key: "v", label: "Source velocity", unit: "mm/s", min: -12, max: 12, step: 0.05, value: -8 }
-    ],
-    compute(v) {
-      const y = site({ IS: 0.37, QS: -0.1, Bhf: 51.8, fwhm: 0.3 });
-      const sim = spectrum([y]);
-      const i = Math.round((v.v + 12) / 24 * (sim.x.length - 1));
-      const depth = Math.max(...y.map(Math.abs));
-      const absorbed = Math.abs(sim.sum[i]) / depth;
-      return {
-        sim,
-        options: { marker: v.v },
-        readout: `At ${fmt(v.v)} mm/s the gamma rays are shifted by ${fmt(v.v * 48.1, 0)} neV. ` +
-          (absorbed > 0.15 ? "This matches a nuclear transition, so many are absorbed and the line dips." :
-                             "This matches no transition, so almost all pass through the sample.")
-      };
-    }
-  },
-
   "isomer-shift": {
     label: "A single line moved by the isomer shift",
     controls: [

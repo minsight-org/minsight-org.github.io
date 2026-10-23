@@ -59,11 +59,15 @@
                     </p>
                     <p>
                         The chemistry around each iron atom shifts and splits these transition energies by tiny amounts. To scan
-                        across them, the source is moved backwards and forwards. The Doppler effect then raises or lowers the energy
-                        of the gamma rays very slightly. A detector behind the sample counts how many get through at each velocity.
+                        across them, the source is moved backwards and forwards which takes advatange of the Doppler effect to 
+                        raise or lower the energy of the gamma rays very slightly. In transmission geometry, a detector (typically 
+                        a proportional counter) behind the sample counts how many gamma rays get through at each velocity. If there 
+                        is no sample, then all the gamma rays reach the detector, but if there is iron in the sample then some 
+                        of them are absorbed and the count drops. The result is a spectrum showing how many gamma rays get through 
+                        at each velocity.
                     </p>
 
-                    <div class="lab" data-lab="velocity"></div>
+                    <div class="instrument" data-instrument></div>
 
                     <h2>Reading a spectrum</h2>
                     <p>
@@ -124,6 +128,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="/js/site.js"></script>
-    <script type="module" src="/js/learn/labs.js"></script>
+    <script type="module" src="/js/learn/instrument.js"></script>
 </body>
 </html>

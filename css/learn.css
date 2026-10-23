@@ -419,3 +419,177 @@
     content: "−";
     color: var(--highlight);
 }
+
+/* SIMULATED SPECTROMETER (js/learn/instrument.js) */
+
+.instrument {
+    display: grid;
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem;
+    padding: 1.25rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.inst-figure {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+}
+
+.inst-schematic {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.inst-box {
+    fill: var(--surface-alt);
+    stroke: var(--border);
+    stroke-width: 1.5;
+}
+
+.inst-label {
+    fill: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.inst-small {
+    fill: var(--muted);
+    font-size: 13px;
+}
+
+.inst-velocity {
+    fill: var(--accent-strong);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.inst-rod {
+    stroke: var(--muted);
+    stroke-width: 4;
+}
+
+.inst-source {
+    fill: var(--highlight);
+}
+
+.inst-sample {
+    fill: #8a4b2a;
+}
+
+.inst-beam {
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+}
+
+/* Gamma rays travel along the beam while measuring */
+.inst-beam.is-running {
+    animation: beam 0.6s linear infinite;
+}
+
+@keyframes beam {
+    to { stroke-dashoffset: -22; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .inst-beam.is-running {
+        animation: none;
+    }
+}
+
+.inst-cable {
+    stroke: var(--muted);
+    stroke-width: 2;
+}
+
+.inst-screen-icon {
+    fill: var(--surface);
+    stroke: var(--border);
+}
+
+/* The computer screen: a white panel like the other plots */
+.inst-screen,
+.inst-fold-plot {
+    padding: 0.5rem;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.inst-screen svg,
+.inst-fold-plot svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.inst-screen-title {
+    margin: 0 0.5rem;
+    color: #4a5766;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.plot-dots {
+    fill: none;
+    stroke: #215f9a;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+}
+
+.plot-text-sub {
+    fill: #6b7889;
+    font-size: 11px;
+}
+
+.inst-controls {
+    display: grid;
+    gap: 1rem;
+}
+
+.inst-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+/* Side box on folding: quieter than the main plot */
+.inst-fold {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface-alt);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.inst-fold p {
+    margin: 0;
+}
+
+.inst-fold-title {
+    font-weight: 700;
+}
+
+.inst-fold-note {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.inst-fold-plot {
+    max-width: 420px;
+}
+
+/* The diagram and plots shrink on phones, so their text is drawn larger */
+@media (max-width: 600px) {
+    .inst-label { font-size: 30px; }
+    .inst-small,
+    .inst-velocity { font-size: 26px; }
+    .plot-text-sub { font-size: 14px; }
+}
