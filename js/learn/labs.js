@@ -45,18 +45,16 @@ const LABS = {
     controls: [
       { key: "IS", label: "Isomer shift δ", unit: "mm/s", min: -1, max: 2, step: 0.01, value: 0.35 }
     ],
-    presets: [
-      { label: "Metallic iron", values: { IS: 0 } },
-      { label: "Typical Fe(III)", values: { IS: 0.35 } },
-      { label: "Typical Fe(II)", values: { IS: 1.2 } }
-    ],
-    compute: v => ({ sim: spectrum([site({ IS: v.IS })]) })
+    compute: v => ({
+      sim: spectrum([site({ IS: v.IS })]),
+      readout: "The whole spectrum moves. Real spectra are rarely a single line, but every line moves by the same amount."
+    })
   },
 
   quadrupole: {
     label: "A doublet from quadrupole splitting",
+    initial: { IS: 0.35 },
     controls: [
-      { key: "IS", label: "Isomer shift δ", unit: "mm/s", min: -1, max: 2, step: 0.01, value: 0.35 },
       { key: "QS", label: "Quadrupole splitting ΔE<sub>Q</sub>", unit: "mm/s", min: 0, max: 3.5, step: 0.01, value: 0.7 }
     ],
     presets: [
@@ -66,7 +64,7 @@ const LABS = {
     compute: v => ({
       sim: spectrum([site({ IS: v.IS, QS: v.QS })]),
       options: { depth: singletDepth(0.25) },
-      readout: `The two lines sit at ${fmt(v.IS - v.QS / 2)} and ${fmt(v.IS + v.QS / 2)} mm/s. ` +
+      readout: `With δ = ${fmt(v.IS)} mm/s, the two lines sit at ${fmt(v.IS - v.QS / 2)} and ${fmt(v.IS + v.QS / 2)} mm/s. ` +
         "Their midpoint is δ and their separation is ΔEQ."
     })
   },
@@ -84,9 +82,8 @@ const LABS = {
     compute(v) {
       return {
         sim: spectrum([site({ IS: 0, Bhf: v.Bhf })]),
-        options: { depth: singletDepth(0.25) },
         readout: v.Bhf > 0
-          ? `The outer lines are ${fmt(0.067897 * v.Bhf * 4.7509, 1)} mm/s apart. The same area is now shared by six lines, so each one is shallower.`
+          ? `The outer lines are ${fmt(0.067897 * v.Bhf * 4.7509, 1)} mm/s apart.`
           : "With no field there is a single line."
       };
     }
@@ -121,6 +118,42 @@ const LABS = {
         ? "This is about as narrow as a measured line can be (twice the natural linewidth of 0.097 mm/s)."
         : "Broader lines are shallower, because the area under each line stays the same."
     })
+  },
+
+  // Every parameter at once, for a doublet or a sextet
+  together: {
+    label: "A spectrum built from all the hyperfine parameters",
+    choices: [
+      { key: "type", label: "Type of site", options: () => [["doublet", "Doublet"], ["sextet", "Sextet"]], value: "doublet" }
+    ],
+    controls: [
+      { key: "IS", label: "Isomer shift δ", unit: "mm/s", min: -0.5, max: 2, step: 0.01, value: 0.35 },
+      { key: "QS", label: "Quadrupole splitting ΔE<sub>Q</sub>", unit: "mm/s", min: 0, max: 3.5, step: 0.01, value: 0.7,
+        showWhen: v => v.type === "doublet" },
+      { key: "Bhf", label: "Hyperfine field B<sub>hf</sub>", unit: "T", min: 0, max: 55, step: 0.1, value: 51.8,
+        showWhen: v => v.type === "sextet" },
+      { key: "eps", label: "Quadrupole shift ε", unit: "mm/s", min: -0.3, max: 0.3, step: 0.01, value: -0.1,
+        showWhen: v => v.type === "sextet" },
+      { key: "fwhm", label: "Linewidth (FWHM)", unit: "mm/s", min: 0.194, max: 1, step: 0.002, value: 0.3 }
+    ],
+    presets: [
+      { label: "Fe(III) doublet", values: { type: "doublet", IS: 0.35, QS: 0.7, fwhm: 0.3 } },
+      { label: "Fe(II) doublet", values: { type: "doublet", IS: 1.15, QS: 2.7, fwhm: 0.3 } },
+      { label: "Hematite", values: { type: "sextet", IS: 0.37, Bhf: 51.8, eps: -0.1, fwhm: 0.3 } },
+      { label: "Goethite at 4.2 K", values: { type: "sextet", IS: 0.48, Bhf: 50.6, eps: -0.13, fwhm: 0.3 } }
+    ],
+    compute(v) {
+      if (v.type === "doublet") {
+        return {
+          sim: spectrum([site({ IS: v.IS, QS: v.QS, fwhm: v.fwhm })]),
+          readout: `A doublet with lines at ${fmt(v.IS - v.QS / 2)} and ${fmt(v.IS + v.QS / 2)} mm/s.`
+        };
+      }
+      return {
+        sim: spectrum([site({ IS: v.IS, QS: v.eps, Bhf: v.Bhf, fwhm: v.fwhm })]),
+        readout: `A sextet centred on ${fmt(v.IS)} mm/s, with its outer lines ${fmt(0.067897 * v.Bhf * 4.7509, 1)} mm/s apart.`
+      };
+    }
   },
 
   // Illustrative model of nanoparticles with a spread of sizes (blocking temperatures)
@@ -322,7 +355,7 @@ function setUpLab(root) {
   const config = LABS[root.dataset.lab];
   if (!config) return;
   const id = `lab-${++labCount}`;
-  const values = {};
+  const values = { ...(config.initial || {}) };
 
   const figure = make("figure", "lab-figure");
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -334,6 +367,27 @@ function setUpLab(root) {
   const panel = make("div", "lab-controls");
   const outputs = {};
   const inputs = {};
+  const radios = {};
+  const conditional = [];
+
+  (config.choices || []).forEach(c => {
+    values[c.key] = c.value;
+    const group = make("fieldset", "lab-choice");
+    group.append(make("legend", "", c.label));
+    c.options().forEach(([value, text]) => {
+      const label = make("label", "lab-pill");
+      const radio = make("input");
+      Object.assign(radio, { type: "radio", name: `${id}-${c.key}`, value, checked: value === c.value });
+      radios[`${c.key}=${value}`] = radio;
+      radio.addEventListener("change", () => {
+        values[c.key] = value;
+        update();
+      });
+      label.append(radio, make("span", "", text));
+      group.append(label);
+    });
+    panel.append(group);
+  });
 
   (config.controls || []).forEach(c => {
     values[c.key] = c.value;
@@ -352,26 +406,9 @@ function setUpLab(root) {
     });
     wrap.append(label, input);
     panel.append(wrap);
+    if (c.showWhen) conditional.push([wrap, c.showWhen]);
     outputs[c.key] = { node: output, control: c };
     inputs[c.key] = input;
-  });
-
-  (config.choices || []).forEach(c => {
-    values[c.key] = c.value;
-    const group = make("fieldset", "lab-choice");
-    group.append(make("legend", "", c.label));
-    c.options().forEach(([value, text]) => {
-      const label = make("label", "lab-pill");
-      const radio = make("input");
-      Object.assign(radio, { type: "radio", name: `${id}-${c.key}`, value, checked: value === c.value });
-      radio.addEventListener("change", () => {
-        values[c.key] = value;
-        update();
-      });
-      label.append(radio, make("span", "", text));
-      group.append(label);
-    });
-    panel.append(group);
   });
 
   if (config.presets) {
@@ -386,6 +423,7 @@ function setUpLab(root) {
         Object.entries(p.values).forEach(([k, v]) => {
           values[k] = v;
           if (inputs[k]) inputs[k].value = v;
+          if (radios[`${k}=${v}`]) radios[`${k}=${v}`].checked = true;
         });
         update();
       });
@@ -401,6 +439,7 @@ function setUpLab(root) {
   root.append(figure, panel);
 
   function update() {
+    conditional.forEach(([wrap, showWhen]) => { wrap.hidden = !showWhen(values); });
     Object.values(outputs).forEach(({ node, control }) => {
       const digits = String(control.step).split(".")[1]?.length ?? 0;
       node.textContent = `${Number(values[control.key]).toFixed(digits)} ${control.unit}`;

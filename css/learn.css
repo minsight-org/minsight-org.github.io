@@ -593,3 +593,120 @@
     .inst-velocity { font-size: 26px; }
     .plot-text-sub { font-size: 14px; }
 }
+
+/* CONCEPT DIAGRAMS beside the text (hyperfine parameters guide) */
+
+.concept {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (max-width: 720px) {
+    .concept {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .concept-figure {
+        max-width: 340px;
+    }
+}
+
+.concept-figure {
+    margin: 0.25rem 0 1rem;
+    padding: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.concept-figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.concept-figure figcaption {
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.cf-text {
+    fill: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.cf-small {
+    fill: var(--muted);
+    font-size: 13px;
+}
+
+.cf-stop {
+    stop-color: var(--accent);
+}
+
+.cf-shell {
+    fill: none;
+    stroke: var(--muted);
+    stroke-dasharray: 3 4;
+}
+
+.cf-d {
+    fill: var(--highlight);
+}
+
+.cf-nucleus {
+    fill: var(--text);
+}
+
+.cf-nucleus-big {
+    fill: var(--surface-alt);
+    stroke: var(--accent);
+    stroke-width: 2;
+}
+
+.cf-charge {
+    fill: var(--surface);
+    stroke: var(--muted);
+}
+
+.cf-charge-sign {
+    fill: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.cf-bar {
+    fill: var(--accent);
+}
+
+.cf-bar-alt {
+    fill: var(--highlight);
+}
+
+.cf-axis {
+    stroke: var(--muted);
+}
+
+.cf-level {
+    stroke: var(--text);
+    stroke-width: 2;
+}
+
+.cf-arrow {
+    stroke: var(--accent);
+    stroke-width: 2;
+}
+
+.cf-arrowhead {
+    fill: var(--accent);
+}
+
+/* Sliders that only apply to a doublet or a sextet */
+.lab-control[hidden] {
+    display: none;
+}
